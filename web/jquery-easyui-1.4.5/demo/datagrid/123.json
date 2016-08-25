@@ -1,0 +1,86 @@
+{
+  "total": 9,
+  "rows": [
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 1,
+      "wlbm": "WL001",
+      "wlmc": "物料001",
+      "wlms": "描述：物料001"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 2,
+      "wlbm": "WL002",
+      "wlmc": "物料002",
+      "wlms": "描述：物料002"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 3,
+      "wlbm": "WL003",
+      "wlmc": "物料003",
+      "wlms": "描述：物料003"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 4,
+      "wlbm": "WL004",
+      "wlmc": "物料004",
+      "wlms": "描述：物料004"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 5,
+      "wlbm": "WL005",
+      "wlmc": "物料005",
+      "wlms": "描述：物料005"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 6,
+      "wlbm": "WL006",
+      "wlmc": "物料006",
+      "wlms": "描述：物料006"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 7,
+      "wlbm": "WL007",
+      "wlmc": "物料007",
+      "wlms": "描述：物料007"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 8,
+      "wlbm": "WL008",
+      "wlmc": "物料008",
+      "wlms": "描述：物料008"
+    },
+    {
+      "createDate": "2016-06-29",
+      "delete": false,
+      "updateDate": "2016-06-29",
+      "wlId": 9,
+      "wlbm": "WL009",
+      "wlmc": "物料009",
+      "wlms": "描述：物料009"
+    }
+  ]
+}

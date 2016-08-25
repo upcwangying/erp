@@ -1,0 +1,70 @@
+[
+  {
+    "id": 2,
+    "text": "图表管理",
+    "state": "closed",
+    "children": [
+    ]
+  },
+  {
+    "id": 3,
+    "text": "填报管理",
+    "state": "closed",
+    "children": [
+      {
+        "id": 6,
+        "text": "物料管理",
+        "state": "closed",
+        "children": [
+          {
+            "id": 5,
+            "text": "物料填报",
+            "attributes": {
+              "url": "/erp/report/report.jsp",
+              "parentId": 6
+            }
+          },
+          {
+            "id": 7,
+            "text": "物料明细",
+            "attributes": {
+              "url": "/wl_detail.jsp",
+              "parentId": 6
+            }
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "text": "物料增加",
+        "attributes": {
+          "url": "/wl_add.jsp",
+          "parentId": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "text": "系统管理",
+    "state": "closed",
+    "children": [
+      {
+        "id": 10,
+        "text": "系统设置",
+        "attributes": {
+          "url": "/erp/sys/setting/setting.jsp",
+          "parentId": 9
+        }
+      },
+      {
+        "id": 11,
+        "text": "用户设置",
+        "attributes": {
+          "url": "/erp/sys/user/user.jsp",
+          "parentId": 9
+        }
+      }
+    ]
+  }
+]

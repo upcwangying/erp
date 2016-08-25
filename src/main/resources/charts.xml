@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tb-charts>
+    <tb-chart name="chart">
+        <chart name="bar">
+            <property name="chartTitle">物料总价图(柱状图)</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation">VERTICAL</property>
+            <property name="XLabel">日期(柱状图)</property>
+            <property name="YLabel">总价格(柱状图)</property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">255, 0, 0</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+        <chart name="line">
+            <property name="chartTitle">物料总价走势图(折线图)</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation">VERTICAL</property>
+            <property name="XLabel">日期(折线图)</property>
+            <property name="YLabel">总价格(折线图)</property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">128, 128, 128</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+        <chart name="pie">
+            <property name="chartTitle">物料总价图</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation"></property>
+            <property name="XLabel"></property>
+            <property name="YLabel"></property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">255, 0, 0</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+    </tb-chart>
+    <tb-chart name="ydjs">
+        <chart name="bar">
+            <property name="chartTitle">月度结算余额走势柱状图</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation">VERTICAL</property>
+            <property name="XLabel">月份</property>
+            <property name="YLabel">余额</property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">255, 0, 0</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+        <chart name="line">
+            <property name="chartTitle">月度结算余额走势折线图</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation">VERTICAL</property>
+            <property name="XLabel">月份</property>
+            <property name="YLabel">余额</property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">255, 0, 0</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+        <chart name="pie">
+            <property name="chartTitle">月度结算余额图</property>
+            <property name="dataset"></property>
+            <property name="plotOrientation"></property>
+            <property name="XLabel"></property>
+            <property name="YLabel"></property>
+            <property name="noDataMessage">无对应的数据，请重新查询!</property>
+            <property name="noDataMessageColor">255, 0, 0</property>
+            <property name="legend">true</property>
+            <property name="tooltips">false</property>
+            <property name="urls">false</property>
+            <property name="showChartData">true</property>
+        </chart>
+    </tb-chart>
+</tb-charts>
