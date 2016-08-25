@@ -215,47 +215,9 @@ public class ImageUtil {
         }
     }
 
-    /**
-     *
-     * @param filepath
-     * @param pathMap
-     * @return
-     * @throws Exception
-     */
-    public static Map<Integer, String> readfile(String filepath,
-                                                Map<Integer, String> pathMap) throws Exception {
-        if (pathMap == null) {
-            pathMap = new HashMap<Integer, String>();
-        }
-
-        File file = new File(filepath);
-        // 文件
-        if (!file.isDirectory()) {
-            pathMap.put(pathMap.size(), file.getPath());
-        } else if (file.isDirectory()) { // 如果是目录， 遍历所有子目录取出所有文件名
-            String[] filelist = file.list();
-            for (int i = 0; i < filelist.length; i++) {
-                File readfile = new File(filepath + "/" + filelist[i]);
-                if (!readfile.isDirectory()) {
-                    pathMap.put(pathMap.size(), readfile.getPath());
-                } else if (readfile.isDirectory()) { // 子目录的目录
-                    readfile(filepath + "/" + filelist[i], pathMap);
-                }
-            }
-        }
-        return pathMap;
-    }
-
-
     public static void main(String args[]) {
         try {
-            Map<Integer, String> map = readfile("E:/yuan", null);
-            for (int i = 0; i < map.size(); i++) {
-                System.out.println(map.get(i) + " ==" + i);
-                System.out.println();
-                String oldpath = map.get(i);
-                compressImage(map.get(i), "E:/ww/_" + i + ".png", 200, 150);
-            }
+            compressImage("", "E:/ww/_abc.png", 200, 150);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
