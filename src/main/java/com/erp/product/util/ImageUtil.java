@@ -1,19 +1,20 @@
 package com.erp.product.util;
 
+import org.apache.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 图片压缩类
  * Created by wang_ on 2016-08-25.
  */
 public class ImageUtil {
+    private static Logger logger = Logger.getLogger(ImageUtil.class);
 
     /**
      * 图片文件读取
@@ -26,7 +27,7 @@ public class ImageUtil {
             FileInputStream in = new FileInputStream(srcImgPath);
             srcImage = javax.imageio.ImageIO.read(in);
         } catch (IOException e) {
-            System.out.println("读取图片文件出错！" + e.getMessage());
+            logger.error("读取图片文件出错！" + e.getMessage(), e);
             e.printStackTrace();
         }
         return srcImage;
@@ -42,7 +43,7 @@ public class ImageUtil {
         try {
             srcImage = javax.imageio.ImageIO.read(in);
         } catch (IOException e) {
-            System.out.println("读取图片文件出错！" + e.getMessage());
+            logger.error("读取图片文件出错！" + e.getMessage(), e);
             e.printStackTrace();
         }
         return srcImage;
@@ -115,32 +116,8 @@ public class ImageUtil {
      */
     private synchronized static void disposeImage(BufferedImage src,
                                                   String outImgPath, int new_w, int new_h) {
-        // 得到图片
-        int old_w = src.getWidth();
-        // 得到源图宽
-        int old_h = src.getHeight();
-        // 得到源图长
-        BufferedImage newImg = null;
-        // 判断输入图片的类型
-        switch (src.getType()) {
-            case 13:
-                // png,gif
-                // newImg = new BufferedImage(new_w, new_h, BufferedImage.TYPE_4BYTE_ABGR);
-                break;
-            default:
-                newImg = new BufferedImage(new_w, new_h, BufferedImage.TYPE_INT_RGB);
-                break;
-        }
-        Graphics2D g = newImg.createGraphics();
-        // 从原图上取颜色绘制新图
-        g.drawImage(src, 0, 0, old_w, old_h, null);
-        g.dispose();
-        // 根据图片尺寸压缩比得到新图的尺寸
-        newImg.getGraphics().drawImage(
-                src.getScaledInstance(new_w, new_h, Image.SCALE_SMOOTH), 0, 0,
-                null);
         // 调用方法输出图片文件
-        OutImage(outImgPath, newImg);
+        OutImage(outImgPath, createNewImage(src, new_w, new_h));
     }
 
     /**
@@ -152,6 +129,18 @@ public class ImageUtil {
      */
     private synchronized static void disposeImage(BufferedImage src,
                                                   File file, int new_w, int new_h) {
+        // 调用方法输出图片文件
+        OutImage(file, createNewImage(src, new_w, new_h));
+    }
+
+    /**
+     *
+     * @param src
+     * @param new_w
+     * @param new_h
+     * @return
+     */
+    private static BufferedImage createNewImage(BufferedImage src, int new_w, int new_h) {
         // 得到图片
         int old_w = src.getWidth();
         // 得到源图宽
@@ -173,11 +162,8 @@ public class ImageUtil {
         g.drawImage(src, 0, 0, old_w, old_h, null);
         g.dispose();
         // 根据图片尺寸压缩比得到新图的尺寸
-        newImg.getGraphics().drawImage(
-                src.getScaledInstance(new_w, new_h, Image.SCALE_SMOOTH), 0, 0,
-                null);
-        // 调用方法输出图片文件
-        OutImage(file, newImg);
+        newImg.getGraphics().drawImage(src.getScaledInstance(new_w, new_h, Image.SCALE_SMOOTH), 0, 0, null);
+        return newImg;
     }
 
     /**
@@ -191,11 +177,12 @@ public class ImageUtil {
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
-        System.out.println(outImgPath.substring(outImgPath.lastIndexOf(".") + 1));
+        logger.info(outImgPath.substring(outImgPath.lastIndexOf(".") + 1));
         // 输出到文件流
         try {
             ImageIO.write(newImg, outImgPath.substring(outImgPath.lastIndexOf(".") + 1), new File(outImgPath));
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
     }
@@ -211,6 +198,7 @@ public class ImageUtil {
         try {
             ImageIO.write(newImg, fileName.substring(fileName.lastIndexOf(".") + 1), file);
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
     }
