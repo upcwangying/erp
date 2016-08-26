@@ -83,7 +83,7 @@ public class WlServlet extends HttpServlet {
 
         PrintWriter writer = response.getWriter();
         writer.write(responseBean.getResponseText());
-        writer.flush();
+        writer.close();
     }
 
 }

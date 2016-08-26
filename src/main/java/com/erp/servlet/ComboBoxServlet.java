@@ -49,7 +49,7 @@ public class ComboBoxServlet extends HttpServlet {
 
         PrintWriter writer = response.getWriter();
         writer.write(responseText);
-        writer.flush();
+        writer.close();
     }
 
     /**

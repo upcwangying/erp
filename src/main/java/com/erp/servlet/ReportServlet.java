@@ -61,7 +61,7 @@ public class ReportServlet extends HttpServlet {
 
         PrintWriter pw = response.getWriter();
         pw.write(responseText);
-        pw.flush();
+        pw.close();
 
     }
 

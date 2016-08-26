@@ -63,7 +63,7 @@ public class UserServlet extends HttpServlet {
 
         PrintWriter writer = response.getWriter();
         writer.write(responseText);
-        writer.flush();
+        writer.close();
 
     }
 
