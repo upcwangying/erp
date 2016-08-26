@@ -226,6 +226,15 @@ public class StringUtil {
     }
 
     /**
+     * 判断是否为空
+     * @param o
+     * @return 如果为 null 或 "" 或 "null" 返回true
+     */
+    public static boolean isEmpty(Object o) {
+        return null == o || isEmpty(o.toString());
+    }
+
+    /**
      * 处理字符串为空的情况
      * @param s
      * @return 如果为 null 或 "" 或 "null" 返回""
