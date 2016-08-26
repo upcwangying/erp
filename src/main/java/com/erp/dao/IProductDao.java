@@ -15,7 +15,7 @@ public interface IProductDao {
      * @return
      * @throws DAOException
      */
-    List queryProfuct() throws DAOException;
+    List<Product> queryProduct() throws DAOException;
 
     /**
      * 插入或更新商品
@@ -27,7 +27,8 @@ public interface IProductDao {
     /**
      * 删除商品
      * @param ids
+     * @param staffId
      * @throws DAOException
      */
-    void deleteProduct(String[] ids) throws DAOException;
+    void deleteProduct(String[] ids, String staffId) throws DAOException;
 }

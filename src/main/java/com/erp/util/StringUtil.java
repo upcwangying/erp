@@ -244,6 +244,15 @@ public class StringUtil {
     }
 
     /**
+     * 处理字符串为空的情况
+     * @param s
+     * @return 如果为 null 或 "" 或 "null" 返回null
+     */
+    public static String isEmptyDo1(String s) {
+        return isEmpty(s) ? null : s;
+    }
+
+    /**
      * 处理字符串对象为空的情况
      * @param o
      * @return 如果为 null 或 "" 或 "null" 返回""
