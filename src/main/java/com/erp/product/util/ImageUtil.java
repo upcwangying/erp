@@ -43,7 +43,7 @@ public class ImageUtil {
         try {
             srcImage = javax.imageio.ImageIO.read(in);
         } catch (IOException e) {
-            logger.error("读取图片文件出错！" + e.getMessage(), e);
+            logger.error("读取图片流文件出错！" + e.getMessage(), e);
             e.printStackTrace();
         }
         return srcImage;
