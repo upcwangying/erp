@@ -1,7 +1,6 @@
 package com.erp.dao.impl;
 
 import com.erp.dao.IProductDao;
-import com.erp.entity.Module;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
