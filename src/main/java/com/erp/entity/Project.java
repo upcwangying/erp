@@ -3,10 +3,10 @@ package com.erp.entity;
 import java.io.Serializable;
 
 /**
- *
+ * 工程
  * Created by wang_ on 2016-07-15.
  */
-public class Project implements Serializable{
+public class Project implements Serializable {
 
     // 工程项目ID
     private int projectId;
