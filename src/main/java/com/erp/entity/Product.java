@@ -15,22 +15,10 @@ public class Product implements Serializable, Comparable<Project> {
     private String productName;
 
     // 商品描述
+    private String productMS;
+
+    // 商品描述
     private String productDesc;
-
-    // 商品描述1
-    private String productDesc1;
-
-    // 商品描述2
-    private String productDesc2;
-
-    // 商品描述3
-    private String productDesc3;
-
-    // 商品描述4
-    private String productDesc4;
-
-    // 商品描述5
-    private String productDesc5;
 
     // 是否删除
     private boolean delete;
@@ -69,52 +57,20 @@ public class Product implements Serializable, Comparable<Project> {
         this.productName = productName;
     }
 
+    public String getProductMS() {
+        return productMS;
+    }
+
+    public void setProductMS(String productMS) {
+        this.productMS = productMS;
+    }
+
     public String getProductDesc() {
         return productDesc;
     }
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
-    }
-
-    public String getProductDesc1() {
-        return productDesc1;
-    }
-
-    public void setProductDesc1(String productDesc1) {
-        this.productDesc1 = productDesc1;
-    }
-
-    public String getProductDesc2() {
-        return productDesc2;
-    }
-
-    public void setProductDesc2(String productDesc2) {
-        this.productDesc2 = productDesc2;
-    }
-
-    public String getProductDesc3() {
-        return productDesc3;
-    }
-
-    public void setProductDesc3(String productDesc3) {
-        this.productDesc3 = productDesc3;
-    }
-
-    public String getProductDesc4() {
-        return productDesc4;
-    }
-
-    public void setProductDesc4(String productDesc4) {
-        this.productDesc4 = productDesc4;
-    }
-
-    public String getProductDesc5() {
-        return productDesc5;
-    }
-
-    public void setProductDesc5(String productDesc5) {
-        this.productDesc5 = productDesc5;
     }
 
     public boolean isDelete() {
@@ -197,12 +153,8 @@ public class Product implements Serializable, Comparable<Project> {
         return "Product{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
+                ", productMS='" + productMS + '\'' +
                 ", productDesc='" + productDesc + '\'' +
-                ", productDesc1='" + productDesc1 + '\'' +
-                ", productDesc2='" + productDesc2 + '\'' +
-                ", productDesc3='" + productDesc3 + '\'' +
-                ", productDesc4='" + productDesc4 + '\'' +
-                ", productDesc5='" + productDesc5 + '\'' +
                 ", delete=" + delete +
                 ", create_StaffId=" + create_StaffId +
                 ", create_staffName='" + create_staffName + '\'' +

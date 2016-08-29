@@ -34,9 +34,9 @@ public class ProductDaoImpl implements IProductDao {
         ResultSet rst = null;
         List<Product> productList = new ArrayList<>();
         try {
-            String sql = "select p.productid, p.productname, p.productdesc,p.productdesc1,p.productdesc2," +
-                    "p.productdesc3,p.productdesc4,p.productdesc5,p.create_staffid,p.create_date,p.update_staffid," +
-                    "p.update_date,s.staffname as create_staffname,s1.staffname as update_staffname " +
+            String sql = "select p.productid, p.productname,p.productms, p.productdesc," +
+                    "p.create_staffid,p.create_date,p.update_staffid,p.update_date," +
+                    "s.staffname as create_staffname,s1.staffname as update_staffname " +
                     "from t_product p " +
                     "left join staffinfo s on p.create_staffid=s.staffid " +
                     "left join staffinfo s1 on p.update_staffid = s1.staffid " +
@@ -47,12 +47,8 @@ public class ProductDaoImpl implements IProductDao {
                 Product product = new Product();
                 product.setProductId(rst.getLong("productid"));
                 product.setProductName(rst.getString("productname"));
+                product.setProductMS(rst.getString("productms"));
                 product.setProductDesc(rst.getString("productdesc"));
-                product.setProductDesc1(rst.getString("productdesc1"));
-                product.setProductDesc2(rst.getString("productdesc2"));
-                product.setProductDesc3(rst.getString("productdesc3"));
-                product.setProductDesc4(rst.getString("productdesc4"));
-                product.setProductDesc5(rst.getString("productdesc5"));
                 product.setDelete(false);
                 product.setCreate_StaffId(rst.getLong("create_staffid"));
                 product.setCreate_staffName(rst.getString("create_staffname"));
@@ -86,7 +82,7 @@ public class ProductDaoImpl implements IProductDao {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         try {
-            if (StringUtil.isEmpty(product.getProductId())) {
+            if (product.getProductId() == 0) {
                 // 商品productId 为空，为新增业务
                 insertProduct(connection, product);
             } else {
@@ -115,19 +111,15 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void insertProduct(Connection connection, Product product) throws SQLException {
-        String insert_sql = "insert into t_product (productname,productdesc,productdesc1,productdesc2," +
-                "productdesc3,productdesc4,productdesc5,is_del,create_staffid,create_date,update_staffid,update_date) " +
-                "values (?,?,?,?,?,?,?,'0',?,getdate(),?,getdate()) ";
+        String insert_sql = "insert into t_product (productname,productms,productdesc," +
+                "is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values (?,?,?,'0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, product.getProductName());
-        ps.setString(2, product.getProductDesc());
-        ps.setString(3, StringUtil.isEmptyDo1(product.getProductDesc1()));
-        ps.setString(4, StringUtil.isEmptyDo1(product.getProductDesc2()));
-        ps.setString(5, StringUtil.isEmptyDo1(product.getProductDesc3()));
-        ps.setString(6, StringUtil.isEmptyDo1(product.getProductDesc4()));
-        ps.setString(7, StringUtil.isEmptyDo1(product.getProductDesc5()));
-        ps.setLong(8, product.getCreate_StaffId());
-        ps.setLong(9, product.getCreate_StaffId());
+        ps.setString(2, product.getProductMS());
+        ps.setString(3, product.getProductDesc());
+        ps.setLong(4, product.getCreate_StaffId());
+        ps.setLong(5, product.getCreate_StaffId());
         ps.execute();
     }
 
@@ -139,19 +131,15 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void updateProduct(Connection connection, Product product) throws SQLException {
-        String update_sql = "update t_product set productname=?,productdesc=?,productdesc1=?,productdesc2=?," +
-                "productdesc3=?,productdesc4=?,productdesc5=?,update_staffid=?,update_date=getdate() " +
+        String update_sql = "update t_product set productname=?,productms=?,productdesc=?," +
+                "update_staffid=?,update_date=getdate() " +
                 "where productid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, product.getProductName());
-        ps.setString(2, product.getProductDesc());
-        ps.setString(3, StringUtil.isEmptyDo1(product.getProductDesc1()));
-        ps.setString(4, StringUtil.isEmptyDo1(product.getProductDesc2()));
-        ps.setString(5, StringUtil.isEmptyDo1(product.getProductDesc3()));
-        ps.setString(6, StringUtil.isEmptyDo1(product.getProductDesc4()));
-        ps.setString(7, StringUtil.isEmptyDo1(product.getProductDesc5()));
-        ps.setLong(8, product.getUpdate_staffId());
-        ps.setLong(9, product.getProductId());
+        ps.setString(2, product.getProductMS());
+        ps.setString(3, product.getProductDesc());
+        ps.setLong(4, product.getUpdate_staffId());
+        ps.setLong(5, product.getProductId());
         ps.execute();
     }
 

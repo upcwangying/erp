@@ -5,7 +5,12 @@ import com.erp.dao.impl.ProductDaoImpl;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.exception.ServiceException;
+import com.erp.util.JsonDateValueProcessor;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,16 +24,25 @@ public class ProductService {
      * @return
      * @throws ServiceException
      */
-    public static List<Product> queryProduct() throws ServiceException {
+    public static JSONArray queryProduct() throws ServiceException {
         IProductDao productDao = new ProductDaoImpl();
-        List<Product> productList = null;
+        JSONArray array = new JSONArray();
         try {
-            productList = productDao.queryProduct();
+            List<Product> productList = productDao.queryProduct();
+            if (productList != null && productList.size() > 0) {
+                JsonConfig config = new JsonConfig();
+                config.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+
+                for (Product product : productList) {
+                    JSONObject object = JSONObject.fromObject(product, config);
+                    array.add(object);
+                }
+            }
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);
         }
-        return productList;
+        return array;
     }
 
     /**

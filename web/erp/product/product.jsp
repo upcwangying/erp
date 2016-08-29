@@ -1,5 +1,6 @@
 <%@ page import="com.erp.entity.StaffInfo" %>
 <%@ page import="com.erp.util.SystemConfig" %>
+<%@ page import="java.security.SecureRandom" %>
 <%--
   Created by IntelliJ IDEA.
   User: wang_
@@ -9,6 +10,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq+"");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -30,50 +34,35 @@
     <script>
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
+        var maxWidth = 0 , maxHeight = 0;
         $(document).ready(function () {
-            $("#product").datagrid('hideColumn', "dbid");
+            $("#product").datagrid('hideColumn', "productId");
+            $("#product").datagrid('hideColumn', "productDesc");
 
+            if (window.screen) {
+                maxWidth = screen.availWidth;
+                maxHeight = screen.availHeight;
+            }
         });
 
         var editor;
         KindEditor.ready(function(K) {
             editor = K.create('textarea[name="content"]', {
                 allowFileManager : true,
+                resizeType: 0,
                 basePath: '<%= request.getContextPath()%>/kindeditor-4.1.10/',
-                <%--uploadJson: '<%= request.getContextPath()%>/kindeditor-4.1.10/jsp/upload_json.jsp',--%>
-                <%--fileManagerJson : '<%= request.getContextPath()%>/kindeditor-4.1.10/jsp/file_manager_json.jsp',--%>
                 uploadJson: '<%= request.getContextPath()%>/UploadJsonServlet',
                 fileManagerJson : '<%= request.getContextPath()%>/FileManagerJsonServlet',
                 cssPath : '<%= request.getContextPath()%>/kindeditor-4.1.10/plugins/code/prettify.css',
                 imageSizeLimit: '3MB',
-                imageUploadLimit: 10
-            });
-            K('input[name=getHtml]').click(function(e) {
-                alert(editor.html());
-            });
-            K('input[name=isEmpty]').click(function(e) {
-                alert(editor.isEmpty());
-            });
-            K('input[name=getText]').click(function(e) {
-                alert(editor.text());
-            });
-            K('input[name=selectedHtml]').click(function(e) {
-                alert(editor.selectedHtml());
-            });
-            K('input[name=setHtml]').click(function(e) {
-                editor.html('<h3>Hello KindEditor</h3>');
-            });
-            K('input[name=setText]').click(function(e) {
-                editor.text('<h3>Hello KindEditor</h3>');
-            });
-            K('input[name=insertHtml]').click(function(e) {
-                editor.insertHtml('<strong>插入HTML</strong>');
-            });
-            K('input[name=appendHtml]').click(function(e) {
-                editor.appendHtml('<strong>添加HTML</strong>');
-            });
-            K('input[name=clear]').click(function(e) {
-                editor.html('');
+                imageUploadLimit: 10,
+                items:[
+                    'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'insertorderedlist',
+                    'insertunorderedlist', 'indent', 'outdent', 'subscript', 'superscript', 'clearhtml', '|',
+                    'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic',
+                    'underline', 'strikethrough', 'lineheight', 'removeformat', '/',
+                    'undo', 'redo', 'multiimage', 'hr', 'pagebreak', 'fullscreen'
+                ]
             });
         });
     </script>
@@ -84,40 +73,48 @@
 				iconCls: 'icon-edit',
 				singleSelect: true,
 				rownumbers:true,
-				<%--url:'<%= request.getContextPath()%>/YJServlet?param=query',--%>
+				url:'<%= request.getContextPath()%>/ProductServlet?param=query',
 				method: 'post',
+				queryParams:{
+                    seq: $('#seq').val()
+                },
 				toolbar: '#product-tb'
 			">
     <thead>
     <tr>
-        <th data-options="field:'dbid',width:100,align:'right'"></th>
-        <th data-options="field:'yjyf',width:150">月结月份</th>
-        <th data-options="field:'yjzc',width:150">月结支出</th>
-        <th data-options="field:'yjhz',width:150">月结划转</th>
-        <th data-options="field:'yjye',width:150">月结余额</th>
-        <th data-options="field:'staffName',width:100">姓名</th>
+        <th data-options="field:'productId',width:100,align:'right'"></th>
+        <th data-options="field:'productName',width:150">商品名</th>
+        <th data-options="field:'productMS',width:150">商品简介</th>
+        <th data-options="field:'productDesc',width:150"></th>
+        <th data-options="field:'create_staffName',width:100">创建人</th>
+        <th data-options="field:'create_date',width:100">创建时间</th>
+        <th data-options="field:'update_staffName',width:100">更新人</th>
+        <th data-options="field:'update_date',width:100">更新时间</th>
     </tr>
     </thead>
 </table>
 
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+
 <div id="product-tb" style="height:auto">
     <a href="javascript:void(0)" id="queryProdtct" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryProdtct()">查询</a>
+    <a href="javascript:void(0)" id="lookProdtct" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="lookProdtct()">预览</a>
     <a href="javascript:void(0)" id="addProduct" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addProduct()">添加</a>
     <a href="javascript:void(0)" id="updateProduct" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateProduct()">编辑</a>
     <a href="javascript:void(0)" id="deleteProduct" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteProduct()">删除</a>
 </div>
 
-<div id="product-dlg" class="easyui-dialog" title="初始化" style="width:800px;height:400px;padding:10px"
+<div id="product-dlg" class="easyui-dialog" title="初始化" style="padding:10px"
      data-options="
 				iconCls: 'icon-save',
-				maximizable:true,
-				collapsible:true,
 				modal: true,
-				<%--closed: true,--%>
+				fit: true,
+				closed: true,
 				toolbar: [
 				    '-',
 				    {
 				        text: '保存',
+				        id: 'product-save',
 				        iconCls: 'icon-save',
 				        handler: function () {
 				            saveProductForm();
@@ -135,21 +132,28 @@
 				]
 			">
     <form id="product-form" method="post">
-        <textarea name="content" style="width:800px;height:400px;visibility:hidden;"></textarea>
-        <p>
-            <input type="button" name="getHtml" value="取得HTML" />
-            <input type="button" name="isEmpty" value="判断是否为空" />
-            <input type="button" name="getText" value="取得文本(包含img,embed)" />
-            <input type="button" name="selectedHtml" value="取得选中HTML" />
-            <br />
-            <br />
-            <input type="button" name="setHtml" value="设置HTML" />
-            <input type="button" name="setText" value="设置文本" />
-            <input type="button" name="insertHtml" value="插入HTML" />
-            <input type="button" name="appendHtml" value="添加HTML" />
-            <input type="button" name="clear" value="清空内容" />
-            <input type="reset" name="reset" value="Reset" />
-        </p>
+        <table cellpadding="5" style="width: 100%; height: 100%;">
+            <tr style="width: 100%;height: 20px">
+                <td style="width: 100px;">商品名:</td>
+                <td>
+                    <input class="easyui-textbox" id="productName" name="productName" style="width: 50%;" data-options="required:true">
+                    </input>
+                </td>
+            </tr>
+            <tr style="width: 100%;height: 50px">
+                <td style="width: 100px;">商品简介:</td>
+                <td>
+                    <input class="easyui-textbox" id="productMs" name="productMs" style="width: 50%;height: 50px" data-options="required:true, multiline:true">
+                    </input>
+                </td>
+            </tr>
+            <tr style="width: 100%;height: 100%">
+                <td style="width: 100px;">商品详情:</td>
+                <td>
+                    <textarea id="content" name="content" style="width:100%;height:800px;visibility:hidden;"></textarea>
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 
