@@ -1,8 +1,8 @@
 package com.erp.product.servlet;
 
-import com.erp.product.util.FileUtil;
-import com.erp.product.util.FormulaUtil;
-import com.erp.product.util.ImageUtil;
+import com.erp.util.FileUtil;
+import com.erp.util.FormulaUtil;
+import com.erp.util.ImageUtil;
 import com.erp.util.SystemConfig;
 import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;

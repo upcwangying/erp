@@ -94,14 +94,45 @@ function updateProduct() {
  * 删除
  */
 function deleteProduct() {
+    var rows = $('#product').datagrid('getSelections');
+    if (!rows || rows.length == 0) {
+        $.messager.alert('提示','未选中数据!','info');
+        return false;
+    }
 
+    var dbids = [];
+    for (var i=0;i<rows.length;i++) {
+        dbids.push(rows[i].productId);
+    }
+
+    $.ajax({
+        url: root + "/ProductServlet",
+        type: 'post',
+        cache: false,
+        dataType: 'json',
+        traditional: true,
+        data: {
+            param: 'delete',
+            seq: $("#seq").val(),
+            productId: dbids,
+            staffId: staffId
+        },
+        success: function (data) {
+            alert(data.msg);
+            if (data.success) {
+                queryProdtct();
+            }
+        },
+        error: function () {
+            alert("网络错误！")
+        }
+    });
 }
 
 /**
  *
  */
 function saveProductForm() {
-    alert('1');
     var html = editor.html();
     var productName = $("#productName").val();
     var productMs = $("#productMs").val();

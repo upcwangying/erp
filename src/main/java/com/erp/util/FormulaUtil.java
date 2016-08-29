@@ -1,4 +1,4 @@
-package com.erp.product.util;
+package com.erp.util;
 
 import java.util.Vector;
 
