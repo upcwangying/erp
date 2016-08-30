@@ -137,6 +137,8 @@ function saveProductForm() {
     var productName = $("#productName").val();
     var productMs = $("#productMs").val();
 
+    var text = editor.text();
+
     if (productName == null || $.trim(productName) == "") {
         $.messager.alert('提示','“商品名称”不允许为空!','info');
         return;
@@ -163,6 +165,23 @@ function saveProductForm() {
             }
         });
     }
+}
+
+/**
+ *
+ * @param text
+ * @param str
+ * @returns {Array}
+ */
+function indexOfByArray(text, str) {
+    var idx=[];
+    if (text.indexOf(str)==-1) return idx;
+    for (var i=text.indexOf(str);i>=0;i=text.indexOf(str)) {
+        idx.push(i);
+        text = text.replace(str, "");
+    }
+    // console.log(idx);
+    return idx;
 }
 
 /**
