@@ -56,13 +56,7 @@
                 cssPath : '<%= request.getContextPath()%>/kindeditor-4.1.10/plugins/code/prettify.css',
                 imageSizeLimit: '3MB',
                 imageUploadLimit: 10,
-                items:[
-                    'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'insertorderedlist',
-                    'insertunorderedlist', 'indent', 'outdent', 'subscript', 'superscript', 'clearhtml', '|',
-                    'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic',
-                    'underline', 'strikethrough', 'lineheight', 'removeformat', '/',
-                    'undo', 'redo', 'multiimage', 'hr', 'pagebreak', 'fullscreen'
-                ]
+                items:['multiimage']
             });
         });
     </script>
@@ -86,6 +80,15 @@
         <th data-options="field:'productName',width:150">商品名</th>
         <th data-options="field:'productMS',width:150">商品简介</th>
         <th data-options="field:'productDesc',width:150"></th>
+        <th data-options="field:'is_valid',width:150,
+            formatter:function(value){
+                    if (value == '0') {
+                        return '未上架';
+                    } else {
+                        return '已上架';
+                    }
+				}
+        ">是否上架</th>
         <th data-options="field:'create_staffName',width:100">创建人</th>
         <th data-options="field:'create_date',width:100">创建时间</th>
         <th data-options="field:'update_staffName',width:100">更新人</th>
@@ -141,14 +144,14 @@
                 </td>
             </tr>
             <tr style="width: 100%;height: 50px">
-                <td style="width: 100px;">商品简介:</td>
+                <td style="width: 100px;">商品说明:</td>
                 <td>
                     <input class="easyui-textbox" id="productMs" name="productMs" style="width: 50%;height: 50px" data-options="required:true, multiline:true">
                     </input>
                 </td>
             </tr>
             <tr style="width: 100%;height: 100%">
-                <td style="width: 100px;">商品详情:</td>
+                <td style="width: 100px;">商品图片:</td>
                 <td>
                     <textarea id="content" name="content" style="width:100%;height:800px;visibility:hidden;"></textarea>
                 </td>
