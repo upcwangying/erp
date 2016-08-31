@@ -1,6 +1,6 @@
-package com.erp.product.servlet;
+package com.erp.product2.servlet;
 
-import com.erp.util.FileUtil;
+import com.erp.product2.util.FileUtil;
 import com.erp.util.FormulaUtil;
 import com.erp.util.ImageUtil;
 import com.erp.util.SystemConfig;

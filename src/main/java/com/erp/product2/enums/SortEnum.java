@@ -1,9 +1,9 @@
-package com.erp.product.enums;
+package com.erp.product2.enums;
 
-import com.erp.product.bean.NameComparator;
-import com.erp.product.bean.SizeComparator;
-import com.erp.product.bean.SortComparator;
-import com.erp.product.bean.TypeComparator;
+import com.erp.product2.bean.NameComparator;
+import com.erp.product2.bean.SizeComparator;
+import com.erp.product2.bean.SortComparator;
+import com.erp.product2.bean.TypeComparator;
 
 /**
  * Created by wang_ on 2016-08-25.

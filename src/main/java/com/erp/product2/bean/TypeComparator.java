@@ -1,4 +1,4 @@
-package com.erp.product.bean;
+package com.erp.product2.bean;
 
 import java.util.HashMap;
 

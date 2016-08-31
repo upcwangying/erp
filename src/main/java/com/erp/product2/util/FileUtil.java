@@ -1,4 +1,4 @@
-package com.erp.util;
+package com.erp.product2.util;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;

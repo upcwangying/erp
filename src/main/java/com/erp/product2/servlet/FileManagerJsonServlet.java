@@ -1,7 +1,7 @@
-package com.erp.product.servlet;
+package com.erp.product2.servlet;
 
-import com.erp.product.enums.SortEnum;
-import com.erp.util.FileUtil;
+import com.erp.product2.enums.SortEnum;
+import com.erp.product2.util.FileUtil;
 import net.sf.json.JSONObject;
 
 import javax.servlet.ServletConfig;
