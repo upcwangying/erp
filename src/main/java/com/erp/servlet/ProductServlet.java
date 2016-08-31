@@ -102,7 +102,7 @@ public class ProductServlet extends HttpServlet {
                 product.setProductDesc(html);
                 product.setCreate_StaffId(Long.valueOf(create_by));
                 product.setUpdate_staffId(Long.valueOf(update_by));
-                ProductService.insertOrUpdateProduct(product);
+                ProductService.insertOrUpdateProduct(product, true);
             } else if ("delete".equals(param)) {
                 String[] productId = request.getParameterValues("productId");
                 String staffId = request.getParameter("staffId");
