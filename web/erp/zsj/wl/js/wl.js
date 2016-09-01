@@ -140,6 +140,7 @@ function updateWl() {
     }
     // alert(rows.length);
     openWlDialog('edit');
+    $('#wl-dlg').dialog('setTitle', '物料修改');
 
     $('#wlmc').textbox('setValue', rows[0].wlmc);
     $('#wlms').textbox('setValue', rows[0].wlms);

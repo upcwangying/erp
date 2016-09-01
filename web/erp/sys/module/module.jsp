@@ -89,7 +89,7 @@
     <div onclick="deleteNode()" id="deleteItem" data-options="iconCls:'icon-remove'">删除节点</div>
 </div>
 
-<div id="module-dlg" class="easyui-dialog" title="节点增加" style="width:400px;height:300px;padding:10px"
+<div id="module-dlg" class="easyui-dialog" title="模块增加" style="width:400px;height:300px;padding:10px"
      data-options="
 				iconCls: 'icon-save',
 				maximizable:true,

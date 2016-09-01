@@ -117,6 +117,9 @@ function saveGysForm() {
     
 }
 
+/**
+ *
+ */
 function updateGys() {
     var rows = $('#gys-add').datagrid('getSelections');
     if (!rows || rows.length == 0) {
@@ -129,6 +132,7 @@ function updateGys() {
     }
     // alert(rows.length);
     openGysDialog('edit');
+    $('#gys-dlg').dialog('setTitle', '供应商修改');
 
     $('#gysmc').textbox('setValue', rows[0].gysmc);
     $('#gysms').textbox('setValue', rows[0].gysms);

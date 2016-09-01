@@ -120,6 +120,8 @@ function updateUser() {
     var id = rows[0].staffId;
 
     openUserDialog('edit');
+    $('#user-dlg').dialog('setTitle','用户修改');
+
     $('#staffId').val(rows[0].staffId);
     $('#staffcode').textbox('setValue', rows[0].staffCode);
     $('#staffname').textbox('setValue', rows[0].staffName);

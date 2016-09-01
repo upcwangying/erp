@@ -63,6 +63,7 @@ function closeModuleDialog() {
 function editNode(row) {
     var id = row.id;
     openModuleDialog("edit");
+    $("#module-dlg").dialog('setTitle', '模块修改');
     var select = $("#select").combobox("getValue");
     $('#modulename').textbox('setValue', row.text);
     $('#moduleurl').textbox('setValue', row.url);
