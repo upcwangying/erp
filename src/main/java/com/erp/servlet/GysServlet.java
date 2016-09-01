@@ -5,6 +5,7 @@ import com.erp.entity.Gys;
 import com.erp.enums.TextEnum;
 import com.erp.service.SequenceService;
 import com.erp.service.ZSJService;
+import com.erp.util.StringUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -49,29 +50,30 @@ public class GysServlet extends HttpServlet {
         boolean success = false;
         String msg = "";
         try {
-            if (param != null && "insert".equalsIgnoreCase(param)) {
+            if (param != null && "add".equalsIgnoreCase(param)) {
                 String name = "GYS";
-                String gysmc = request.getParameter("gysmc");
-                String gysms = request.getParameter("gysms");
-                String gysbm = SequenceService.initSequence(name, 4);
-                gysbm = name + gysbm;
-                Gys gys = new Gys();
-                gys.setGysbm(gysbm);
-                gys.setGysmc(gysmc);
-                gys.setGysms(gysms);
-                ZSJService.insertGys(gys);
-            } else if (param != null && "delete".equalsIgnoreCase(param)) {
-                String[] dbids = request.getParameterValues("dbids");
-                ZSJService.deleteGys(dbids);
-            } else if (param != null && "update".equalsIgnoreCase(param)) {
-                Gys gys = new Gys();
                 String dbid = request.getParameter("dbid");
                 String gysmc = request.getParameter("gysmc");
                 String gysms = request.getParameter("gysms");
-                gys.setGysId(Long.valueOf(dbid));
+                String create_staffid = request.getParameter("create_staffid");
+                String update_staffid = request.getParameter("update_staffid");
+                String gysbm = null;
+                if (StringUtil.isEmpty(dbid)) {
+                    gysbm = name + SequenceService.initSequence(name, 4);
+                }
+                Gys gys = new Gys();
+                gys.setGysId(StringUtil.isEmpty(dbid)?0L:Long.valueOf(dbid));
+                gys.setGysbm(gysbm);
                 gys.setGysmc(gysmc);
                 gys.setGysms(gysms);
-                ZSJService.updateGys(gys);
+                gys.setCreate_staffId(Long.valueOf(create_staffid));
+                gys.setUpdate_staffId(Long.valueOf(update_staffid));
+
+                ZSJService.insertOrUpdateGys(gys);
+            } else if (param != null && "delete".equalsIgnoreCase(param)) {
+                String[] dbids = request.getParameterValues("dbids");
+                String staffId = request.getParameter("update_staffid");
+                ZSJService.deleteGys(dbids, Long.valueOf(staffId));
             }
             success = true;
             msg = TextEnum.getText(param, success);

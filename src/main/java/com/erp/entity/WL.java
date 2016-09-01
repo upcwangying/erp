@@ -23,8 +23,14 @@ public class WL implements Serializable {
     // 是否删除
     private boolean delete;
 
+    // 创建人
+    private long create_staffId;
+
     // 创建时间
     private java.util.Date createDate;
+
+    // 更新人
+    private long update_staffId;
 
     // 更新时间
     private java.util.Date updateDate;
@@ -69,12 +75,28 @@ public class WL implements Serializable {
         this.delete = delete;
     }
 
+    public long getCreate_staffId() {
+        return create_staffId;
+    }
+
+    public void setCreate_staffId(long create_staffId) {
+        this.create_staffId = create_staffId;
+    }
+
     public java.util.Date getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(java.util.Date createDate) {
         this.createDate = createDate;
+    }
+
+    public long getUpdate_staffId() {
+        return update_staffId;
+    }
+
+    public void setUpdate_staffId(long update_staffId) {
+        this.update_staffId = update_staffId;
     }
 
     public java.util.Date getUpdateDate() {
@@ -108,7 +130,9 @@ public class WL implements Serializable {
                 ", wlmc='" + wlmc + '\'' +
                 ", wlms='" + wlms + '\'' +
                 ", delete=" + delete +
+                ", create_staffId=" + create_staffId +
                 ", createDate=" + createDate +
+                ", update_staffId=" + update_staffId +
                 ", updateDate=" + updateDate +
                 '}';
     }

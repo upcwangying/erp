@@ -5,6 +5,7 @@ import com.erp.entity.WL;
 import com.erp.enums.TextEnum;
 import com.erp.service.SequenceService;
 import com.erp.service.ZSJService;
+import com.erp.util.StringUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -48,29 +49,30 @@ public class WlServlet extends HttpServlet {
         boolean success = false;
         String msg = "";
         try {
-            if (param != null && "insert".equalsIgnoreCase(param)) {
+            if (param != null && "add".equalsIgnoreCase(param)) {
                 String name = "WL";
-                String wlmc = request.getParameter("wlmc");
-                String wlms = request.getParameter("wlms");
-                String wlbm = SequenceService.initSequence(name, 4);
-                WL wl = new WL();
-                wlbm = name + wlbm;
-                wl.setWlbm(wlbm);
-                wl.setWlmc(wlmc);
-                wl.setWlms(wlms);
-                ZSJService.insertWl(wl);
-            } else if (param != null && "delete".equalsIgnoreCase(param)) {
-                String[] dbids = request.getParameterValues("dbids");
-                ZSJService.deleteWl(dbids);
-            } else if (param != null && "update".equalsIgnoreCase(param)) {
-                WL wl = new WL();
                 String dbid = request.getParameter("dbid");
                 String wlmc = request.getParameter("wlmc");
                 String wlms = request.getParameter("wlms");
-                wl.setWlId(Long.valueOf(dbid));
+                String create_staffid = request.getParameter("create_staffid");
+                String update_staffid = request.getParameter("update_staffid");
+                String wlbm = null;
+                if (StringUtil.isEmpty(dbid)) {
+                    wlbm = name + SequenceService.initSequence(name, 4);
+                }
+
+                WL wl = new WL();
+                wl.setWlId(StringUtil.isEmpty(dbid)?0L:Long.valueOf(dbid));
+                wl.setWlbm(wlbm);
                 wl.setWlmc(wlmc);
                 wl.setWlms(wlms);
-                ZSJService.updateWl(wl);
+                wl.setCreate_staffId(Long.valueOf(create_staffid));
+                wl.setUpdate_staffId(Long.valueOf(update_staffid));
+                ZSJService.insertOrUpdateWl(wl);
+            } else if (param != null && "delete".equalsIgnoreCase(param)) {
+                String[] dbids = request.getParameterValues("dbids");
+                String staffId = request.getParameter("update_staffid");
+                ZSJService.deleteWl(dbids, Long.valueOf(staffId));
             }
             success = true;
             msg = TextEnum.getText(param, success);

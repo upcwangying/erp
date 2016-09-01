@@ -75,31 +75,15 @@ public class ZSJService {
     }
 
     /**
-     * 插入物料数据
+     * 插入、更新物料数据
      *
      * @param wl
      * @throws ServiceException
      */
-    public static void insertWl(WL wl) throws ServiceException {
+    public static void insertOrUpdateWl(WL wl) throws ServiceException {
         IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
         try {
-            zsjDataDao.insertWl(wl);
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * 更新物料主数据
-     *
-     * @param wl
-     * @throws ServiceException
-     */
-    public static void updateWl(WL wl) throws ServiceException {
-        IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
-        try {
-            zsjDataDao.updateWl(wl);
+            zsjDataDao.insertOrUpdateWl(wl);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);
@@ -110,12 +94,13 @@ public class ZSJService {
      * 删除物料数据
      *
      * @param ids
+     * @param update_staffId
      * @throws DAOException
      */
-    public static void deleteWl(String[] ids) throws ServiceException {
+    public static void deleteWl(String[] ids, long update_staffId) throws ServiceException {
         IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
         try {
-            zsjDataDao.deleteWl(ids);
+            zsjDataDao.deleteWl(ids, update_staffId);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);
@@ -123,31 +108,15 @@ public class ZSJService {
     }
 
     /**
-     * 增加供应商主数据
+     * 增加、更新供应商主数据
      *
      * @param gys
      * @throws ServiceException
      */
-    public static void insertGys(Gys gys) throws ServiceException {
+    public static void insertOrUpdateGys(Gys gys) throws ServiceException {
         IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
         try {
-            zsjDataDao.insertGys(gys);
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * 更新供应商主数据
-     *
-     * @param gys
-     * @throws ServiceException
-     */
-    public static void updateGys(Gys gys) throws ServiceException {
-        IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
-        try {
-            zsjDataDao.updateGys(gys);
+            zsjDataDao.insertOrUpdateGys(gys);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);
@@ -158,12 +127,13 @@ public class ZSJService {
      * 删除供应商数据
      *
      * @param ids
+     * @param update_staffId
      * @throws ServiceException
      */
-    public static void deleteGys(String[] ids) throws ServiceException {
+    public static void deleteGys(String[] ids, long update_staffId) throws ServiceException {
         IZSJDataDao zsjDataDao = new ZSJDataDaoImpl();
         try {
-            zsjDataDao.deleteGys(ids);
+            zsjDataDao.deleteGys(ids, update_staffId);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);

@@ -25,6 +25,7 @@
 
     <script>
         var root = '<%= request.getContextPath()%>';
+        var staffId = '<%= staffInfo.getStaffId()%>';
 
         $(document).ready(function () {
             $("#gys-add").datagrid('hideColumn', "gysId");

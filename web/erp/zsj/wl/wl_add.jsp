@@ -25,6 +25,7 @@
 
     <script>
         var root = '<%= request.getContextPath()%>';
+        var staffId = '<%= staffInfo.getStaffId()%>';
         $(document).ready(function () {
             $("#wl-add").datagrid('hideColumn', "wlId");
         });

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,30 +60,27 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
     }
 
     /**
-     * 增加物料主数据
+     * 增加、更新物料主数据
      *
      * @param wl
      * @throws DAOException
      */
     @Override
-    public void insertWl(WL wl) throws DAOException {
+    public void insertOrUpdateWl(WL wl) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
-        PreparedStatement ps = null;
         try {
-            String wl_sql = "insert into t_wl(wlbm,wlmc,wlms,is_del,create_date,update_date) " +
-                    "values(?,?,?,'0',getdate(),getdate())";
-            ps = connection.prepareStatement(wl_sql);
-            ps.setString(1, wl.getWlbm());
-            ps.setString(2, wl.getWlmc());
-            ps.setString(3, wl.getWlms());
-            ps.execute();
+            if (wl.getWlId() == 0) {
+                insertWl(connection, wl);
+            } else {
+                updateWl(connection, wl);
+            }
             JdbcUtil.commit();
         } catch (Exception e) {
             JdbcUtil.rollback();
-            logger.error("插入物料数据失败：" + e.getMessage(), e);
+            logger.error("插入或更新物料数据失败：" + e.getMessage(), e);
             e.printStackTrace();
-            throw new DAOException("插入物料数据失败：" + e.getMessage(), e);
+            throw new DAOException("插入或更新物料数据失败：" + e.getMessage(), e);
         } finally {
             if (connection != null) {
                 JdbcUtil.close();
@@ -91,52 +89,59 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
     }
 
     /**
+     * 增加物料主数据
+     *
+     * @param connection
+     * @param wl
+     * @throws SQLException
+     */
+    private void insertWl(Connection connection, WL wl) throws SQLException {
+        String wl_sql = "insert into t_wl(wlbm,wlmc,wlms,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values(?,?,?,'0',?,getdate(),?,getdate())";
+        PreparedStatement ps = connection.prepareStatement(wl_sql);
+        ps.setString(1, wl.getWlbm());
+        ps.setString(2, wl.getWlmc());
+        ps.setString(3, wl.getWlms());
+        ps.setLong(4, wl.getCreate_staffId());
+        ps.setLong(5, wl.getUpdate_staffId());
+        ps.execute();
+    }
+
+    /**
      * 更新物料主数据
      *
+     * @param connection
      * @param wl
-     * @throws DAOException
+     * @throws SQLException
      */
-    @Override
-    public void updateWl(WL wl) throws DAOException {
-        Connection connection = JdbcUtil.getConnection();
-        JdbcUtil.beginTranaction();
-        PreparedStatement ps = null;
-        try {
-            String wl_sql = "update t_wl set wlmc=?,wlms=?,update_date=getdate() where dbid=? ";
-            ps = connection.prepareStatement(wl_sql);
-            ps.setString(1, wl.getWlmc());
-            ps.setString(2, wl.getWlms());
-            ps.setLong(3, wl.getWlId());
-            ps.execute();
-            JdbcUtil.commit();
-        } catch (Exception e) {
-            JdbcUtil.rollback();
-            logger.error("更新物料数据失败：" + e.getMessage(), e);
-            e.printStackTrace();
-            throw new DAOException("更新物料数据失败：" + e.getMessage(), e);
-        } finally {
-            if (connection != null) {
-                JdbcUtil.close();
-            }
-        }
+    private void updateWl(Connection connection, WL wl) throws SQLException {
+        String wl_sql = "update t_wl set wlmc=?,wlms=?,update_staffid=?,update_date=getdate() where dbid=? ";
+        PreparedStatement ps = connection.prepareStatement(wl_sql);
+        ps.setString(1, wl.getWlmc());
+        ps.setString(2, wl.getWlms());
+        ps.setLong(3, wl.getUpdate_staffId());
+        ps.setLong(4, wl.getWlId());
+        ps.execute();
     }
 
     /**
      * 删除物料数据
      *
      * @param ids
+     * @param update_staffId
      * @throws DAOException
      */
     @Override
-    public void deleteWl(String[] ids) throws DAOException {
+    public void deleteWl(String[] ids, long update_staffId) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String wl_sql = "update t_wl set is_del='1',update_date=getdate() where dbid=? ";
+            String wl_sql = "update t_wl set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
             ps = connection.prepareStatement(wl_sql);
             for (String id : ids) {
-                ps.setLong(1, Long.valueOf(id));
+                ps.setLong(1, update_staffId);
+                ps.setLong(2, Long.valueOf(id));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -198,24 +203,21 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
      * @throws DAOException
      */
     @Override
-    public void insertGys(Gys gys) throws DAOException {
+    public void insertOrUpdateGys(Gys gys) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
-        PreparedStatement ps = null;
         try {
-            String gys_sql = "insert into t_gys(gysbm,gysmc,gysms,is_del,create_date,update_date) " +
-                    "values(?,?,?,'0',getdate(),getdate())";
-            ps = connection.prepareStatement(gys_sql);
-            ps.setString(1, gys.getGysbm());
-            ps.setString(2, gys.getGysmc());
-            ps.setString(3, gys.getGysms());
-            ps.execute();
+            if (gys.getGysId() == 0) {
+                insertGys(connection, gys);
+            } else {
+                updateGys(connection, gys);
+            }
             JdbcUtil.commit();
         } catch (Exception e) {
             JdbcUtil.rollback();
-            logger.error("插入供应商数据失败：" + e.getMessage(), e);
+            logger.error("插入或更新供应商数据失败：" + e.getMessage(), e);
             e.printStackTrace();
-            throw new DAOException("插入供应商数据失败：" + e.getMessage(), e);
+            throw new DAOException("插入或更新供应商数据失败：" + e.getMessage(), e);
         } finally {
             if (connection != null) {
                 JdbcUtil.close();
@@ -224,52 +226,59 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
     }
 
     /**
+     * 增加供应商主数据
+     *
+     * @param connection
+     * @param gys
+     * @throws SQLException
+     */
+    private void insertGys(Connection connection, Gys gys) throws SQLException {
+        String gys_sql = "insert into t_gys(gysbm,gysmc,gysms,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values(?,?,?,'0',?,getdate(),?,getdate())";
+        PreparedStatement ps = connection.prepareStatement(gys_sql);
+        ps.setString(1, gys.getGysbm());
+        ps.setString(2, gys.getGysmc());
+        ps.setString(3, gys.getGysms());
+        ps.setLong(4, gys.getCreate_staffId());
+        ps.setLong(5, gys.getUpdate_staffId());
+        ps.execute();
+    }
+
+    /**
      * 更新供应商主数据
      *
+     * @param connection
      * @param gys
-     * @throws DAOException
+     * @throws SQLException
      */
-    @Override
-    public void updateGys(Gys gys) throws DAOException {
-        Connection connection = JdbcUtil.getConnection();
-        JdbcUtil.beginTranaction();
-        PreparedStatement ps = null;
-        try {
-            String gys_sql = "update t_gys set gysmc=?,gysms=?,update_date=getdate() where dbid=? ";
-            ps = connection.prepareStatement(gys_sql);
-            ps.setString(1, gys.getGysmc());
-            ps.setString(2, gys.getGysms());
-            ps.setLong(3, gys.getGysId());
-            ps.execute();
-            JdbcUtil.commit();
-        } catch (Exception e) {
-            JdbcUtil.rollback();
-            logger.error("更新供应商数据失败：" + e.getMessage(), e);
-            e.printStackTrace();
-            throw new DAOException("更新供应商数据失败：" + e.getMessage(), e);
-        } finally {
-            if (connection != null) {
-                JdbcUtil.close();
-            }
-        }
+    private void updateGys(Connection connection, Gys gys) throws SQLException {
+        String gys_sql = "update t_gys set gysmc=?,gysms=?,update_staffid=?,update_date=getdate() where dbid=? ";
+        PreparedStatement ps = connection.prepareStatement(gys_sql);
+        ps.setString(1, gys.getGysmc());
+        ps.setString(2, gys.getGysms());
+        ps.setLong(3, gys.getUpdate_staffId());
+        ps.setLong(4, gys.getGysId());
+        ps.execute();
     }
 
     /**
      * 删除供应商数据
      *
      * @param ids
+     * @param update_staffId
      * @throws DAOException
      */
     @Override
-    public void deleteGys(String[] ids) throws DAOException {
+    public void deleteGys(String[] ids, long update_staffId) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String gys_sql = "update t_gys set is_del='1',update_date=getdate() where dbid=? ";
+            String gys_sql = "update t_gys set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
             ps = connection.prepareStatement(gys_sql);
             for (String id : ids) {
-                ps.setLong(1, Long.valueOf(id));
+                ps.setLong(1, update_staffId);
+                ps.setLong(2, Long.valueOf(id));
                 ps.addBatch();
             }
             ps.executeBatch();
