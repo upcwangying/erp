@@ -1,6 +1,9 @@
 function queryModule() {
     $("#module-tree").treegrid({
         url: root + '/ModuleServlet?param=query',
+        queryParams: {
+            flag: 'true'
+        },
         method: 'post'
     });
 }
@@ -144,6 +147,40 @@ function deleteSelectedNodes() {
         }
     });
 
+}
+
+function resumeModule() {
+    var selected = $("#module-tree").treegrid('getSelected');
+    if (selected.display == '0') {
+        $.messager.alert('提示', '该数据已是“显示”状态', 'info');
+        return;
+    }
+
+    var id = selected.id;
+    $.messager.confirm('确认框', '确定恢复该节点吗?', function (r) {
+        if (r) {
+            $.ajax({
+                url: root + "/ModuleServlet",
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                traditional: true,
+                data: {
+                    param: 'resume',
+                    id: id
+                },
+                success: function (data) {
+                    alert(data.msg);
+                    if (data.success) {
+                        queryModule();
+                    }
+                },
+                error: function () {
+                    alert("网络错误！")
+                }
+            });
+        }
+    });
 }
 
 

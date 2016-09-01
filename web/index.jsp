@@ -127,6 +127,9 @@
                 cache: false,
                 dataType: 'json',
                 traditional: true,
+                data: {
+                    flag: 'false'
+                },
                 success: function (data) {
 //                    if (data == "0") {
 //                        window.location = "/Account";

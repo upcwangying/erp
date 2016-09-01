@@ -41,6 +41,9 @@
     <table id="module-tree" class="easyui-treegrid" style="height: 100%" data-options="
 				url: '<%= request.getContextPath()%>/ModuleServlet?param=query',
 				method: 'post',
+				queryParams: {
+				    flag: 'true'
+				},
 				rownumbers: true,
 				idField: 'id',
 				treeField: 'text',
@@ -70,11 +73,22 @@
             <th data-options="field:'parentId'" width="220"></th>
             <th data-options="field:'text'" width="220">模块名</th>
             <th data-options="field:'url'" width="250">链接</th>
+            <th data-options="field:'leaf',
+                formatter:function(value){
+                    if (value == 'file') {
+                        return '叶子结点';
+                    } else {
+                        return '非叶子结点';
+                    }
+				}
+            " width="150">是否显示</th>
             <th data-options="field:'order'" width="100" align="right">排序</th>
             <th data-options="field:'display',
                 formatter:function(value){
                     if (value == '0') {
                         return '显示';
+                    } else {
+                        return '不显示';
                     }
 				}
             " width="150">是否显示</th>
@@ -87,6 +101,8 @@
     <div onclick="addNode()" id="addItem" data-options="iconCls:'icon-add'">增加节点</div>
     <div class="menu-sep"></div>
     <div onclick="deleteNode()" id="deleteItem" data-options="iconCls:'icon-remove'">删除节点</div>
+    <div class="menu-sep"></div>
+    <div onclick="resumeModule()" id="resumeItem" data-options="iconCls:'icon-remove'">恢复显示节点</div>
 </div>
 
 <div id="module-dlg" class="easyui-dialog" title="模块增加" style="width:400px;height:300px;padding:10px"

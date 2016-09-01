@@ -12,10 +12,11 @@ public interface IModuleDao {
 
     /**
      * 查询所有模块
+     * @param flag true:查询时包含已删除的数据
      * @return
      * @throws DAOException
      */
-    List<Module> queryModules() throws DAOException;
+    List<Module> queryModules(boolean flag) throws DAOException;
 
     /**
      * 插入模块
@@ -30,6 +31,13 @@ public interface IModuleDao {
      * @throws DAOException
      */
     void updateModule(Module module) throws DAOException;
+
+    /**
+     * 更新模块
+     * @param id
+     * @throws DAOException
+     */
+    void updateModule(String id) throws DAOException;
 
     /**
      * 删除节点

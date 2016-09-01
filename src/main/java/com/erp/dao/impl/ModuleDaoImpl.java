@@ -25,7 +25,7 @@ public class ModuleDaoImpl implements IModuleDao {
      * @return
      * @throws Exception
      */
-    public List<Module> queryModules() throws DAOException {
+    public List<Module> queryModules(boolean flag) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rst = null;
@@ -33,19 +33,19 @@ public class ModuleDaoImpl implements IModuleDao {
         try {
             String sql = "select module_id,module_name,href,parentid,parenttype,display,dis_order,icon " +
                     "from module " +
-                    "where display='0' " +
+                    "where (0=? or display='0') " +
                     "order by parenttype desc,parentid asc, dis_order asc ";
             ps = connection.prepareStatement(sql);
+            ps.setInt(1, flag ? 0 : 1);
             rst = ps.executeQuery();
             while (rst.next()) {
-
                 Module module = new Module();
                 module.setModuleId(rst.getInt("module_id"));
                 module.setModuleName(rst.getString("module_name"));
                 module.setHref(rst.getString("href"));
                 module.setParentId(rst.getInt("parentid"));
                 module.setParentType(rst.getString("parenttype"));
-                module.setDisplay('0');
+                module.setDisplay(rst.getString("display"));
                 module.setDisOrder(rst.getInt("dis_order"));
                 module.setIcon(rst.getString("icon"));
                 moduleList.add(module);
@@ -123,6 +123,35 @@ public class ModuleDaoImpl implements IModuleDao {
             logger.error("更新模块失败：" + e.getMessage(), e);
             e.printStackTrace();
             throw new DAOException("更新模块失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+    }
+
+    /**
+     * 更新模块
+     *
+     * @param id
+     * @throws DAOException
+     */
+    @Override
+    public void updateModule(String id) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        try {
+            String sql = "update module set display='0' where module_id=?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.execute();
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("修改模块失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("修改模块失败：" + e.getMessage(), e);
         } finally {
             if (connection != null) {
                 JdbcUtil.close();

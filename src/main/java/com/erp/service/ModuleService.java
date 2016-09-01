@@ -17,14 +17,15 @@ public class ModuleService {
 
     /**
      *
+     * @param flag
      * @return
      * @throws ServiceException
      */
-    public static List<Module> initModules() throws ServiceException{
+    public static List<Module> initModules(boolean flag) throws ServiceException{
         IModuleDao moduleDao = new ModuleDaoImpl();
         List<Module> modules = null;
         try {
-            modules = moduleDao.queryModules();
+            modules = moduleDao.queryModules(flag);
 
             if (projectModuleMaps == null) {
                 projectModuleMaps = new HashMap<Integer, Set<Module>>();
@@ -99,6 +100,22 @@ public class ModuleService {
         IModuleDao moduleDao = new ModuleDaoImpl();
         try {
             moduleDao.updateModule(module);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * ¸üÐÂÄ£¿é
+     *
+     * @param id
+     * @throws ServiceException
+     */
+    public static void updateModule(String id) throws ServiceException {
+        IModuleDao moduleDao = new ModuleDaoImpl();
+        try {
+            moduleDao.updateModule(id);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);

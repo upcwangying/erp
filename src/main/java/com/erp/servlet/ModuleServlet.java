@@ -55,10 +55,10 @@ public class ModuleServlet extends HttpServlet {
         String responseText = "";
         if (param != null) {
             if ("query".equals(param)) {
-                responseText = queryModules();
-            } else if ("insert".equals(param)
-                        || "update".equals(param)
-                            || "delete".equals(param)) {
+                String flag = request.getParameter("flag");
+                responseText = queryModules(Boolean.valueOf(flag));
+            } else if ("insert".equals(param) || "update".equals(param)
+                        || "delete".equals(param) || "resume".equals(param)) {
                 responseText = addOrUpdateOrDelModule(param, request);
             }
         }
@@ -73,10 +73,10 @@ public class ModuleServlet extends HttpServlet {
      *
      * @return
      */
-    private String queryModules() {
+    private String queryModules(boolean flag) {
         try {
             logger.info("----------- The Module begin init -----------");
-            ModuleService.initModules();
+            ModuleService.initModules(flag);
             logger.info("----------- The Module init success -----------");
         } catch (ServiceException e) {
             logger.error("----------- The Module init failure:" + e.getMessage() + " -----------");
@@ -131,6 +131,9 @@ public class ModuleServlet extends HttpServlet {
             } else if ("delete".equals(param)) {
                 String[] ids = request.getParameterValues("ids");
                 ModuleService.deleteModule(ids);
+            } else if ("resume".equals(param)) {
+                String id = request.getParameter("id");
+                ModuleService.updateModule(id);
             }
             success = true;
             msg = TextEnum.getText(param, success);

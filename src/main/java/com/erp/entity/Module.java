@@ -26,7 +26,7 @@ public class Module implements Serializable, Comparable<Module> {
     private String parentType;
 
     //  «∑Òœ‘ æ
-    private char display;
+    private String display;
 
     // ≈≈–Ú
     private int disOrder;
@@ -77,11 +77,11 @@ public class Module implements Serializable, Comparable<Module> {
         this.parentType = parentType;
     }
 
-    public char getDisplay() {
+    public String getDisplay() {
         return display;
     }
 
-    public void setDisplay(char display) {
+    public void setDisplay(String display) {
         this.display = display;
     }
 

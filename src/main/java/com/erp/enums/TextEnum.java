@@ -9,7 +9,8 @@ public enum TextEnum {
     INIT("init", new String[]{"初始化成功！", "初始化失败："}),
     INSERT("insert", new String[]{"插入成功！", "插入失败："}),
     UPDATE("update", new String[]{"更新成功！", "更新失败："}),
-    DELETE("delete", new String[]{"删除成功！", "删除失败："});
+    DELETE("delete", new String[]{"删除成功！", "删除失败："}),
+    RESUME("resume", new String[]{"数据恢复成功！", "数据恢复失败："});
 
     private String key;
     private String[] value;
