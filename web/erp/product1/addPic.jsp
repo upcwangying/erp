@@ -238,6 +238,10 @@
 		uploader.bind('fileuploaddone', function(e, data) {
 			alert('上传成功');
 		});
+        uploader.bind('fileuploaddestroyed', function(e, data) {
+//            console.log(data);
+            alert('删除成功');
+        });
 	});
 </script>
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
