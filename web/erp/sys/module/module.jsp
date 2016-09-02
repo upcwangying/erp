@@ -80,7 +80,14 @@
                     } else {
                         return '非叶子结点';
                     }
-				}
+				},
+				styler: function(value,row,index){
+				    if (value == 'file'){
+					    return 'background-color:#99d8c9;color:red;';
+					    // the function can return predefined css class and inline style
+					    // return {class:'c1',style:'color:red'}
+				    }
+			    }
             " width="150">是否显示</th>
             <th data-options="field:'order'" width="100" align="right">排序</th>
             <th data-options="field:'display',
