@@ -1,8 +1,8 @@
 package com.erp.chart.factory;
 
 import com.erp.chart.bean.ChartBean;
+import com.erp.enums.ResourceXmlEnum;
 import com.erp.util.XmlUtil;
-import com.erp.util.SystemConfig;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -33,7 +33,7 @@ public class ChartBeanFactory {
     }
 
     public static void init() {
-        init(SystemConfig.CHART_ROOT);
+        init(ResourceXmlEnum.path_chart.getValue());
     }
 
     public static void init(String file) {

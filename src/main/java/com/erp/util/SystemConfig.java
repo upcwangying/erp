@@ -5,18 +5,14 @@ import com.erp.exception.ServiceException;
 import com.erp.service.ProjectService;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.*;
 
 public class SystemConfig {
 	private static Logger logger = Logger.getLogger(SystemConfig.class);
 	private static Map<String, String> configs = new HashMap<String, String>();
 	private static Map<Integer, Project> projectMaps = new HashMap<Integer, Project>();
-	public static String CHART_ROOT = "";
 
 	public static void init() {
 		InputStream in = null;
@@ -31,22 +27,6 @@ public class SystemConfig {
 			}
 			properties.clear();
 
-			String chart_path = Thread.currentThread().getContextClassLoader().getResource("charts.xml").getFile();
-			try {
-				chart_path = URLDecoder.decode(chart_path, "UTF-8");
-			} catch (UnsupportedEncodingException ex) {
-				logger.error("decode the config path failed:" + ex.getMessage(), ex);
-				return;
-			}
-			if (chart_path != null) {
-				chart_path = new File(chart_path).getPath();
-			} else {
-				logger.error("get classpath root error");
-				return;
-			}
-			logger.info("chart_path=" + chart_path);
-
-			CHART_ROOT = chart_path;
 			logger.info("--------The system config init success---------");
 		} catch (IOException e) {
 			logger.error("--------The system config init failure:" + e.getMessage() + "---------");
