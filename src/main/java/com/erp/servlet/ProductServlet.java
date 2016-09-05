@@ -114,7 +114,7 @@ public class ProductServlet extends HttpServlet {
                 String[] productId = request.getParameterValues("productId");
                 String flag = request.getParameter("flag");
                 String staffId = request.getParameter("update_by");
-                System.out.println(Boolean.valueOf(flag));
+//                System.out.println(Boolean.valueOf(flag));
                 ProductService.updateProductValid(productId, staffId, Boolean.valueOf(flag));
             }
             success = true;
