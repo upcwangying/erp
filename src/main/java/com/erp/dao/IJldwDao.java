@@ -18,19 +18,20 @@ public interface IJldwDao {
     List<Jldw> queryJldw() throws DAOException;
 
     /**
+     * 查询
+     * @param jldwmc
+     * @param jldwId
+     * @return
+     * @throws DAOException
+     */
+    Jldw queryJldwByJldwId(String jldwmc, String jldwId) throws DAOException;
+
+    /**
      * 插入、更新数据
      * @param jldw
      * @throws DAOException
      */
     void insertOrUpdateJldw(Jldw jldw) throws DAOException;
-
-    /**
-     * 恢复数据
-     * @param ids
-     * @param update_staffId
-     * @throws DAOException
-     */
-    void resumeJldw(String[] ids, long update_staffId) throws DAOException;
 
     /**
      * 删除数据
@@ -39,4 +40,5 @@ public interface IJldwDao {
      * @throws DAOException
      */
     void deleteJldw(String[] ids, long update_staffId) throws DAOException;
+
 }

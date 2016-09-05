@@ -24,7 +24,7 @@ public class JldwService {
      * @return
      * @throws ServiceException
      */
-    public static List<Jldw> queryJldw() throws ServiceException {
+    public static JSONArray queryJldw() throws ServiceException {
         IJldwDao jldwDao = new JldwDaoImpl();
         JSONArray array = new JSONArray();
         try {
@@ -48,6 +48,25 @@ public class JldwService {
     /**
      * 插入、更新数据
      *
+     * @param jldwmc
+     * @param jldwId
+     * @throws ServiceException
+     */
+    public static Jldw queryJldwByJldwId(String jldwmc, String jldwId) throws ServiceException {
+        IJldwDao jldwDao = new JldwDaoImpl();
+        Jldw jldw = null;
+        try {
+            jldw = jldwDao.queryJldwByJldwId(jldwmc, jldwId);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+        return jldw;
+    }
+
+    /**
+     * 插入、更新数据
+     *
      * @param jldw
      * @throws ServiceException
      */
@@ -55,23 +74,6 @@ public class JldwService {
         IJldwDao jldwDao = new JldwDaoImpl();
         try {
             jldwDao.insertOrUpdateJldw(jldw);
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * 恢复数据
-     *
-     * @param ids
-     * @param update_staffId
-     * @throws ServiceException
-     */
-    public static void resumeJldw(String[] ids, long update_staffId) throws ServiceException {
-        IJldwDao jldwDao = new JldwDaoImpl();
-        try {
-            jldwDao.resumeJldw(ids, update_staffId);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);

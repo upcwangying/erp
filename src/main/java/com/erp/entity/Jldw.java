@@ -18,7 +18,7 @@ public class Jldw implements Serializable {
     private String jldwms;
 
     // 是否有效
-    private String is_valid;
+    private String is_del;
 
     // 创建人
     private long create_staffId;
@@ -56,12 +56,12 @@ public class Jldw implements Serializable {
         this.jldwms = jldwms;
     }
 
-    public String getIs_valid() {
-        return is_valid;
+    public String getIs_del() {
+        return is_del;
     }
 
-    public void setIs_valid(String is_valid) {
-        this.is_valid = is_valid;
+    public void setIs_del(String is_del) {
+        this.is_del = is_del;
     }
 
     public long getCreate_staffId() {
@@ -121,7 +121,7 @@ public class Jldw implements Serializable {
                 "jldwId=" + jldwId +
                 ", jldwmc='" + jldwmc + '\'' +
                 ", jldwms='" + jldwms + '\'' +
-                ", is_valid='" + is_valid + '\'' +
+                ", is_del='" + is_del + '\'' +
                 ", create_staffId=" + create_staffId +
                 ", createDate=" + createDate +
                 ", update_staffId=" + update_staffId +

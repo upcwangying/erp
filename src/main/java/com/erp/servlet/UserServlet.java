@@ -90,12 +90,12 @@ public class UserServlet extends HttpServlet {
         String staffId = request.getParameter("staffId");
         boolean success = false;
         try {
-            if (!StringUtil.isEmpty(staffcode)) {
+//            if (!StringUtil.isEmpty(staffcode)) {
                 StaffInfo staffInfo = LoginService.queryStaffByCode(staffId, staffcode);
                 if (staffInfo == null) {
                     success = true;
                 }
-            }
+//            }
         } catch (ServiceException e) {
             e.printStackTrace();
         }

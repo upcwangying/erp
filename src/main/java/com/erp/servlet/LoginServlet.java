@@ -45,13 +45,10 @@ public class LoginServlet extends HttpServlet {
         String param = request.getParameter("param");
 
         if (param != null && "login".equalsIgnoreCase(param)) {
-            String staffCode = request.getParameter("userid");
-            String pwd = request.getParameter("pwd");
+            String staffCode = request.getParameter("username");
+            String pwd = request.getParameter("password");
 
             try {
-                if (Boolean.valueOf(SystemConfig.getValue("encrypt"))) {
-                    pwd = EncryptUtil.encrypt(pwd);
-                }
                 StaffInfo staffInfo = LoginService.queryStaffByCode("", staffCode);
                 if (staffInfo != null && pwd.equals(staffInfo.getPassword())) {
                     LoginService.updateStaffByCode(staffCode);
