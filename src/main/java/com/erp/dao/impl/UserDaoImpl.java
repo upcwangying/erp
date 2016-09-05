@@ -128,11 +128,7 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setStaffId(rst.getLong("staffid"));
                 staffInfo.setStaffCode(rst.getString("staffcode"));
                 staffInfo.setStaffName(rst.getString("staffname"));
-                String pwd = rst.getString("password");
-                if (Boolean.valueOf(SystemConfig.getValue("encrypt"))) {
-                    pwd = EncryptUtil.decrypt(pwd);
-                }
-                staffInfo.setPassword(pwd);
+                staffInfo.setPassword(rst.getString("password"));
                 staffInfo.setTelephone(rst.getString("telphone"));
                 staffInfo.setIsInit(rst.getString("is_init"));
                 staffInfo.setDelete(false);
@@ -255,11 +251,7 @@ public class UserDaoImpl implements IUserDao {
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
-        String pwd = staffInfo.getPassword();
-        if (Boolean.valueOf(SystemConfig.getValue("encrypt"))) {
-            pwd = EncryptUtil.encrypt(pwd);
-        }
-        ps.setString(3, pwd);
+        ps.setString(3, staffInfo.getPassword());
         ps.setString(4, staffInfo.getTelephone());
         ps.setLong(5, staffInfo.getStyleId());
         ps.execute();
@@ -278,11 +270,7 @@ public class UserDaoImpl implements IUserDao {
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
-        String pwd = staffInfo.getPassword();
-        if (Boolean.valueOf(SystemConfig.getValue("encrypt"))) {
-            pwd = EncryptUtil.encrypt(pwd);
-        }
-        ps.setString(3, pwd);
+        ps.setString(3, staffInfo.getPassword());
         ps.setString(4, staffInfo.getTelephone());
         ps.setLong(5, staffInfo.getStyleId());
         ps.setLong(6, staffInfo.getStaffId());
