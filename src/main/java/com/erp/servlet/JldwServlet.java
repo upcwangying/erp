@@ -47,11 +47,13 @@ public class JldwServlet extends HttpServlet {
         String param = request.getParameter("param");
         String reponseText = "";
         if ("query".equals(param)) {
-            reponseText = queryJldw();
+            reponseText = queryJldw(true);
         } else if ("delete".equals(param) || "add".equals(param)) {
             reponseText = editJldw(request, param);
         } else if ("valid".equals(param)) {
             reponseText = isValid(request);
+        } else if ("query-combo".equals(param)) {
+            reponseText = queryJldw(false);
         }
 
         PrintWriter writer = response.getWriter();
@@ -60,7 +62,12 @@ public class JldwServlet extends HttpServlet {
 
     }
 
-    private String queryJldw() {
+    /**
+     *
+     * @param flag
+     * @return
+     */
+    private String queryJldw(boolean flag) {
         JSONArray array = null;
         try {
             array = JldwService.queryJldw();
@@ -69,7 +76,7 @@ public class JldwServlet extends HttpServlet {
         }
 
         ResponseBean responseBean = new ResponseBean(array);
-        return responseBean.getResponseArray(true);
+        return responseBean.getResponseArray(flag);
     }
 
     /**
