@@ -51,7 +51,8 @@ public class ProductServlet extends HttpServlet {
         if (random_session != null && seq != null && seq.equals(random_session)) {
             if ("query".equals(param)) {
                 responseText = queryProduct();
-            } else if ("add".equals(param) || "delete".equals(param)) {
+            } else if ("add".equals(param) || "delete".equals(param)
+                            || "up".equals(param) || "down".equals(param)) {
                 responseText = editProduct(request, param);
             }
         } else {
@@ -92,21 +93,29 @@ public class ProductServlet extends HttpServlet {
                 Product product = new Product();
                 String productId = request.getParameter("productId");
                 String productName = request.getParameter("productName");
-                String productMs = request.getParameter("productMs");
-                String html = request.getParameter("html");
+                String productDesc = request.getParameter("productDesc");
+                String jldwid = request.getParameter("jldw");
+                String price = request.getParameter("price");
                 String create_by = request.getParameter("create_by");
                 String update_by = request.getParameter("update_by");
                 product.setProductId(StringUtil.isEmpty(productId)?0L:Long.valueOf(productId));
                 product.setProductName(productName);
-                product.setProductMS(productMs);
-                product.setProductDesc(html);
+                product.setProductDesc(productDesc);
+                product.setJldwid(Long.valueOf(jldwid));
+                product.setPrice(Double.valueOf(price));
                 product.setCreate_StaffId(Long.valueOf(create_by));
                 product.setUpdate_staffId(Long.valueOf(update_by));
-                ProductService.insertOrUpdateProduct(product, true);
+                ProductService.insertOrUpdateProduct(product);
             } else if ("delete".equals(param)) {
                 String[] productId = request.getParameterValues("productId");
-                String staffId = request.getParameter("staffId");
+                String staffId = request.getParameter("update_by");
                 ProductService.deleteProduct(productId, staffId);
+            } else if ("up".equals(param) || "down".equals(param)) {
+                String[] productId = request.getParameterValues("productId");
+                String flag = request.getParameter("flag");
+                String staffId = request.getParameter("update_by");
+                System.out.println(Boolean.valueOf(flag));
+                ProductService.updateProductValid(productId, staffId, Boolean.valueOf(flag));
             }
             success = true;
             msg = TextEnum.getText(param, success);

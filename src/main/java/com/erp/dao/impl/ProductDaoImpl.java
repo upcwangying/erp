@@ -4,7 +4,6 @@ import com.erp.dao.IProductDao;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
-import com.erp.util.StringUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -34,21 +33,25 @@ public class ProductDaoImpl implements IProductDao {
         ResultSet rst = null;
         List<Product> productList = new ArrayList<>();
         try {
-            String sql = "select p.productid, p.productname,p.productms, p.productdesc," +
-                    "p.create_staffid,p.create_date,p.update_staffid,p.update_date," +
+            String sql = "select p.productid, p.productname, p.productdesc,p.jldwid,j.jldwmc," +
+                    "p.price,p.is_valid,p.create_staffid,p.create_date,p.update_staffid,p.update_date," +
                     "s.staffname as create_staffname,s1.staffname as update_staffname " +
                     "from t_product p " +
                     "left join staffinfo s on p.create_staffid=s.staffid " +
                     "left join staffinfo s1 on p.update_staffid = s1.staffid " +
-                    "where p.is_del='0' and s.is_del='0' and s1.is_del='0' ";
+                    "left join t_jldw j on p.jldwid=j.jldwid " +
+                    "where p.is_del='0' and s.is_del='0' and s1.is_del='0' and j.is_del='0' ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
             while (rst.next()) {
                 Product product = new Product();
                 product.setProductId(rst.getLong("productid"));
                 product.setProductName(rst.getString("productname"));
-                product.setProductMS(rst.getString("productms"));
                 product.setProductDesc(rst.getString("productdesc"));
+                product.setJldwid(rst.getLong("jldwid"));
+                product.setJldwmc(rst.getString("jldwmc"));
+                product.setPrice(rst.getDouble("price"));
+                product.setIs_valid(rst.getString("is_valid"));
                 product.setDelete(false);
                 product.setCreate_StaffId(rst.getLong("create_staffid"));
                 product.setCreate_staffName(rst.getString("create_staffname"));
@@ -104,6 +107,43 @@ public class ProductDaoImpl implements IProductDao {
     }
 
     /**
+     * 上架或下架
+     *
+     * @param ids
+     * @param staffId
+     * @param flag    下架标识: true执行下架操作
+     * @throws DAOException
+     */
+    @Override
+    public void updateProductValid(String[] ids, String staffId, boolean flag) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        try {
+            String update_sql = "update t_product set is_valid=?,update_staffid=?,update_date=getdate() " +
+                    "where productid=? ";
+            ps = connection.prepareStatement(update_sql);
+            for (String id : ids) {
+                ps.setString(1, flag?"0":"1");
+                ps.setLong(2, Long.valueOf(staffId));
+                ps.setLong(3, Long.valueOf(id));
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("上架或下架商品失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("上架或下架商品失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+    }
+
+    /**
      * 插入商品
      *
      * @param connection
@@ -111,15 +151,16 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void insertProduct(Connection connection, Product product) throws SQLException {
-        String insert_sql = "insert into t_product (productname,productms,productdesc," +
-                "is_del,create_staffid,create_date,update_staffid,update_date) " +
-                "values (?,?,?,'0',?,getdate(),?,getdate()) ";
+        String insert_sql = "insert into t_product (productname,productdesc," +
+                "jldwid,price,is_valid,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values (?,?,?,?,'0','0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, product.getProductName());
-        ps.setString(2, product.getProductMS());
-        ps.setString(3, product.getProductDesc());
-        ps.setLong(4, product.getCreate_StaffId());
+        ps.setString(2, product.getProductDesc());
+        ps.setLong(3, product.getJldwid());
+        ps.setDouble(4, product.getPrice());
         ps.setLong(5, product.getCreate_StaffId());
+        ps.setLong(6, product.getCreate_StaffId());
         ps.execute();
     }
 
@@ -131,15 +172,15 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void updateProduct(Connection connection, Product product) throws SQLException {
-        String update_sql = "update t_product set productname=?,productms=?,productdesc=?," +
-                "update_staffid=?,update_date=getdate() " +
-                "where productid=? ";
+        String update_sql = "update t_product set productname=?,productdesc=?," +
+                "jldwid=?,price=?,update_staffid=?,update_date=getdate() where productid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, product.getProductName());
-        ps.setString(2, product.getProductMS());
-        ps.setString(3, product.getProductDesc());
-        ps.setLong(4, product.getUpdate_staffId());
-        ps.setLong(5, product.getProductId());
+        ps.setString(2, product.getProductDesc());
+        ps.setLong(3, product.getJldwid());
+        ps.setDouble(4, product.getPrice());
+        ps.setLong(5, product.getUpdate_staffId());
+        ps.setLong(6, product.getProductId());
         ps.execute();
     }
 

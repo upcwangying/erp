@@ -15,10 +15,19 @@ public class Product implements Serializable, Comparable<Project> {
     private String productName;
 
     // 商品描述
-    private String productMS;
-
-    // 商品描述
     private String productDesc;
+
+    // 计量单位
+    private long jldwid;
+
+    // 计量单位名称
+    private String jldwmc;
+
+    // 单价
+    private double price;
+
+    // 是否上架 1为上架；0为下架
+    private String is_valid;
 
     // 是否删除
     private boolean delete;
@@ -57,20 +66,44 @@ public class Product implements Serializable, Comparable<Project> {
         this.productName = productName;
     }
 
-    public String getProductMS() {
-        return productMS;
-    }
-
-    public void setProductMS(String productMS) {
-        this.productMS = productMS;
-    }
-
     public String getProductDesc() {
         return productDesc;
     }
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
+    }
+
+    public long getJldwid() {
+        return jldwid;
+    }
+
+    public void setJldwid(long jldwid) {
+        this.jldwid = jldwid;
+    }
+
+    public String getJldwmc() {
+        return jldwmc;
+    }
+
+    public void setJldwmc(String jldwmc) {
+        this.jldwmc = jldwmc;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getIs_valid() {
+        return is_valid;
+    }
+
+    public void setIs_valid(String is_valid) {
+        this.is_valid = is_valid;
     }
 
     public boolean isDelete() {
@@ -153,8 +186,11 @@ public class Product implements Serializable, Comparable<Project> {
         return "Product{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
-                ", productMS='" + productMS + '\'' +
                 ", productDesc='" + productDesc + '\'' +
+                ", jldwid=" + jldwid +
+                ", jldwmc=" + jldwmc +
+                ", price=" + price +
+                ", is_valid=" + is_valid +
                 ", delete=" + delete +
                 ", create_StaffId=" + create_StaffId +
                 ", create_staffName='" + create_staffName + '\'' +

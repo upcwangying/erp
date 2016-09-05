@@ -225,21 +225,22 @@
             e.p(data);
 		});
 		uploader.bind('fileuploadadded', function (e, data) {
-			alert('my-add');
+//			alert('my-add');
 			//if(!data.files.valid) {
 				//uploader.find('.files .cancel').click();
 			//}
 		});
 		uploader.bind('fileuploadchange', function (e, data) {
-			alert('my-change');
+//			alert('my-change');
 			//uploader.find('.files').empty();
 		});
 		
 		uploader.bind('fileuploaddone', function(e, data) {
+		    console.log(data.result.files[0]);
 			alert('上传成功');
 		});
         uploader.bind('fileuploaddestroyed', function(e, data) {
-//            console.log(data);
+            console.log(data);
             alert('删除成功');
         });
 	});

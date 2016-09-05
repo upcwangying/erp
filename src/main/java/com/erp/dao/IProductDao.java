@@ -25,6 +25,15 @@ public interface IProductDao {
     void insertOrUpdateProduct(Product product) throws DAOException;
 
     /**
+     * 上架或下架
+     * @param ids
+     * @param staffId
+     * @param flag 下架标识: true执行下架操作
+     * @throws DAOException
+     */
+    void updateProductValid(String[] ids, String staffId, boolean flag) throws DAOException;
+
+    /**
      * 删除商品
      * @param ids
      * @param staffId

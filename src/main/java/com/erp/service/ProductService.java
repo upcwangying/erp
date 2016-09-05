@@ -62,6 +62,24 @@ public class ProductService {
     }
 
     /**
+     * 上架或下架
+     *
+     * @param ids
+     * @param staffId
+     * @param flag    下架标识: true执行下架操作
+     * @throws ServiceException
+     */
+    public static void updateProductValid(String[] ids, String staffId, boolean flag) throws ServiceException {
+        IProductDao productDao = new ProductDaoImpl();
+        try {
+            productDao.updateProductValid(ids, staffId, flag);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * 删除商品
      *
      * @param ids
