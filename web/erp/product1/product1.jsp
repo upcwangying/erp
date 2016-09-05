@@ -75,7 +75,16 @@
 				queryParams:{
                     seq: $('#seq').val()
                 },
-				toolbar: '#product1-tb'
+				toolbar: '#product1-tb',
+				onRowContextMenu: function(e,index,row) {
+				    e.preventDefault();
+				    $(this).datagrid('unselectAll');
+				    $(this).datagrid('selectRow',index);
+				    $('#product1-tree-menu').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+				}
 			">
     <thead>
     <tr>
@@ -109,16 +118,21 @@
     <a href="javascript:void(0)" id="queryProdtct" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryProdtct()">查询</a>
     <a href="javascript:void(0)" id="addProduct" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addProduct()">添加</a>
     <a href="javascript:void(0)" id="updateProduct" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateProduct()">编辑</a>
-    <a href="javascript:void(0)" id="up" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="upProduct()">上架</a>
-    <a href="javascript:void(0)" id="down" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="downProduct()">下架</a>
+    <a href="javascript:void(0)" id="up" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="upProduct()">上架</a>
+    <a href="javascript:void(0)" id="down" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true" onclick="downProduct()">下架</a>
     <a href="javascript:void(0)" id="deleteProduct" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteProduct()">删除</a>
-    <%--<a href="javascript:void(0)" id="uploadPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="uploadPic()">上传图片</a>--%>
-    <%--<a href="javascript:void(0)" id="lookPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="lookPic()">查看图片</a>--%>
-    <%--<a href="javascript:void(0)" id="openProductWindow" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="openProductWindow()">打开窗口</a>--%>
-    <%--<a href="javascript:void(0)" id="closeProductWindow" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="closeProductWindow()">关闭窗口</a>--%>
+    <a href="javascript:void(0)" id="uploadPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="uploadPic()">上传图片</a>
+    <a href="javascript:void(0)" id="lookPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="lookPic()">查看图片</a>
 </div>
 
-<div id="product1-win" class="easyui-window" title="商品填报" data-options="iconCls:'icon-save',modal:true,closed:true,fit:true">
+<div id="product1-tree-menu" class="easyui-menu" style="width:120px;">
+    <div onclick="openProductWindow()" id="addItem" data-options="iconCls:'icon-add'">打开窗口</div>
+    <div class="menu-sep"></div>
+    <div onclick="closeProductWindow()" id="deleteItem" data-options="iconCls:'icon-remove'">关闭窗口</div>
+</div>
+
+<div id="product1-win" class="easyui-window" title="商品填报" data-options="iconCls:'icon-save',maximizable:false,minimizable:false,
+				collapsible:false,modal:true,closed:true,fit:true">
     <div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'center'" style="height: 30%">
             <div id="tabs-test" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
@@ -201,24 +215,6 @@
                 </td>
             </tr>
         </table>
-
-        <%--<div class="easyui-panel" style="width:100%;height:100%; padding:30px 70px 50px 70px">--%>
-            <%--<div style="margin-bottom:20px">--%>
-                <%--<div>商品名:</div>--%>
-                <%--<input class="easyui-textbox" id="productName" name="productName" style="width: 100%;"--%>
-                       <%--data-options="required:true">--%>
-                <%--</input>--%>
-            <%--</div>--%>
-            <%--<div style="margin-bottom:20px">--%>
-                <%--<div>商品简介:</div>--%>
-                <%--<input class="easyui-textbox" id="productMs" name="productMs" style="width: 100%; height: 100px"--%>
-                       <%--data-options="required:true, multiline:true">--%>
-                <%--</input>--%>
-            <%--</div>--%>
-            <%--<div>--%>
-                <%--<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100%" onclick="upload()">Upload</a>--%>
-            <%--</div>--%>
-        <%--</div>--%>
     </form>
 </div>
 </body>
