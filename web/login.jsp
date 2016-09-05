@@ -1,75 +1,80 @@
-<%@ page import="com.erp.util.SystemConfig" %><%--
-Created by IntelliJ IDEA.
-User: wang_
-Date: 2016-06-28
-Time: 10:11
-To change this template use File | Settings | File Templates.
---%>
+﻿<%@ page import="com.erp.util.SystemConfig" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String loginInIframe = SystemConfig.getValue("login.jsp.in.iframe");
 %>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" href="<%= request.getContextPath()%>/bootstrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-easyui-1.4.5/jquery.min.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
-    <title>登陆</title>
-    <script language="JavaScript">
-        var loginInFrame = '<%= loginInIframe%>';
-        console.log("loginInFrame:" + loginInFrame);
-        if (loginInFrame == "true") {
-            if (window != parent) {
-                parent.location.href = location.href;
-            }
-        } else {
-            if (window != top) {
-                top.location.href = location.href;
-            }
-        }
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <title>登陆</title>
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/reset.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/supersized.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/style.css">
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/supersized.3.2.7.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/supersized-init.js"></script>
 
-        function login() {
-            var userid = document.getElementById("userid").value;
-            var pwd = document.getElementById("pwd").value;
-            if (userid == "") {
-                alert("请输入用户名！");
-                document.loginForm.userid.focus();
-                return false;
-            }
-            if (pwd == "") {
-                alert("请输入密码！");
-                document.loginForm.pwd.focus();
-                return false;
-            }
-            document.loginForm.submit();
-        }
-    </script>
-</head>
-<body onload="document.getElementById('userid').focus()">
-    <form class="form-horizontal" id="loginForm" name="loginForm" action="<%=request.getContextPath()%>/LoginServlet?param=login" method="post">
-        <div class="form-group">
-            <label for="userid" class="col-md-5 control-label">用户名：</label>
-            <div class="col-md-2">
-                <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户名">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="pwd" class="col-md-5 control-label">密码：</label>
-            <div class="col-md-2">
-                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="请输入密码">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-5 col-md-7">
-                <button class="btn btn-default" onclick="login()">登陆</button>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-5 col-md-7">${msg}</div>
-        </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.page-container form').submit(function(){
+                    var username = $(this).find('.username').val();
+                    var password = $(this).find('.password').val();
+                    if(username == '') {
+                        alert("请输入用户名！");
+                        $(this).find('.error').fadeOut('fast', function(){
+                            $(this).css('top', '27px');
+                        });
+                        $(this).find('.error').fadeIn('fast', function(){
+                            $(this).parent().find('.username').focus();
+                        });
+                        return false;
+                    }
+                    if(password == '') {
+                        alert("请输入密码！");
+                        $(this).find('.error').fadeOut('fast', function(){
+                            $(this).css('top', '96px');
+                        });
+                        $(this).find('.error').fadeIn('fast', function(){
+                            $(this).parent().find('.password').focus();
+                        });
+                        return false;
+                    }
+                });
 
-    </form>
-</body>
+                $('.page-container form .username, .page-container form .password').keyup(function(){
+                    $(this).parent().find('.error').fadeOut('fast');
+                });
+            });
+
+            var loginInFrame = '<%= loginInIframe%>';
+            console.log("loginInFrame:" + loginInFrame);
+            if (loginInFrame == "true") {
+                if (window != parent) {
+                    parent.location.href = location.href;
+                }
+            } else {
+                if (window != top) {
+                    top.location.href = location.href;
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="page-container">
+            <h1>登录</h1>
+            <form action="<%=request.getContextPath()%>/LoginServlet?param=login" method="post">
+                <input type="text" id="username" name="username" class="username" placeholder="用户名">
+                <input type="password" id="password" name="password" class="password" placeholder="密码">
+                <button type="submit">Login</button>
+                <div class="error"><span>+</span></div>
+                <br>
+                <div>${msg}</div>
+            </form>
+        </div>
+    </body>
 </html>
+
+
