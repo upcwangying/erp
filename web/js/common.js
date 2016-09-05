@@ -207,6 +207,24 @@ $.extend($.fn.validatebox.defaults.rules, {
             return _48;
         },
         message: '该用户名已被占用！'
+    },
+    remotejldwmc: {
+        validator: function (_46, _47) {
+            var _48 = $.ajax({
+                url: root + '/JldwServlet',
+                dataType: "json",
+                data: {
+                    param: 'valid',
+                    jldwmc: _46,
+                    jldwId: $("#" + _47[0]).val()
+                },
+                async: false,
+                cache: false,
+                type: "post"
+            }).responseJSON.success;
+            return _48;
+        },
+        message: '该计量编号名称已被占用！'
     }
 
 });
