@@ -41,7 +41,7 @@ public class ChartBeanFactory {
         getInstance();
     }
 
-    public void build() {
+    private void build() {
         Document doc = null;
         try {
             logger.info("--------The chart bean begin init---------");
