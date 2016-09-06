@@ -252,6 +252,66 @@ function commonPaging(id) {
 }
 
 /**
+ * 打开某一个URL地址
+ * @param url
+ * @param params
+ */
+var _counter = 0;
+function openUrl(url, params) {
+    var index = url.indexOf('?');
+    var postUrl = url.substring(0, index);
+    var postData = url.substring(index + 1);
+    var iframe = document.getElementById("postData_iframe");
+    var form;
+    if (!iframe) {
+        iframe = document.createElement("iframe");
+        iframe.id = "postData_iframe";
+        iframe.scr = "about:blank";
+        iframe.frameborder = "0";
+        iframe.style.width = "0px";
+        iframe.style.height = "0px";
+
+        form = document.createElement("form");
+        form.id = "postData_form";
+        form.method = "post";
+        document.body.appendChild(iframe);
+        iframe.contentWindow.document.write("<body>" + form.outerHTML + "</body>");
+    }
+
+    form = iframe.contentWindow.document.getElementById("postData_form");
+    form.target = "_blank_" + (_counter++);
+    var innerInputs = "";
+
+    if (postData != null && postData.length > 0) {
+        var inputs = postData.split('&');
+        for (var i = 0; i < inputs.length; i++) {
+            var nvs = inputs[i].split('=');
+            var fn = nvs[0];
+            var fv = "";
+            if (nvs.length == 2) {
+                fv = nvs[1];
+            }
+            innerInputs += "<input name='" + fn + "'  type='hidden' value='" + fv.replace(/%26/g, '&') + "'/>";
+        }
+    }
+
+    if (params) {
+        for (var pname in params) {
+            var pvalue = params[pname];
+            innerInputs += "<input name='" + pname + "'  type='hidden' value='" + pvalue + "'/>";
+        }
+    }
+    if (innerInputs.length > 0) {
+        form.innerHTML = innerInputs;
+    }
+    form.action = postUrl + "?_flag_=" + _counter;
+//    alert(innerInputs);
+//    alert(iframe.contentWindow.document.getElementById("postData_form").innerHTML);
+    form.submit();
+
+}
+
+/**
  * 设置datagrid的编辑器的值
  * @param editor
  * @param value
