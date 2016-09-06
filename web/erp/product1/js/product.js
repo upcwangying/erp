@@ -305,13 +305,15 @@ function closeProductDialog() {
 function uploadPic() {
     var rows = $('#product1').datagrid('getSelections');
     var productId = rows[0].productId;
-    openUrl(root + '/erp/product1/addPic.jsp?productId='+productId);
+    openUrl(root + '/erp/product1/addPic.jsp?productId='+productId+"&staffId="+staffId);
 }
 
 /**
  * 查看图片
  */
 function lookPic() {
-
+    var rows = $('#product1').datagrid('getSelections');
+    var productId = rows[0].productId;
+    openUrl(root + '/erp/product1/lookPic.jsp?productId='+productId+"&staffId="+staffId);
 }
 

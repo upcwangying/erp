@@ -1,15 +1,13 @@
 package com.erp.dao.impl;
 
 import com.erp.dao.IProductDao;
+import com.erp.entity.FileUploadLog;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -212,6 +210,213 @@ public class ProductDaoImpl implements IProductDao {
             logger.error("删除商品失败：" + e.getMessage(), e);
             e.printStackTrace();
             throw new DAOException("删除商品失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+    }
+
+    /**
+     * 查询该商品下上传的图片
+     *
+     * @param productId 商品ID
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public List<FileUploadLog> queryFileUploadLog(String productId) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        List<FileUploadLog> fileUploadLogList = new ArrayList<>();
+        try {
+            String query_sql = "select dbid,productid,name,url,thumbnailurl,deleteurl," +
+                    "is_del,create_staffid,create_date,update_staffid,update_date " +
+                    "from t_fileupload where is_del='0' and productid=? ";
+            ps = connection.prepareStatement(query_sql);
+            ps.setLong(1, Long.valueOf(productId));
+            rst = ps.executeQuery();
+            while (rst.next()) {
+                FileUploadLog fileUploadLog = new FileUploadLog();
+                fileUploadLog.setDbid(rst.getLong("dbid"));
+                fileUploadLog.setProductId(rst.getLong("productid"));
+                fileUploadLog.setName(rst.getString("name"));
+                fileUploadLog.setUrl(rst.getString("url"));
+                fileUploadLog.setThumbnailurl(rst.getString("thumbnailurl"));
+                fileUploadLog.setDeleteurl(rst.getString("deleteurl"));
+                fileUploadLog.setIs_del("0");
+                fileUploadLog.setCreate_staffId(rst.getLong("create_staffid"));
+                fileUploadLog.setCreateDate(new Date(rst.getDate("create_date").getTime()));
+                fileUploadLog.setUpdate_staffId(rst.getLong("update_staffid"));
+                fileUploadLog.setUpdateDate(new Date(rst.getDate("update_date").getTime()));
+                fileUploadLogList.add(fileUploadLog);
+            }
+        } catch (Exception e) {
+            logger.error("查询商品图片失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("查询商品图片失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+
+        return fileUploadLogList;
+    }
+
+    /**
+     * 增加
+     *
+     * @param fileUploadLog
+     * @throws DAOException
+     */
+    @Override
+    public long insertFileUploadLog(FileUploadLog fileUploadLog) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        long dbid = 0;
+        try {
+            String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl,deleteurl," +
+                    "is_del,create_staffid,create_date,update_staffid,update_date) " +
+                    "values (?,?,?,?,?,'0',?,getdate(),?,getdate()) ";
+            ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, fileUploadLog.getProductId());
+            ps.setString(2, fileUploadLog.getName());
+            ps.setString(3, fileUploadLog.getUrl());
+            ps.setString(4, fileUploadLog.getThumbnailurl());
+            ps.setString(5, fileUploadLog.getDeleteurl());
+            ps.setLong(6, fileUploadLog.getCreate_staffId());
+            ps.setLong(7, fileUploadLog.getUpdate_staffId());
+            ps.executeUpdate();
+            rst = ps.getGeneratedKeys();
+            if (rst.next()) {
+                dbid = rst.getLong(1);
+            }
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("插入商品图片失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("插入商品图片失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+
+        return dbid;
+    }
+
+    /**
+     *
+     * @param productId
+     * @param name
+     * @param url
+     * @param thumbnailUrl
+     * @param staffId
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public long insertFileUploadLog(String productId, String name, String url, String thumbnailUrl, String staffId) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        long dbid = 0;
+        try {
+            String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl," +
+                    "is_del,create_staffid,create_date,update_staffid,update_date) " +
+                    "values (?,?,?,?,'0',?,getdate(),?,getdate()) ";
+            ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, Long.valueOf(productId));
+            ps.setString(2, name);
+            ps.setString(3, url);
+            ps.setString(4, thumbnailUrl);
+            ps.setLong(5, Long.valueOf(staffId));
+            ps.setLong(6, Long.valueOf(staffId));
+            ps.executeUpdate();
+            rst = ps.getGeneratedKeys();
+            if (rst.next()) {
+                dbid = rst.getLong(1);
+            }
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("插入商品图片失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("插入商品图片失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+
+        return dbid;
+    }
+
+    /**
+     * 更新deleteUrl字段
+     *
+     * @param dbid
+     * @param deleteUrl
+     * @param update_staffId
+     * @throws DAOException
+     */
+    @Override
+    public void updateFileUploadLog(long dbid, String deleteUrl, String update_staffId) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        try {
+            String update_sql = "update t_fileuploadlog set deleteurl=?,update_staffid=?,update_date=getdate() " +
+                    "where dbid=? ";
+            ps = connection.prepareStatement(update_sql);
+            ps.setString(1, deleteUrl);
+            ps.setLong(2, Long.valueOf(update_staffId));
+            ps.setLong(3, dbid);
+            ps.execute();
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("更新商品图片失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("更新商品图片失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+    }
+
+    /**
+     * 删除该条数据
+     *
+     * @param dbid 主键
+     * @param update_staffId
+     * @throws DAOException
+     */
+    @Override
+    public void deleteFileUploadLog(String dbid, String update_staffId) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        JdbcUtil.beginTranaction();
+        PreparedStatement ps = null;
+        try {
+            String delete_sql = "update t_fileuploadlog set is_del='1',update_staffid=?,update_date=getdate() " +
+                    "where dbid=? ";
+            ps = connection.prepareStatement(delete_sql);
+            ps.setLong(1, Long.valueOf(update_staffId));
+            ps.setLong(2, Long.valueOf(dbid));
+            ps.execute();
+            JdbcUtil.commit();
+        } catch (Exception e) {
+            JdbcUtil.rollback();
+            logger.error("删除商品图片失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("删除商品图片失败：" + e.getMessage(), e);
         } finally {
             if (connection != null) {
                 JdbcUtil.close();

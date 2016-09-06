@@ -1,6 +1,9 @@
 package com.erp.product.servlet;
 
+import com.erp.exception.ServiceException;
+import com.erp.service.FileUploadLogService;
 import com.erp.util.ImageUtil;
+import com.erp.util.StringUtil;
 import com.erp.util.SystemConfig;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,16 +35,28 @@ public class FileUploadServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=UTF-8");
 
-		String delfile = request.getParameter("delfile");
-		if (delfile != null && !delfile.isEmpty()) {
-			String parentFile = delfile.substring(0,8);
+		String[] delfiles = request.getParameterValues("delfile");
+		String dbid = request.getParameter("dbid");
+		String staffId = request.getParameter("staffId");
+		if (StringUtil.isEmpty(staffId)) {
+			throw new IllegalArgumentException("staffId is null, please check your code in your jsp page.");
+		}
+
+		if (delfiles != null && delfiles.length > 0) {
+			String parentFile = delfiles[0].substring(0,8);
 			String delPath = request.getServletContext().getRealPath("/") + "upload/" + parentFile + "/";
-			String[] delFiles = delfile.split(",");
-			for (String delFile : delFiles) {
+
+			for (String delFile : delfiles) {
 				File file = new File(delPath, delFile);
 				if (file.exists()) {
 					file.delete();
 				}
+			}
+
+			try {
+				FileUploadLogService.deleteFileUploadLog(dbid, staffId);
+			} catch (ServiceException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -57,6 +72,16 @@ public class FileUploadServlet extends HttpServlet {
 		}
 
 		PrintWriter out = response.getWriter();
+
+		String productId = request.getParameter("productId");
+		String staffId = request.getParameter("staffId");
+		if (StringUtil.isEmpty(productId)) {
+			throw new IllegalArgumentException("productId is null, please check your code in your jsp page.");
+		}
+
+		if (StringUtil.isEmpty(staffId)) {
+			throw new IllegalArgumentException("staffId is null, please check your code in your jsp page.");
+		}
 
 		//文件保存目录路径
 		StringBuffer savePath = new StringBuffer(request.getServletContext().getRealPath("/"));
@@ -80,7 +105,6 @@ public class FileUploadServlet extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setHeaderEncoding("UTF-8");
 		List items = null;
-		JSONObject json = null;
 		String fileName = null;
 		try {
 			items = upload.parseRequest(request);
@@ -102,7 +126,7 @@ public class FileUploadServlet extends HttpServlet {
 
 					String url = saveUrl.toString() + newFileName;
 					String thumbnailUrl = url;
-					String deleteUrl = url;
+
 
 					if (SystemConfig.getBooleanValue("fileupload.imageResizeEnable")) {
 						File parseUploadedFile = new File(savePath.toString(), parseFileName);
@@ -116,13 +140,21 @@ public class FileUploadServlet extends HttpServlet {
 
 					item.write(uploadedFile);
 
+					long dbid = FileUploadLogService.insertFileUploadLog(productId, fileName, url, thumbnailUrl, staffId);
+
+					StringBuffer deleteUrl = new StringBuffer("/erp/FileUploadServlet?delfile=");
+					deleteUrl.append(newFileName).append("&delfile=").append(parseFileName);
+					deleteUrl.append("&dbid=").append(dbid).append("&staffId=").append(staffId);
+
+					FileUploadLogService.updateFileUploadLog(dbid, deleteUrl.toString(), staffId);
+
 					JSONArray array = new JSONArray();
-					json = new JSONObject();
+					JSONObject json = new JSONObject();
 					json.put("name", fileName);
 					json.put("size", fileSize);
 					json.put("url", url);
 					json.put("thumbnailUrl", thumbnailUrl);
-					json.put("deleteUrl", "/erp/FileUploadServlet?delfile=" + newFileName+","+parseFileName);
+					json.put("deleteUrl", deleteUrl.toString());
 					json.put("deleteType", "GET");
 					array.add(json);
 					JSONObject object = new JSONObject();
@@ -132,7 +164,7 @@ public class FileUploadServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			json = new JSONObject();
+			JSONObject json = new JSONObject();
 			json.put("name", fileName);
 			json.put("size", 902604);
 			json.put("error", "上传图片失败！！");

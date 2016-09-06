@@ -1,5 +1,6 @@
 package com.erp.dao;
 
+import com.erp.entity.FileUploadLog;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 
@@ -40,4 +41,50 @@ public interface IProductDao {
      * @throws DAOException
      */
     void deleteProduct(String[] ids, String staffId) throws DAOException;
+
+    /**
+     * 查询该商品下上传的图片
+     * @param productId 商品ID
+     * @return
+     * @throws DAOException
+     */
+    List<FileUploadLog> queryFileUploadLog(String productId) throws DAOException;
+
+    /**
+     * 增加
+     * @param fileUploadLog
+     * @throws DAOException
+     */
+    long insertFileUploadLog(FileUploadLog fileUploadLog) throws DAOException;
+
+    /**
+     * 增加
+     * @param productId
+     * @param name
+     * @param url
+     * @param thumbnailUrl
+     * @param staffId
+     * @return
+     * @throws DAOException
+     */
+    long insertFileUploadLog(String productId, String name, String url,
+                             String thumbnailUrl, String staffId) throws DAOException;
+
+    /**
+     * 更新deleteUrl字段
+     * @param dbid
+     * @param deleteUrl
+     * @param update_staffId
+     * @throws DAOException
+     */
+    void updateFileUploadLog(long dbid, String deleteUrl, String update_staffId) throws DAOException;
+
+    /**
+     * 删除该条数据
+     * @param dbid 主键
+     * @param update_staffId
+     * @throws DAOException
+     */
+    void deleteFileUploadLog(String dbid, String update_staffId) throws DAOException;
+
 }

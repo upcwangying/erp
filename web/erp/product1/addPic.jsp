@@ -1,6 +1,8 @@
 ﻿<%
     String productId = request.getParameter("productId");
+    String staffId = request.getParameter("staffId");
     System.out.println("productId=" + productId);
+    String path = request.getContextPath()+"/FileUploadServlet?productId="+productId+"&staffId="+staffId;
 %>
 <html>
 <head>
@@ -60,10 +62,10 @@
 <body>
 <div class="container">
     <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="<%= request.getContextPath()%>/FileUploadServlet" method="POST"
+    <form id="fileupload" action="<%= path%>" method="POST"
           enctype="multipart/form-data">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
-        <noscript><input type="hidden" name="redirect" value="<%= request.getContextPath()%>/FileUploadServlet">
+        <noscript><input type="hidden" name="redirect" value="<%= path%>">
         </noscript>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
@@ -225,7 +227,7 @@
         uploader.fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            'url': '<%= request.getContextPath()%>/FileUploadServlet',
+            'url': '<%= path%>',
             'method': 'POST',
             'autoUpload': false,
             'limitMultiFileUploads': 2, // 限定最多两个文件
@@ -259,6 +261,7 @@
             alert('删除成功: ' + '<%= productId%>');
         });
     });
+
 </script>
 
 </body>
