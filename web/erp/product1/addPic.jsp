@@ -31,7 +31,7 @@
     </noscript>
 
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-    <script src="<%= request.getContextPath()%>/fileupload/js/jquery-1.7.1.min.js"></script>
+    <script src="<%= request.getContextPath()%>/js/jquery-1.8.2.min.js"></script>
     <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
     <script src="<%= request.getContextPath()%>/fileupload/js/vendor/jquery.ui.widget.js"></script>
     <!-- The Templates plugin is included to render the upload/download listings -->
