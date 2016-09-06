@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tb-factory>
+    <tb-connection name="erp" default="true">
+        <property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="username">sa</property>
+        <property name="password">F51FDFCDC45224635B5C6F4EAFCBAEFC</property>
+        <property name="encrypt">true</property>
+        <property name="url">
+            jdbc:sqlserver://localhost:1433;databaseName=erp
+        </property>
+    </tb-connection>
+    <tb-connection name="sms" default="false">
+        <property name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="username">sa</property>
+        <property name="password">F51FDFCDC45224635B5C6F4EAFCBAEFC</property>
+        <property name="encrypt">true</property>
+        <property name="url">
+            jdbc:sqlserver://localhost:1433;databaseName=sms
+        </property>
+    </tb-connection>
+</tb-factory>
