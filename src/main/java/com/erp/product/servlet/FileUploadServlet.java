@@ -32,31 +32,18 @@ public class FileUploadServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=UTF-8");
 
-//		PrintWriter writer = response.getWriter();
 		String delfile = request.getParameter("delfile");
 		if (delfile != null && !delfile.isEmpty()) {
 			String parentFile = delfile.substring(0,8);
-//			System.out.println("parentFile=" + parentFile);
 			String delPath = request.getServletContext().getRealPath("/") + "upload/" + parentFile + "/";
 			String[] delFiles = delfile.split(",");
-//			StringBuffer success = new StringBuffer();
-//			StringBuffer failure = new StringBuffer();
-
 			for (String delFile : delFiles) {
 				File file = new File(delPath, delFile);
 				if (file.exists()) {
 					file.delete();
-//					success.append(",").append(file);
-				} else {
-//					failure.append(",").append(file);
 				}
 			}
-//			JSONObject object = new JSONObject();
-//			object.put("success", success.toString().length()>1?success.toString().substring(1)+" 删除成功!":"");
-//			object.put("failure", failure.toString().length()>1?failure.toString().substring(1)+" 不存在!":"");
-//			writer.print(object.toString());
 		}
-//		writer.close();
 	}
 	
 	@Override
@@ -150,7 +137,10 @@ public class FileUploadServlet extends HttpServlet {
 			json.put("size", 902604);
 			json.put("error", "上传图片失败！！");
 			out.println(json.toString());
-			out.close();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
 		}
 	}
 
