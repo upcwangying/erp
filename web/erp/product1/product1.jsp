@@ -20,14 +20,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/jquery-easyui-1.4.5/themes/<%= staffInfo.getStyle()%>/easyui.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/jquery-easyui-1.4.5/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/kindeditor-4.1.10/themes/default/default.css"/>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/fileupload/js/tmpl.min.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/product1/js/product.js?version=<%= version%>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
     <title>商品填报</title>
 
     <script>
@@ -36,30 +37,6 @@
         $(document).ready(function () {
             $("#product1").datagrid('hideColumn', "productId");
             $("#product1").datagrid('hideColumn', "jldwid");
-
-            if ($('#tabs').tabs('exists', '图片上传')){
-                $('#tabs').tabs('select', '图片上传');
-            } else {
-                var content = '<iframe scrolling="auto" frameborder="0"  src="<%= request.getContextPath()%>/erp/product1/addPic.jsp" style="width:100%;height:100%;"></iframe>';
-                $('#tabs').tabs('add',{
-                    id: "tabs1",
-                    title: '图片上传',
-                    content: content,
-                    closable:false
-                });
-            }
-
-            if ($('#tabs-test').tabs('exists', 'test')){
-                $('#tabs-test').tabs('select', 'test');
-            } else {
-                var content = '<iframe scrolling="auto" frameborder="0"  src="<%= request.getContextPath()%>/erp/product1/test.jsp" style="width:100%;height:100%;"></iframe>';
-                $('#tabs-test').tabs('add',{
-                    id: "test",
-                    title: 'test',
-                    content: content,
-                    closable:false
-                });
-            }
 
         });
     </script>
@@ -119,44 +96,20 @@
     <a href="javascript:void(0)" id="addProduct" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addProduct()">添加</a>
     <a href="javascript:void(0)" id="updateProduct" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateProduct()">编辑</a>
     <a href="javascript:void(0)" id="up" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="upProduct()">上架</a>
-    <a href="javascript:void(0)" id="down" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true" onclick="downProduct()">下架</a>
+    <a href="javascript:void(0)" id="down" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="downProduct()">下架</a>
     <a href="javascript:void(0)" id="deleteProduct" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteProduct()">删除</a>
-    <a href="javascript:void(0)" id="uploadPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="uploadPic()">上传图片</a>
-    <a href="javascript:void(0)" id="lookPic" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="lookPic()">查看图片</a>
 </div>
 
 <div id="product1-tree-menu" class="easyui-menu" style="width:120px;">
-    <div onclick="openProductWindow()" id="addItem" data-options="iconCls:'icon-add'">打开窗口</div>
+    <div onclick="uploadPic()" id="uploadPic" data-options="iconCls:'icon-add'">上传图片</div>
     <div class="menu-sep"></div>
-    <div onclick="closeProductWindow()" id="deleteItem" data-options="iconCls:'icon-remove'">关闭窗口</div>
-</div>
-
-<div id="product1-win" class="easyui-window" title="商品填报" data-options="iconCls:'icon-save',maximizable:false,minimizable:false,
-				collapsible:false,modal:true,closed:true,fit:true">
-    <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'center'" style="height: 30%">
-            <div id="tabs-test" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
-
-            </div>
-        </div>
-        <div data-options="region:'south',split:true" style="height:70%">
-            <div id="tabs" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="upload-win" class="easyui-window" title="图片上传" data-options="iconCls:'icon-save',modal:true,closed:true,fit:true,
-    collapsible:false,minimizable:false,maximizable:false">
-
+    <div onclick="lookPic()" id="lookPic" data-options="iconCls:'icon-remove'">查看图片</div>
 </div>
 
 <div id="product1-dlg" class="easyui-dialog" title="商品增加" style="width:500px;height:400px;padding:10px"
      data-options="
 				iconCls: 'icon-save',
 				modal: true,
-				<%--fit: true,--%>
 				closed: true,
 				toolbar: [
 				    '-',
@@ -217,6 +170,7 @@
         </table>
     </form>
 </div>
+
 </body>
 </html>
 

@@ -12,7 +12,7 @@ function queryProdtct() {
 }
 
 /**
- *
+ * 数据检查
  * @returns {boolean}
  */
 function checkData() {
@@ -51,6 +51,8 @@ function updateProduct() {
     }
 
     openProductDialog('edit');
+
+    $('#product1-dlg').dialog('setTitle', '商品修改');
     $('#productName').textbox('setValue', row.productName);
     $('#productDesc').textbox('setValue', row.productDesc);
     $('#jldw').combobox('setValue', row.jldwid);
@@ -147,36 +149,6 @@ function upOrDown(param, ids, flag) {
 }
 
 /**
- *
- */
-function upload() {
-    alert($('#files').textbox("getValue"));
-    console.log($('#files').filebox("options").value);
-    // $.ajax({
-    //     url: root + "/ProductServlet",
-    //     type: 'post',
-    //     cache: false,
-    //     dataType: 'json',
-    //     traditional: true,
-    //     data: {
-    //         param: 'delete',
-    //         seq: $("#seq").val(),
-    //         productId: dbids,
-    //         staffId: staffId
-    //     },
-    //     success: function (data) {
-    //         alert(data.msg);
-    //         if (data.success) {
-    //             queryProdtct();
-    //         }
-    //     },
-    //     error: function () {
-    //         alert("网络错误！")
-    //     }
-    // });
-}
-
-/**
  * 删除
  */
 function deleteProduct() {
@@ -226,7 +198,7 @@ function deleteProduct() {
 }
 
 /**
- *
+ * Dialog保存
  */
 function saveProductForm() {
     var productName = $('#productName').textbox('getValue');
@@ -328,24 +300,18 @@ function closeProductDialog() {
 }
 
 /**
- *
+ * 上传图片
  */
-function openProductWindow() {
-    $('#product1-win').window('open');
+function uploadPic() {
+    var rows = $('#product1').datagrid('getSelections');
+    var productId = rows[0].productId;
+    openUrl(root + '/erp/product1/addPic.jsp?productId='+productId);
 }
 
 /**
- *
+ * 查看图片
  */
-function closeProductWindow() {
-    $('#product1-win').window('close');
-}
-
-function uploadPic() {
-    $('#upload-win').window('open').window('refresh', root + '/erp/product1/addPic.jsp');
-}
-
 function lookPic() {
-    
+
 }
 
