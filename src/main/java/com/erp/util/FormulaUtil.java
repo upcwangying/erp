@@ -1,5 +1,7 @@
 package com.erp.util;
 
+import org.apache.log4j.Logger;
+
 import java.util.Vector;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Vector;
  * Created by wang_ on 2016-08-25.
  */
 public class FormulaUtil {
+    private static Logger logger = Logger.getLogger(FormulaUtil.class);
     private static int leftBracket = 0;//左括号个数
     private static int rightBracket = 0;//右括号个数
     private static int startL = 0;//左括号的位置
@@ -14,7 +17,6 @@ public class FormulaUtil {
     private static double answer = 0;
     private static String leftNumber = "0";
     private static String rightNumber = "0";
-    public static String Msg = "";
     private static String formula = "";
     private static int[] sym = new int[4];
     private static Vector<String> list = new Vector<String>();//用来存放从字符串解析出来的字符
@@ -116,13 +118,12 @@ public class FormulaUtil {
         int rb = getRightBracket(formula);
         boolean CTLR = false;
         if (lb == rb) {
-            Msg = "";
             CTLR = true;
         } else if (lb > rb) {
-            Msg = "左括弧的个数多于右括弧，请检查！";
+            logger.error("左括弧的个数多于右括弧，请检查！");
             CTLR = false;
         } else {
-            Msg = "左括弧的个数少于右括弧，请检查！";
+            logger.error("左括弧的个数少于右括弧，请检查！");
             CTLR = false;
         }
         return CTLR;
@@ -149,7 +150,7 @@ public class FormulaUtil {
                 else
                     vstr = sign[j] + bracket[i];
                 if (formula.indexOf(vstr) > 0) {
-                    Msg = "公式中存在非法字符" + vstr;
+                    logger.error("公式中存在非法字符:" + vstr);
                     isOk = false;
                     return isOk;
                 }
@@ -159,14 +160,14 @@ public class FormulaUtil {
             for (int j = 0; j < sign.length; j++) {
                 vstr = sign[i] + sign[j];
                 if (formula.indexOf(vstr) > 0) {
-                    Msg = "公式中存在非法字符" + vstr;
+                    logger.error("公式中存在非法字符:" + vstr);
                     isOk = false;
                     return isOk;
                 }
             }
         }
         if (formula.indexOf("()") > 0) {
-            Msg = "公式中存在非法字符()";
+            logger.error("公式中存在非法字符()");
             isOk = false;
         }
         return isOk;
@@ -177,7 +178,7 @@ public class FormulaUtil {
      */
     public static boolean checkValid() {
         if ((formula == null) || (formula.trim().length() <= 0)) {
-            Msg = "请设置属性calRule!";
+            logger.warn("请设置属性calRule!");
             return false;
         }
         return (compareToLR() && checkFormula());
@@ -356,7 +357,7 @@ public class FormulaUtil {
             calculate();
             return answer;
         } catch (Exception e) {
-            Msg = "错误：" + e.getMessage();
+            logger.error("错误：" + e.getMessage(), e);
             return 0.0;
         }
     }
