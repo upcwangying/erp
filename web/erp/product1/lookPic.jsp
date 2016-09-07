@@ -45,16 +45,19 @@
                     productId: productId
                 },
                 success: function (result) {
-                    var carouselLinks = [],
-                            linksContainer = $('#links');
+                    var carouselLinks = [], linksContainer = $('#links');
                     // Add the demo images as links with thumbnails to the page:
                     $.each(result, function (index, photo) {
-                        console.log(photo);
-                        $('<a/>').append($('<img>').prop('src', baseRoot + photo.thumbnailurl))
+                        var a = $('<a/>').append($('<img>').prop('src', baseRoot + photo.thumbnailurl))
                                 .prop('href', baseRoot + photo.url)
                                 .prop('title', photo.name)
-                                .attr('data-gallery', '')
-                                .appendTo(linksContainer);
+                                .attr('data-gallery', '');
+                        // 每行最多为9张照片
+                        if ((index+1)%5==0) {
+//                            console.log(index);
+                            a.append('<br>');
+                        }
+                        a.appendTo(linksContainer);
                         carouselLinks.push({
                             href: baseRoot + photo.url,
                             title: photo.name
@@ -72,9 +75,7 @@
             });
 
         });
-
     </script>
-
 </head>
 <body>
 <!-- The container for the list of example images -->
@@ -89,6 +90,5 @@
     <a class="play-pause"></a>
     <ol class="indicator"></ol>
 </div>
-
 </body>
 </html>
