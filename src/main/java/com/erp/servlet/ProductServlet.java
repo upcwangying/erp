@@ -44,19 +44,17 @@ public class ProductServlet extends HttpServlet {
         String param = request.getParameter("param");
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
-//        System.out.println("random_session:" + random_session);
-//        System.out.println("seq:" + seq);
+
+        if (random_session == null || seq == null || !seq.equals(random_session)) {
+            throw new IllegalArgumentException("非法请求方式.......");
+        }
         String responseText = "";
         PrintWriter writer = response.getWriter();
-        if (random_session != null && seq != null && seq.equals(random_session)) {
-            if ("query".equals(param)) {
-                responseText = queryProduct();
-            } else if ("add".equals(param) || "delete".equals(param)
-                            || "up".equals(param) || "down".equals(param)) {
-                responseText = editProduct(request, param);
-            }
-        } else {
-            responseText = "非法请求路径！！！";
+        if ("query".equals(param)) {
+            responseText = queryProduct();
+        } else if ("add".equals(param) || "delete".equals(param)
+                || "up".equals(param) || "down".equals(param)) {
+            responseText = editProduct(request, param);
         }
 
         writer.write(responseText);
@@ -64,7 +62,6 @@ public class ProductServlet extends HttpServlet {
     }
 
     /**
-     *
      * @return
      */
     private String queryProduct() {
@@ -80,7 +77,6 @@ public class ProductServlet extends HttpServlet {
     }
 
     /**
-     *
      * @param request
      * @param param
      * @return
@@ -98,7 +94,7 @@ public class ProductServlet extends HttpServlet {
                 String price = request.getParameter("price");
                 String create_by = request.getParameter("create_by");
                 String update_by = request.getParameter("update_by");
-                product.setProductId(StringUtil.isEmpty(productId)?0L:Long.valueOf(productId));
+                product.setProductId(StringUtil.isEmpty(productId) ? 0L : Long.valueOf(productId));
                 product.setProductName(productName);
                 product.setProductDesc(productDesc);
                 product.setJldwid(Long.valueOf(jldwid));
