@@ -80,11 +80,12 @@ public interface IProductDao {
     void updateFileUploadLog(long dbid, String deleteUrl, String update_staffId) throws DAOException;
 
     /**
-     * 删除该条数据
-     * @param dbid 主键
+     * 恢复、删除该条数据
+     * @param dbid
      * @param update_staffId
+     * @param del_flag
      * @throws DAOException
      */
-    void deleteFileUploadLog(String dbid, String update_staffId) throws DAOException;
+    void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws DAOException;
 
 }

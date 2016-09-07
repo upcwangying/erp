@@ -2,7 +2,6 @@
     String productId = request.getParameter("productId");
     String staffId = request.getParameter("staffId");
     String root = request.getContextPath();
-    String baseRoot = "http://"+request.getLocalAddr()+":"+request.getLocalPort();
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -26,7 +25,6 @@
     <script src="<%= request.getContextPath()%>/fileupload/js/jquery.blueimp-gallery.min.js"></script>
 
     <script type="text/javascript">
-        var baseRoot = '<%= baseRoot%>';
         var root = '<%= root%>';
         var staffId = '<%= staffId%>';
         var productId = '<%= productId%>';
@@ -48,8 +46,8 @@
                     var carouselLinks = [], linksContainer = $('#links');
                     // Add the demo images as links with thumbnails to the page:
                     $.each(result, function (index, photo) {
-                        var a = $('<a/>').append($('<img>').prop('src', baseRoot + photo.thumbnailurl))
-                                .prop('href', baseRoot + photo.url)
+                        var a = $('<a/>').append($('<img>').prop('src', photo.thumbnailurl))
+                                .prop('href', photo.url)
                                 .prop('title', photo.name)
                                 .attr('data-gallery', '');
                         // 每行最多为9张照片
@@ -59,7 +57,7 @@
                         }
                         a.appendTo(linksContainer);
                         carouselLinks.push({
-                            href: baseRoot + photo.url,
+                            href: photo.url,
                             title: photo.name
                         });
                     });

@@ -317,3 +317,37 @@ function lookPic() {
     openUrl(root + '/erp/product1/lookPic.jsp?productId='+productId+"&staffId="+staffId);
 }
 
+function queryPics() {
+    console.log($('#product1').datagrid('getSelections')[0].productId);
+    $("#product1-grid").datagrid({
+        url:root + '/FileUploadLogServlet?param=query',
+        queryParams:{
+            seq: $("#seq").val(),
+            productId: $('#product1').datagrid('getSelections')[0].productId
+        },
+        method:'post'
+    });
+}
+
+function deletePics() {
+    
+}
+
+function resumePics() {
+    
+}
+
+/**
+ * 打开窗口
+ */
+function openWindow() {
+    $('#product1-win').window('open');
+}
+
+/**
+ * 关闭窗口
+ */
+function closeWindow() {
+    $('#product1-win').window('close');
+}
+

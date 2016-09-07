@@ -400,34 +400,37 @@ public class ProductDaoImpl implements IProductDao {
     }
 
     /**
-     * 删除该条数据
+     * 恢复、删除该条数据
      *
-     * @param dbid 主键
+     * @param dbid
      * @param update_staffId
+     * @param del_flag
      * @throws DAOException
      */
     @Override
-    public void deleteFileUploadLog(String dbid, String update_staffId) throws DAOException {
+    public void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String delete_sql = "update t_fileuploadlog set is_del='1',update_staffid=?,update_date=getdate() " +
+            String resume_sql = "update t_fileuploadlog set is_del=?,update_staffid=?,update_date=getdate() " +
                     "where dbid=? ";
-            ps = connection.prepareStatement(delete_sql);
-            ps.setLong(1, Long.valueOf(update_staffId));
-            ps.setLong(2, Long.valueOf(dbid));
+            ps = connection.prepareStatement(resume_sql);
+            ps.setString(1, del_flag?"1":"0");
+            ps.setLong(2, Long.valueOf(update_staffId));
+            ps.setLong(3, Long.valueOf(dbid));
             ps.execute();
             JdbcUtil.commit();
         } catch (Exception e) {
             JdbcUtil.rollback();
-            logger.error("删除商品图片失败：" + e.getMessage(), e);
+            logger.error("恢复或删除商品图片失败：" + e.getMessage(), e);
             e.printStackTrace();
-            throw new DAOException("删除商品图片失败：" + e.getMessage(), e);
+            throw new DAOException("恢复或删除商品图片失败：" + e.getMessage(), e);
         } finally {
             if (connection != null) {
                 JdbcUtil.close();
             }
         }
     }
+
 }

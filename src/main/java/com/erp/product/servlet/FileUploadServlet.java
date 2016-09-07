@@ -54,7 +54,7 @@ public class FileUploadServlet extends HttpServlet {
 			}
 
 			try {
-				FileUploadLogService.deleteFileUploadLog(dbid, staffId);
+				FileUploadLogService.resumeOrDeleteFileUploadLog(dbid, staffId, true);
 			} catch (ServiceException e) {
 				e.printStackTrace();
 			}
@@ -87,9 +87,16 @@ public class FileUploadServlet extends HttpServlet {
 		StringBuffer savePath = new StringBuffer(request.getServletContext().getRealPath("/"));
 		savePath.append("upload/");
 
+		String host = request.getLocalAddr();
+		int port = request.getLocalPort();
+		String path = request.getContextPath();
+
+		StringBuffer basePath = new StringBuffer("http://");
+		basePath.append(host).append(":").append(port).append(path);
+
 		//文件保存目录URL
-		StringBuffer saveUrl = new StringBuffer(request.getContextPath());
-		saveUrl.append("/upload/");
+		StringBuffer saveUrl = new StringBuffer();
+		saveUrl.append(basePath).append("/upload/");
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String ymd = sdf.format(new Date());
@@ -142,7 +149,10 @@ public class FileUploadServlet extends HttpServlet {
 
 					long dbid = FileUploadLogService.insertFileUploadLog(productId, fileName, url, thumbnailUrl, staffId);
 
-					StringBuffer deleteUrl = new StringBuffer("/erp/FileUploadServlet?delfile=");
+					StringBuffer deleteUrl = new StringBuffer();
+//					deleteUrl.append(basePath);
+//					deleteUrl.append("/FileUploadServlet?delfile=");
+					deleteUrl.append("/erp/FileUploadServlet?delfile=");
 					deleteUrl.append(newFileName).append("&delfile=").append(parseFileName);
 					deleteUrl.append("&dbid=").append(dbid).append("&staffId=").append(staffId);
 

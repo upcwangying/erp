@@ -108,19 +108,21 @@ public class FileUploadLogService {
     }
 
     /**
-     * 删除该条数据
+     * 恢复、删除该条数据
      *
      * @param dbid 主键
      * @param update_staffId
+     * @param del_flag
      * @throws ServiceException
      */
-    public static void deleteFileUploadLog(String dbid, String update_staffId) throws ServiceException {
+    public static void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws ServiceException {
         IProductDao productDao = new ProductDaoImpl();
         try {
-            productDao.deleteFileUploadLog(dbid, update_staffId);
+            productDao.resumeOrDeleteFileUploadLog(dbid, update_staffId, del_flag);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);
         }
     }
+
 }

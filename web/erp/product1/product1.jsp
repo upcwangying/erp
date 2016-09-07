@@ -15,7 +15,6 @@
     session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
-    String baseRoot = "http://"+request.getLocalAddr()+":"+request.getLocalPort();
 %>
 <html>
 <head>
@@ -33,12 +32,12 @@
     <title>商品填报</title>
 
     <script>
-        var baseRoot = '<%= baseRoot%>';
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
         $(document).ready(function () {
             $("#product1").datagrid('hideColumn', "productId");
             $("#product1").datagrid('hideColumn', "jldwid");
+            $("#product1-grid").datagrid('hideColumn', "dbid");
 
         });
     </script>
@@ -92,7 +91,7 @@
                 if (value == '') {
                     return '无图片可显示,<br>请上传图片!';
                 } else {
-                    return '<img src=<%= baseRoot%>'+ value +' />';
+                    return '<img src='+ value +' />';
                 }
 			}
         ">商品图片</th>
@@ -115,6 +114,8 @@
     <div onclick="uploadPic()" id="uploadPic" data-options="iconCls:'icon-add'">上传图片</div>
     <div class="menu-sep"></div>
     <div onclick="lookPic()" id="lookPic" data-options="iconCls:'icon-remove'">查看图片</div>
+    <div class="menu-sep"></div>
+    <div onclick="openWindow()" id="openWindow" data-options="iconCls:'icon-remove'">删除图片</div>
 </div>
 
 <div id="product1-dlg" class="easyui-dialog" title="商品增加" style="width:500px;height:400px;padding:10px"
@@ -180,6 +181,48 @@
             </tr>
         </table>
     </form>
+</div>
+
+<div id="product1-win" class="easyui-window" title="图片删除" data-options="modal:true,fit:true,closed:true,iconCls:'icon-edit'"
+     style="width:500px;height:200px;padding:10px;">
+    <table id="product1-grid" class="easyui-datagrid" style="width:100%;height:100%;"
+           data-options="
+				iconCls: 'icon-edit',
+				singleSelect: false,
+				rownumbers:true,
+				emptyMsg: '没有上传过图片',
+				<%--url:'<%= request.getContextPath()%>/FileUploadLogServlet?param=query',--%>
+				method: 'post',
+				<%--queryParams:{--%>
+                    <%--seq: $('#seq').val(),--%>
+                    <%--productId: $('#product1').datagrid('getSelections')[0].productId--%>
+                <%--},--%>
+				toolbar: '#product1-tb-grid'
+			">
+        <thead>
+        <tr>
+            <th data-options="field:'dbid',width:100,align:'right'"></th>
+            <th data-options="field:'name',width:300">图片名</th>
+            <th data-options="field:'url',width:150">原始商品路径</th>
+            <th data-options="field:'is_del',width:150,
+                formatter:function(value){
+                    if (value == '1') {
+                        return '已删除';
+                    } else {
+                        return '未删除';
+                    }
+				}
+                ">是否删除</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<div id="product1-tb-grid" style="height:auto">
+    <a href="javascript:void(0)" id="queryPics" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryPics()">查询</a>
+    <a href="javascript:void(0)" id="deletePics" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="deletePics()">删除</a>
+    <a href="javascript:void(0)" id="resumePics" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="resumePics()">恢复</a>
+    <a href="javascript:void(0)" id="closeWindow" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="closeWindow()">关闭窗口</a>
 </div>
 
 </body>
