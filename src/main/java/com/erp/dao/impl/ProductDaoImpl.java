@@ -233,7 +233,7 @@ public class ProductDaoImpl implements IProductDao {
         try {
             String query_sql = "select dbid,productid,name,url,thumbnailurl,deleteurl," +
                     "is_del,create_staffid,create_date,update_staffid,update_date " +
-                    "from t_fileupload where is_del='0' and productid=? ";
+                    "from t_fileuploadlog where is_del='0' and productid=? ";
             ps = connection.prepareStatement(query_sql);
             ps.setLong(1, Long.valueOf(productId));
             rst = ps.executeQuery();

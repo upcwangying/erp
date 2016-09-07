@@ -1,113 +1,86 @@
 ﻿<%
     String productId = request.getParameter("productId");
-    System.out.println("productId=" + productId);
+    String staffId = request.getParameter("staffId");
+    String root = request.getContextPath();
+    String baseRoot = "http://"+request.getLocalAddr()+":"+request.getLocalPort();
 %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
     <!--[if IE]>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <meta charset="utf-8">
-    <title>图片查看</title>
-    <meta name="description"
-          content="File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for jQuery. Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.">
+    <title>blueimp Gallery</title>
+    <meta name="description" content="blueimp Gallery is a touch-enabled, responsive and customizable image and video gallery, carousel and lightbox, optimized for both mobile and desktop web browsers. It features swipe, mouse and keyboard navigation, transition effects, slideshow functionality, fullscreen support and on-demand content loading and can be extended to display additional content types.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap styles -->
-    <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/bootstrap.min.css">
-    <!-- blueimp Gallery styles -->
     <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/blueimp-gallery.min.css">
-    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-    <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/fileupload.css">
-    <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/fileupload-ui.css">
-    <!-- CSS adjustments for browsers with JavaScript disabled -->
-    <noscript>
-        <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/fileupload-noscript.css">
-    </noscript>
-    <noscript>
-        <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/fileupload-ui-noscript.css">
-    </noscript>
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/blueimp-gallery-indicator.css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/fileupload/css/demo.css">
 
-    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="<%= request.getContextPath()%>/fileupload/js/blueimp-helper.js"></script>
+    <script src="<%= request.getContextPath()%>/fileupload/js/blueimp-gallery.min.js"></script>
+    <script src="<%= request.getContextPath()%>/fileupload/js/blueimp-gallery-fullscreen.js"></script>
+    <script src="<%= request.getContextPath()%>/fileupload/js/blueimp-gallery-indicator.js"></script>
     <script src="<%= request.getContextPath()%>/js/jquery-1.8.2.min.js"></script>
-    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/vendor/jquery.ui.widget.js"></script>
-    <!-- The Templates plugin is included to render the upload/download listings -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/tmpl.min.js"></script>
-    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/load-image.min.js"></script>
-    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/canvas-to-blob.min.js"></script>
-    <!-- blueimp Gallery script -->
     <script src="<%= request.getContextPath()%>/fileupload/js/jquery.blueimp-gallery.min.js"></script>
-    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/jquery.iframe-transport.js"></script>
-    <!-- The basic File Upload plugin -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/fileupload.js"></script>
-    <!-- The File Upload processing plugin -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/fileupload-process.js"></script>
-    <!-- The File Upload image preview & resize plugin -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/fileupload-image.js"></script>
-    <!-- The File Upload validation plugin -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/fileupload-validate.js"></script>
-    <!-- The File Upload user interface plugin -->
-    <script src="<%= request.getContextPath()%>/fileupload/js/fileupload-ui.js"></script>
-    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
-    <!--[if (gte IE 8)&(lt IE 10)]>
-    <script src="<%= request.getContextPath()%>/fileupload/js/cors/jquery.xdr-transport.js"></script>
-    <![endif]-->
+
+    <script type="text/javascript">
+        var baseRoot = '<%= baseRoot%>';
+        var root = '<%= root%>';
+        var staffId = '<%= staffId%>';
+        var productId = '<%= productId%>';
+
+        $(function () {
+            'use strict';
+            // Load demo images from flickr:
+            $.ajax({
+                url: root + "/FileDownloadServlet",
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                traditional: true,
+                data: {
+                    param: 'query',
+                    productId: productId
+                },
+                success: function (result) {
+                    var carouselLinks = [],
+                            linksContainer = $('#links');
+                    // Add the demo images as links with thumbnails to the page:
+                    $.each(result, function (index, photo) {
+                        console.log(photo);
+                        $('<a/>').append($('<img>').prop('src', baseRoot + photo.url))
+                                .prop('href', baseRoot + photo.url)
+                                .prop('title', photo.name)
+                                .attr('data-gallery', '')
+                                .appendTo(linksContainer);
+                        carouselLinks.push({
+                            href: baseRoot + photo.url,
+                            title: photo.name
+                        });
+                    });
+                    // Initialize the Gallery as image carousel:
+                    blueimp.Gallery(carouselLinks, {
+                        container: '#blueimp-gallery',
+                        carousel: true
+                    });
+                },
+                error: function () {
+                    alert("网络错误！")
+                }
+            });
+
+        });
+
+    </script>
+
 </head>
 <body>
-<div class="container">
-    <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="<%= request.getContextPath()%>/FileUploadServlet" method="POST"
-          enctype="multipart/form-data">
-        <!-- Redirect browsers with JavaScript disabled to the origin page -->
-        <noscript><input type="hidden" name="redirect" value="<%= request.getContextPath()%>/FileUploadServlet">
-        </noscript>
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-        <div class="row fileupload-buttonbar">
-            <div class="col-lg-7">
-                <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>添加文件</span>
-                    <input type="file" name="files[]" multiple>
-                </span>
-                <button type="submit" class="btn btn-primary start">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>开始上传</span>
-                </button>
-                <button type="reset" class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>取消上传</span>
-                </button>
-                <button type="button" class="btn btn-danger delete">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span>删除</span>
-                </button>
-                <input type="checkbox" class="toggle">
-                <!-- The loading indicator is shown during file processing -->
-                <span class="fileupload-loading"></span>
-            </div>
-            <!-- The global progress information -->
-            <div class="col-lg-5 fileupload-progress fade">
-                <!-- The global progress bar -->
-                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
-                </div>
-                <!-- The extended global progress information -->
-                <div class="progress-extended">&nbsp;</div>
-            </div>
-        </div>
-        <!-- The table listing the files available for upload/download -->
-        <table role="presentation" class="table table-striped">
-            <tbody class="files"></tbody>
-        </table>
-    </form>
-</div>
-<!-- The blueimp Gallery widget -->
-<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+<!-- The container for the list of example images -->
+<div id="links" class="links"></div>
+<!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
     <div class="slides"></div>
     <h3 class="title"></h3>
     <a class="prev">‹</a>
@@ -116,93 +89,6 @@
     <a class="play-pause"></a>
     <ol class="indicator"></ol>
 </div>
-<!-- The template to display files available for upload -->
-<script id="template-upload" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
-        <td>
-            <span class="preview"></span>
-        </td>
-        <td>
-            <p class="name">{%=file.name%}</p>
-            {% if (file.error) { %}
-                <div><span class="label label-danger">错误</span> {%=file.error%}</div>
-            {% } %}
-        </td>
-        <td>
-            <p class="size">{%=o.formatFileSize(file.size)%}</p>
-            {% if (!o.files.error) { %}
-                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
-            {% } %}
-        </td>
-        <td>
-            {% if (!o.files.error && !i && !o.options.autoUpload) { %}
-                <button class="btn btn-primary start">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>开始</span>
-                </button>
-            {% } %}
-            {% if (!i) { %}
-                <button class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>取消</span>
-                </button>
-            {% } %}
-        </td>
-    </tr>
-{% } %}
-
-</script>
-<!-- The template to display files available for download -->
-<script id="template-download" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
-        <td>
-            <span class="preview">
-                {% if (file.thumbnailUrl) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
-                {% } %}
-            </span>
-        </td>
-        <td>
-            <p class="name">
-                {% if (file.url) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
-                {% } else { %}
-                    <span>{%=file.name%}</span>
-                {% } %}
-            </p>
-            {% if (file.error) { %}
-                <div><span class="label label-danger">错误</span> {%=file.error%}</div>
-            {% } %}
-        </td>
-        <td>
-            <span class="size">{%=o.formatFileSize(file.size)%}</span>
-        </td>
-        <td>
-            {% if (file.deleteUrl) { %}
-                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span>删除</span>
-                </button>
-                <input type="checkbox" name="delete" value="1" class="toggle">
-            {% } else { %}
-                <button class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>取消</span>
-                </button>
-            {% } %}
-        </td>
-    </tr>
-{% } %}
-
-</script>
-
-<!-- The main application script -->
-<script type="text/javascript">
-
-
-</script>
 
 </body>
 </html>

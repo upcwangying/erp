@@ -25,7 +25,7 @@ public class FileUploadLogService {
      * @return
      * @throws ServiceException
      */
-    public static List<FileUploadLog> queryFileUploadLog(String productId) throws ServiceException {
+    public static JSONArray queryFileUploadLog(String productId) throws ServiceException {
         IProductDao productDao = new ProductDaoImpl();
         JSONArray array = new JSONArray();
         try {

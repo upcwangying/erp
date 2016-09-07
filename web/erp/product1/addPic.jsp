@@ -4,6 +4,7 @@
     System.out.println("productId=" + productId);
     String path = request.getContextPath()+"/FileUploadServlet?productId="+productId+"&staffId="+staffId;
 %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <!-- Force latest IE rendering engine or ChromeFrame if installed -->

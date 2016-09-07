@@ -140,6 +140,9 @@ public class FileUploadServlet extends HttpServlet {
 
 					item.write(uploadedFile);
 
+					System.out.println("saveUrl: " + saveUrl.toString());
+					System.out.println();
+
 					long dbid = FileUploadLogService.insertFileUploadLog(productId, fileName, url, thumbnailUrl, staffId);
 
 					StringBuffer deleteUrl = new StringBuffer("/erp/FileUploadServlet?delfile=");
