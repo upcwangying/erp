@@ -3,6 +3,7 @@ package com.erp.product.servlet;
 import com.erp.bean.ResponseBean;
 import com.erp.exception.ServiceException;
 import com.erp.service.FileUploadLogService;
+import com.erp.util.StringUtil;
 import net.sf.json.JSONArray;
 
 import javax.servlet.ServletException;
@@ -34,6 +35,10 @@ public class FileDownloadServlet extends HttpServlet {
 
         String param = request.getParameter("param");
         String productId = request.getParameter("productId");
+        if (StringUtil.isEmpty(productId)) {
+            throw new IllegalArgumentException("productId is null, please check your code in your jsp page.");
+        }
+
         String responseText = "";
         if ("query".equals(param)) {
             responseText = queryFileUploadLog(productId);
