@@ -5,6 +5,7 @@ import com.erp.entity.FileUploadLog;
 import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.StringUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -32,12 +33,16 @@ public class ProductDaoImpl implements IProductDao {
         List<Product> productList = new ArrayList<>();
         try {
             String sql = "select p.productid, p.productname, p.productdesc,p.jldwid,j.jldwmc," +
-                    "p.price,p.is_valid,p.create_staffid,p.create_date,p.update_staffid,p.update_date," +
-                    "s.staffname as create_staffname,s1.staffname as update_staffname " +
+                    "p.price,t1.thumbnailurl,p.is_valid,p.create_staffid,p.create_date," +
+                    "p.update_staffid,p.update_date,s.staffname as create_staffname," +
+                    "s1.staffname as update_staffname " +
                     "from t_product p " +
                     "left join staffinfo s on p.create_staffid=s.staffid " +
                     "left join staffinfo s1 on p.update_staffid = s1.staffid " +
                     "left join t_jldw j on p.jldwid=j.jldwid " +
+                    "left join (select max(t.thumbnailurl) as thumbnailurl," +
+                    "t.productid as productid from t_fileuploadlog t " +
+                    "where t.is_del='0' group by t.productid) t1 on p.productid=t1.productid " +
                     "where p.is_del='0' and s.is_del='0' and s1.is_del='0' and j.is_del='0' ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
@@ -49,6 +54,8 @@ public class ProductDaoImpl implements IProductDao {
                 product.setJldwid(rst.getLong("jldwid"));
                 product.setJldwmc(rst.getString("jldwmc"));
                 product.setPrice(rst.getDouble("price"));
+                String thumbnailurl = rst.getString("thumbnailurl");
+                product.setThumbnailUrl(StringUtil.isEmptyDo(thumbnailurl));
                 product.setIs_valid(rst.getString("is_valid"));
                 product.setDelete(false);
                 product.setCreate_StaffId(rst.getLong("create_staffid"));

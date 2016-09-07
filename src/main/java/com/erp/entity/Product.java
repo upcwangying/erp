@@ -26,6 +26,9 @@ public class Product implements Serializable, Comparable<Project> {
     // 单价
     private double price;
 
+    // 缩略图URL
+    private String thumbnailUrl;
+
     // 是否上架 1为上架；0为下架
     private String is_valid;
 
@@ -96,6 +99,14 @@ public class Product implements Serializable, Comparable<Project> {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getIs_valid() {
@@ -190,6 +201,7 @@ public class Product implements Serializable, Comparable<Project> {
                 ", jldwid=" + jldwid +
                 ", jldwmc=" + jldwmc +
                 ", price=" + price +
+                ", thumbnailUrl=" + thumbnailUrl +
                 ", is_valid=" + is_valid +
                 ", delete=" + delete +
                 ", create_StaffId=" + create_StaffId +

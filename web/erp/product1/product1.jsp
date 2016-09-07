@@ -15,6 +15,7 @@
     session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
+    String baseRoot = "http://"+request.getLocalAddr()+":"+request.getLocalPort();
 %>
 <html>
 <head>
@@ -32,6 +33,7 @@
     <title>商品填报</title>
 
     <script>
+        var baseRoot = '<%= baseRoot%>';
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
         $(document).ready(function () {
@@ -47,12 +49,16 @@
 				iconCls: 'icon-edit',
 				singleSelect: false,
 				rownumbers:true,
+				emptyMsg: '没有符合条件的结果集',
 				url:'<%= request.getContextPath()%>/ProductServlet?param=query',
 				method: 'post',
 				queryParams:{
                     seq: $('#seq').val()
                 },
 				toolbar: '#product1-tb',
+				onLoadSuccess: function() {
+				    $(this).datagrid('fixRownumber');
+				},
 				onRowContextMenu: function(e,index,row) {
 				    e.preventDefault();
 				    $(this).datagrid('unselectAll');
@@ -81,10 +87,15 @@
 				}
         ">是否上架
         </th>
-        <th data-options="field:'create_staffName',width:100">创建人</th>
-        <th data-options="field:'create_date',width:100">创建时间</th>
-        <th data-options="field:'update_staffName',width:100">更新人</th>
-        <th data-options="field:'update_date',width:100">更新时间</th>
+        <th data-options="field:'thumbnailUrl',width:150,
+            formatter:function(value){
+                if (value == '') {
+                    return '无图片可显示,<br>请上传图片!';
+                } else {
+                    return '<img src=<%= baseRoot%>'+ value +' />';
+                }
+			}
+        ">商品图片</th>
     </tr>
     </thead>
 </table>
