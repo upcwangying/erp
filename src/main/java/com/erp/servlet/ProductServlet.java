@@ -44,8 +44,8 @@ public class ProductServlet extends HttpServlet {
         String param = request.getParameter("param");
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
-        System.out.println("random_session:" + random_session);
-        System.out.println("seq:" + seq);
+//        System.out.println("random_session:" + random_session);
+//        System.out.println("seq:" + seq);
         String responseText = "";
         PrintWriter writer = response.getWriter();
         if (random_session != null && seq != null && seq.equals(random_session)) {
