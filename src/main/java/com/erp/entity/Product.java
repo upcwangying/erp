@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by wang_ on 2016-08-26.
  */
-public class Product implements Serializable, Comparable<Project> {
+public class Product implements Serializable, Comparable<Product> {
 
     // …Ã∆∑ID
     private long productId;
@@ -214,7 +214,7 @@ public class Product implements Serializable, Comparable<Project> {
     }
 
     @Override
-    public int compareTo(Project o) {
-        return (int) (this.productId - o.getProjectId());
+    public int compareTo(Product o) {
+        return (int) (this.productId - o.getProductId());
     }
 }
