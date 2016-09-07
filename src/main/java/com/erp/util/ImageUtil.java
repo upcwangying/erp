@@ -203,12 +203,12 @@ public class ImageUtil {
         }
     }
 
-    public static void main(String args[]) {
-        try {
-            compressImage("", "E:/ww/_abc.png", 200, 150);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        System.out.println("ok");
-    }
+//    public static void main(String args[]) {
+//        try {
+//            compressImage("", "E:/ww/_abc.png", 200, 150);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        System.out.println("ok");
+//    }
 }
