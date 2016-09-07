@@ -50,7 +50,7 @@
                     // Add the demo images as links with thumbnails to the page:
                     $.each(result, function (index, photo) {
                         console.log(photo);
-                        $('<a/>').append($('<img>').prop('src', baseRoot + photo.url))
+                        $('<a/>').append($('<img>').prop('src', baseRoot + photo.thumbnailurl))
                                 .prop('href', baseRoot + photo.url)
                                 .prop('title', photo.name)
                                 .attr('data-gallery', '')
