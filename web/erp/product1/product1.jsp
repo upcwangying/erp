@@ -34,11 +34,11 @@
     <script>
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
+
         $(document).ready(function () {
             $("#product1").datagrid('hideColumn', "productId");
             $("#product1").datagrid('hideColumn', "jldwid");
             $("#product1-grid").datagrid('hideColumn', "dbid");
-
         });
     </script>
 </head>
@@ -184,7 +184,8 @@
     </form>
 </div>
 
-<div id="product1-win" class="easyui-window" title="图片删除" data-options="modal:true,fit:true,closed:true,iconCls:'icon-edit'"
+<div id="product1-win" class="easyui-window" title="图片删除"
+     data-options="modal:true,fit:true,closed:true,closable:false,collapsible:false,minimizable:false,maximizable:false,iconCls:'icon-edit'"
      style="width:500px;height:200px;padding:10px;">
     <table id="product1-grid" class="easyui-datagrid" style="width:100%;height:100%;"
            data-options="
@@ -230,9 +231,9 @@
 
 <div id="product1-tb-grid" style="height:auto">
     <a href="javascript:void(0)" id="queryPics" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryPics()">查询</a>
-    <a href="javascript:void(0)" id="deletePics" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="deletePics()">删除</a>
-    <a href="javascript:void(0)" id="resumePics" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="resumePics()">恢复</a>
-    <a href="javascript:void(0)" id="closeWindow" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="closeWindow()">关闭窗口</a>
+    <a href="javascript:void(0)" id="deletePics" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deletePics()">删除</a>
+    <a href="javascript:void(0)" id="resumePics" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="resumePics()">恢复</a>
+    <a href="javascript:void(0)" id="closeWindow" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="closeWindow()">关闭窗口</a>
 </div>
 
 </body>

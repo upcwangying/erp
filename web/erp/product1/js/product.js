@@ -430,5 +430,6 @@ function openWindow() {
 function closeWindow() {
     $('#productId').val('');
     $('#product1-win').window('close');
+    queryProdtct();
 }
 
