@@ -303,6 +303,9 @@ function closeProductDialog() {
  * 上传图片
  */
 function uploadPic() {
+    if ($('#product1-tree-menu').menu("getItem", $('#uploadPic')).disabled) {
+        return;
+    }
     var rows = $('#product1').datagrid('getSelections');
     var productId = rows[0].productId;
     openUrl(root + '/erp/product1/addPic.jsp?productId='+productId+"&staffId="+staffId);
@@ -418,6 +421,9 @@ function resumeOrDelPics(param, dbid) {
  * 打开窗口
  */
 function openWindow() {
+    if ($('#product1-tree-menu').menu("getItem", $('#openWindow')).disabled) {
+        return;
+    }
     $('#product1-win').window('open');
     var productId = $('#product1').datagrid('getSelections')[0].productId;
     $('#productId').val(productId);

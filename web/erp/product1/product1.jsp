@@ -70,8 +70,10 @@
 
                     if (is_valid == '1') {
 				        $('#product1-tree-menu').menu('disableItem', $('#openWindow'));
+				        $('#product1-tree-menu').menu('disableItem', $('#uploadPic'));
                     } else {
                         $('#product1-tree-menu').menu('enableItem', $('#openWindow'));
+                        $('#product1-tree-menu').menu('enableItem', $('#uploadPic'));
                     }
 				}
 			">
@@ -119,9 +121,9 @@
 </div>
 
 <div id="product1-tree-menu" class="easyui-menu" style="width:120px;">
-    <div onclick="uploadPic()" id="uploadPic" data-options="iconCls:'icon-add'">上传图片</div>
-    <div class="menu-sep"></div>
     <div onclick="lookPic()" id="lookPic" data-options="iconCls:'icon-remove'">查看图片</div>
+    <div class="menu-sep"></div>
+    <div onclick="uploadPic()" id="uploadPic" data-options="iconCls:'icon-add'">上传图片</div>
     <div class="menu-sep"></div>
     <div onclick="openWindow()" id="openWindow" data-options="iconCls:'icon-remove'">删除图片</div>
 </div>
