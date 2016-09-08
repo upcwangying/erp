@@ -67,7 +67,7 @@ public class FileUploadLogServlet extends HttpServlet {
     private String queryFileUploadLog(String productId) {
         JSONArray array = null;
         try {
-            array = FileUploadLogService.queryFileUploadLog(productId);
+            array = FileUploadLogService.queryFileUploadLog(productId, true);
         } catch (ServiceException e) {
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class FileUploadLogServlet extends HttpServlet {
         try {
             String dbid = request.getParameter("dbid");
             String update_staffId = request.getParameter("update_staffId");
-            FileUploadLogService.resumeOrDeleteFileUploadLog(dbid, update_staffId, "delete".equals(param));
+            FileUploadLogService.resumeOrDeleteFileUploadLog(dbid, "1", update_staffId, "delete".equals(param));
             success = true;
             msg = TextEnum.getText(param, success);
         } catch (Exception e) {

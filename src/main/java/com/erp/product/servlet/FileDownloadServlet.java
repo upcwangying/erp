@@ -57,7 +57,7 @@ public class FileDownloadServlet extends HttpServlet {
     private String queryFileUploadLog(String productId) {
         JSONArray array = null;
         try {
-            array = FileUploadLogService.queryFileUploadLog(productId);
+            array = FileUploadLogService.queryFileUploadLog(productId, false);
         } catch (ServiceException e) {
             e.printStackTrace();
         }

@@ -54,7 +54,7 @@ public class FileUploadServlet extends HttpServlet {
 			}
 
 			try {
-				FileUploadLogService.resumeOrDeleteFileUploadLog(dbid, staffId, true);
+				FileUploadLogService.resumeOrDeleteFileUploadLog(dbid, "0", staffId, true);
 			} catch (ServiceException e) {
 				e.printStackTrace();
 			}

@@ -20,6 +20,8 @@ public class FileUploadLog implements Serializable {
 
     private String deleteurl;
 
+    private String is_pic_valid;
+
     private String is_del;
 
     private long create_staffId;
@@ -78,6 +80,14 @@ public class FileUploadLog implements Serializable {
         this.deleteurl = deleteurl;
     }
 
+    public String getIs_pic_valid() {
+        return is_pic_valid;
+    }
+
+    public void setIs_pic_valid(String is_pic_valid) {
+        this.is_pic_valid = is_pic_valid;
+    }
+
     public String getIs_del() {
         return is_del;
     }
@@ -119,35 +129,6 @@ public class FileUploadLog implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FileUploadLog that = (FileUploadLog) o;
-
-        if (dbid != that.dbid) return false;
-        if (productId != that.productId) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (thumbnailurl != null ? !thumbnailurl.equals(that.thumbnailurl) : that.thumbnailurl != null) return false;
-        if (deleteurl != null ? !deleteurl.equals(that.deleteurl) : that.deleteurl != null) return false;
-        return is_del != null ? is_del.equals(that.is_del) : that.is_del == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (dbid ^ (dbid >>> 32));
-        result = 31 * result + (int) (productId ^ (productId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (thumbnailurl != null ? thumbnailurl.hashCode() : 0);
-        result = 31 * result + (deleteurl != null ? deleteurl.hashCode() : 0);
-        result = 31 * result + (is_del != null ? is_del.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "FileUploadLog{" +
                 "dbid=" + dbid +
@@ -156,6 +137,7 @@ public class FileUploadLog implements Serializable {
                 ", url='" + url + '\'' +
                 ", thumbnailurl='" + thumbnailurl + '\'' +
                 ", deleteurl='" + deleteurl + '\'' +
+                ", is_pic_valid='" + is_pic_valid + '\'' +
                 ", is_del='" + is_del + '\'' +
                 ", create_staffId=" + create_staffId +
                 ", createDate=" + createDate +

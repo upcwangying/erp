@@ -22,14 +22,15 @@ public class FileUploadLogService {
      * 查询该商品下上传的图片
      *
      * @param productId 商品ID
+     * @param queryAll
      * @return
      * @throws ServiceException
      */
-    public static JSONArray queryFileUploadLog(String productId) throws ServiceException {
+    public static JSONArray queryFileUploadLog(String productId, boolean queryAll) throws ServiceException {
         IProductDao productDao = new ProductDaoImpl();
         JSONArray array = new JSONArray();
         try {
-            List<FileUploadLog> fileUploadLogList = productDao.queryFileUploadLog(productId);
+            List<FileUploadLog> fileUploadLogList = productDao.queryFileUploadLog(productId, queryAll);
             if (fileUploadLogList != null && fileUploadLogList.size() > 0) {
                 JsonConfig config = new JsonConfig();
                 config.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
@@ -111,14 +112,15 @@ public class FileUploadLogService {
      * 恢复、删除该条数据
      *
      * @param dbid 主键
+     * @param is_pic_valid
      * @param update_staffId
      * @param del_flag
      * @throws ServiceException
      */
-    public static void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws ServiceException {
+    public static void resumeOrDeleteFileUploadLog(String dbid, String is_pic_valid, String update_staffId, boolean del_flag) throws ServiceException {
         IProductDao productDao = new ProductDaoImpl();
         try {
-            productDao.resumeOrDeleteFileUploadLog(dbid, update_staffId, del_flag);
+            productDao.resumeOrDeleteFileUploadLog(dbid, is_pic_valid, update_staffId, del_flag);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);

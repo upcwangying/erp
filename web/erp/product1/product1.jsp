@@ -100,6 +100,7 @@
 </table>
 
 <input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+<input type="hidden" id="productId" name="productId"/>
 
 <div id="product1-tb" style="height:auto">
     <a href="javascript:void(0)" id="queryProdtct" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryProdtct()">查询</a>
@@ -188,14 +189,14 @@
     <table id="product1-grid" class="easyui-datagrid" style="width:100%;height:100%;"
            data-options="
 				iconCls: 'icon-edit',
-				singleSelect: false,
+				singleSelect: true,
 				rownumbers:true,
 				emptyMsg: '没有上传过图片',
 				<%--url:'<%= request.getContextPath()%>/FileUploadLogServlet?param=query',--%>
-				method: 'post',
+				<%--method: 'post',--%>
 				<%--queryParams:{--%>
                     <%--seq: $('#seq').val(),--%>
-                    <%--productId: $('#product1').datagrid('getSelections')[0].productId--%>
+                    <%--productId: $('#productId').val()--%>
                 <%--},--%>
 				toolbar: '#product1-tb-grid'
 			">
@@ -204,6 +205,15 @@
             <th data-options="field:'dbid',width:100,align:'right'"></th>
             <th data-options="field:'name',width:300">图片名</th>
             <th data-options="field:'url',width:150">原始商品路径</th>
+            <th data-options="field:'is_pic_valid',width:150,
+                formatter:function(value){
+                    if (value == '1') {
+                        return '有效';
+                    } else {
+                        return '无效';
+                    }
+				}
+                ">图片是否有效</th>
             <th data-options="field:'is_del',width:150,
                 formatter:function(value){
                     if (value == '1') {

@@ -42,7 +42,7 @@ public class ProductDaoImpl implements IProductDao {
                     "left join t_jldw j on p.jldwid=j.jldwid " +
                     "left join (select max(t.thumbnailurl) as thumbnailurl," +
                     "t.productid as productid from t_fileuploadlog t " +
-                    "where t.is_del='0' group by t.productid) t1 on p.productid=t1.productid " +
+                    "where t.is_del='0' and t.is_pic_valid='1' group by t.productid) t1 on p.productid=t1.productid " +
                     "where p.is_del='0' and s.is_del='0' and s1.is_del='0' and j.is_del='0' ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
@@ -228,21 +228,24 @@ public class ProductDaoImpl implements IProductDao {
      * 查询该商品下上传的图片
      *
      * @param productId 商品ID
+     * @param queryAll
      * @return
      * @throws DAOException
      */
     @Override
-    public List<FileUploadLog> queryFileUploadLog(String productId) throws DAOException {
+    public List<FileUploadLog> queryFileUploadLog(String productId, boolean queryAll) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rst = null;
         List<FileUploadLog> fileUploadLogList = new ArrayList<>();
         try {
             String query_sql = "select dbid,productid,name,url,thumbnailurl,deleteurl," +
-                    "is_del,create_staffid,create_date,update_staffid,update_date " +
-                    "from t_fileuploadlog where is_del='0' and productid=? ";
+                    "is_pic_valid,is_del,create_staffid,create_date,update_staffid,update_date " +
+                    "from t_fileuploadlog where (0=? or is_del=?) and productid=? ";
             ps = connection.prepareStatement(query_sql);
-            ps.setLong(1, Long.valueOf(productId));
+            ps.setInt(1, queryAll?0:1);
+            ps.setString(2, "0");
+            ps.setLong(3, Long.valueOf(productId));
             rst = ps.executeQuery();
             while (rst.next()) {
                 FileUploadLog fileUploadLog = new FileUploadLog();
@@ -252,7 +255,8 @@ public class ProductDaoImpl implements IProductDao {
                 fileUploadLog.setUrl(rst.getString("url"));
                 fileUploadLog.setThumbnailurl(rst.getString("thumbnailurl"));
                 fileUploadLog.setDeleteurl(rst.getString("deleteurl"));
-                fileUploadLog.setIs_del("0");
+                fileUploadLog.setIs_pic_valid(rst.getString("is_pic_valid"));
+                fileUploadLog.setIs_del(rst.getString("is_del"));
                 fileUploadLog.setCreate_staffId(rst.getLong("create_staffid"));
                 fileUploadLog.setCreateDate(new Date(rst.getDate("create_date").getTime()));
                 fileUploadLog.setUpdate_staffId(rst.getLong("update_staffid"));
@@ -288,7 +292,7 @@ public class ProductDaoImpl implements IProductDao {
         try {
             String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl,deleteurl," +
                     "is_del,create_staffid,create_date,update_staffid,update_date) " +
-                    "values (?,?,?,?,?,'0',?,getdate(),?,getdate()) ";
+                    "values (?,?,?,?,?,'1','0',?,getdate(),?,getdate()) ";
             ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, fileUploadLog.getProductId());
             ps.setString(2, fileUploadLog.getName());
@@ -336,8 +340,8 @@ public class ProductDaoImpl implements IProductDao {
         long dbid = 0;
         try {
             String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl," +
-                    "is_del,create_staffid,create_date,update_staffid,update_date) " +
-                    "values (?,?,?,?,'0',?,getdate(),?,getdate()) ";
+                    "is_pic_valid,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                    "values (?,?,?,?,'1','0',?,getdate(),?,getdate()) ";
             ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, Long.valueOf(productId));
             ps.setString(2, name);
@@ -403,22 +407,24 @@ public class ProductDaoImpl implements IProductDao {
      * 恢复、删除该条数据
      *
      * @param dbid
+     * @param is_pic_valid
      * @param update_staffId
      * @param del_flag
      * @throws DAOException
      */
     @Override
-    public void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws DAOException {
+    public void resumeOrDeleteFileUploadLog(String dbid, String is_pic_valid, String update_staffId, boolean del_flag) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String resume_sql = "update t_fileuploadlog set is_del=?,update_staffid=?,update_date=getdate() " +
+            String resume_sql = "update t_fileuploadlog set is_pic_valid=?,is_del=?,update_staffid=?,update_date=getdate() " +
                     "where dbid=? ";
             ps = connection.prepareStatement(resume_sql);
-            ps.setString(1, del_flag?"1":"0");
-            ps.setLong(2, Long.valueOf(update_staffId));
-            ps.setLong(3, Long.valueOf(dbid));
+            ps.setString(1, is_pic_valid);
+            ps.setString(2, del_flag?"1":"0");
+            ps.setLong(3, Long.valueOf(update_staffId));
+            ps.setLong(4, Long.valueOf(dbid));
             ps.execute();
             JdbcUtil.commit();
         } catch (Exception e) {

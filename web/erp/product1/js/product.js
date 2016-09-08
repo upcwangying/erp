@@ -318,23 +318,100 @@ function lookPic() {
 }
 
 function queryPics() {
-    console.log($('#product1').datagrid('getSelections')[0].productId);
     $("#product1-grid").datagrid({
         url:root + '/FileUploadLogServlet?param=query',
         queryParams:{
             seq: $("#seq").val(),
-            productId: $('#product1').datagrid('getSelections')[0].productId
+            productId: $('#productId').val()
         },
         method:'post'
     });
 }
 
 function deletePics() {
-    
+    var rows = $('#product1-grid').datagrid('getSelections');
+    if (!rows || rows.length == 0) {
+        $.messager.alert('提示','未选中数据!','info');
+        return;
+    }
+
+    if (rows.length > 1) {
+        $.messager.alert('提示','只能选择一条数据!','info');
+        return;
+    }
+
+    var row = rows[0];
+    if (row.is_del == '1') {
+        $.messager.alert('提示','该数据‘已删除’,不能重复操作!','info');
+        return;
+    }
+
+    var dbid = row.dbid;
+    $.messager.confirm('确认框', '确定删除数据吗?', function (r) {
+        if (r) {
+            resumeOrDelPics('delete', dbid);
+        }
+    });
 }
 
 function resumePics() {
-    
+    var rows = $('#product1-grid').datagrid('getSelections');
+    if (!rows || rows.length == 0) {
+        $.messager.alert('提示','未选中数据!','info');
+        return;
+    }
+
+    if (rows.length > 1) {
+        $.messager.alert('提示','只能选择一条数据!','info');
+        return;
+    }
+
+    var row = rows[0];
+    if (row.is_del == '0') {
+        $.messager.alert('提示','只能恢复‘已删除’的数据!','info');
+        return;
+    }
+
+    var dbid = row.dbid;
+    if (row.is_pic_valid == '0') {
+        $.messager.confirm('确认框', '该数据对应的图片‘物理删除’,确定恢复数据吗?', function (r) {
+            if (r) {
+                resumeOrDelPics('resume', dbid);
+            }
+        });
+    } else {
+        $.messager.confirm('确认框', '确定恢复数据吗?', function (r) {
+            if (r) {
+                resumeOrDelPics('resume', dbid);
+            }
+        });
+    }
+
+}
+
+function resumeOrDelPics(param, dbid) {
+    $.ajax({
+        url: root + "/FileUploadLogServlet",
+        type: 'post',
+        cache: false,
+        dataType: 'json',
+        traditional: true,
+        data: {
+            param: param,
+            seq: $("#seq").val(),
+            dbid: dbid,
+            update_staffId: staffId
+        },
+        success: function (data) {
+            alert(data.msg);
+            if (data.success) {
+                queryPics();
+            }
+        },
+        error: function () {
+            alert("网络错误！")
+        }
+    });
 }
 
 /**
@@ -342,12 +419,16 @@ function resumePics() {
  */
 function openWindow() {
     $('#product1-win').window('open');
+    var productId = $('#product1').datagrid('getSelections')[0].productId;
+    $('#productId').val(productId);
+    queryPics();
 }
 
 /**
  * 关闭窗口
  */
 function closeWindow() {
+    $('#productId').val('');
     $('#product1-win').window('close');
 }
 

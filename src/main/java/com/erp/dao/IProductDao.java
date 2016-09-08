@@ -45,10 +45,11 @@ public interface IProductDao {
     /**
      * 查询该商品下上传的图片
      * @param productId 商品ID
+     * @param queryAll
      * @return
      * @throws DAOException
      */
-    List<FileUploadLog> queryFileUploadLog(String productId) throws DAOException;
+    List<FileUploadLog> queryFileUploadLog(String productId, boolean queryAll) throws DAOException;
 
     /**
      * 增加
@@ -82,10 +83,11 @@ public interface IProductDao {
     /**
      * 恢复、删除该条数据
      * @param dbid
+     * @param is_pic_valid
      * @param update_staffId
      * @param del_flag
      * @throws DAOException
      */
-    void resumeOrDeleteFileUploadLog(String dbid, String update_staffId, boolean del_flag) throws DAOException;
+    void resumeOrDeleteFileUploadLog(String dbid, String is_pic_valid, String update_staffId, boolean del_flag) throws DAOException;
 
 }
