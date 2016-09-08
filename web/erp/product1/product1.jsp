@@ -62,10 +62,17 @@
 				    e.preventDefault();
 				    $(this).datagrid('unselectAll');
 				    $(this).datagrid('selectRow',index);
+				    var is_valid = row.is_valid;
 				    $('#product1-tree-menu').menu('show', {
                         left: e.pageX,
                         top: e.pageY
                     });
+
+                    if (is_valid == '1') {
+				        $('#product1-tree-menu').menu('disableItem', $('#openWindow'));
+                    } else {
+                        $('#product1-tree-menu').menu('enableItem', $('#openWindow'));
+                    }
 				}
 			">
     <thead>
