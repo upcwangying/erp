@@ -87,6 +87,9 @@ function addNode() {
  * 删除节点
  */
 function deleteNode() {
+    if ($('#module-tree-menu').menu("getItem", $('#deleteItem')).disabled) {
+        return;
+    }
     var selected = $("#module-tree").treegrid('getSelected');
     var parentNode = $("#module-tree").treegrid('getParent', selected.id);
     var children = [];
@@ -151,6 +154,9 @@ function deleteSelectedNodes() {
 }
 
 function resumeModule() {
+    if ($('#module-tree-menu').menu("getItem", $('#resumeItem')).disabled) {
+        return;
+    }
     var selected = $("#module-tree").treegrid('getSelected');
     if (selected.display == '0') {
         $.messager.alert('提示', '该数据已是“显示”状态', 'info');
@@ -314,9 +320,12 @@ function getSelectedNode() {
     var children = $("#module-tree").treegrid('getChildren', selected.id);
     if (children.length > 0) {
         for (var i = 0; i < children.length; i++) {
-            node.push(children[i]);
+            if (children[i].display == '0') {
+                node.push(children[i]);
+            }
         }
     }
+    // console.log(node);
     return node;
 }
 
