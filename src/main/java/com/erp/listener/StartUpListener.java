@@ -3,6 +3,7 @@ package com.erp.listener;
 import com.erp.chart.factory.ChartBeanFactory;
 import com.erp.util.JdbcUtil;
 import com.erp.util.SystemConfig;
+import com.erp.util.TableNameConstant;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -56,7 +57,7 @@ public class StartUpListener implements ServletContextListener {
         String initYJ = "0";
         String sql = "select dbid,yjyf,yjzc,yjhz,yjye,staffid, " +
                 "yjlx,create_date,update_date " +
-                "from t_yj where is_del='0' and yjlx='1' ";
+                "from "+ TableNameConstant.T_YJ+" where is_del='0' and yjlx='1' ";
         try {
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
