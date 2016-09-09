@@ -4,6 +4,9 @@
 function queryUser() {
     $("#user-query").datagrid({
         url: root + '/UserServlet?param=user-query',
+        queryParams:{
+            seq: $('#seq').val()
+        },
         method: 'post'
     });
 }
@@ -86,7 +89,8 @@ function deleteUser() {
                 traditional: true,
                 data: {
                     param: 'delete',
-                    dbid: ids
+                    dbid: ids,
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     alert(data.msg);
@@ -146,7 +150,8 @@ function saveUser(param, dbid, staffcode, staffname, pwd, telphone, styleid) {
             staffname: $('#staffname').textbox('getValue'),
             pwd: $('#pwd').textbox('getValue'),
             telphone: $('#telphone').textbox('getValue'),
-            styleid: $('#styleid').combobox('getValue')
+            styleid: $('#styleid').combobox('getValue'),
+            seq: $('#seq').val()
         },
         success: function (data) {
             alert(data.msg);

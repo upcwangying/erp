@@ -189,7 +189,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         },
         message: '两次输入的密码不一致！'
     },
-    remote: {
+    remoteuser: {
         validator: function (_46, _47) {
             var _48 = $.ajax({
                 url: root + '/UserServlet',
@@ -197,7 +197,8 @@ $.extend($.fn.validatebox.defaults.rules, {
                 data: {
                     param: 'valid',
                     staffcode: _46,
-                    staffId: $("#" + _47[0]).val()
+                    staffId: $("#" + _47[0]).val(),
+                    seq: $("#" + _47[1]).val()
                 },
                 async: false,
                 cache: false,

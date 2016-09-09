@@ -1,5 +1,6 @@
 <%@ page import="com.erp.util.SystemConfig" %>
-<%@ page import="com.erp.entity.StaffInfo" %><%--
+<%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %><%--
   Created by IntelliJ IDEA.
   User: wang_
   Date: 2016-07-21
@@ -8,6 +9,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -37,12 +41,17 @@
 </head>
 <body>
 
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+
 <table id="user-query" class="easyui-datagrid" title="物料明细" style="width:100%;height:100%"
        data-options="
 				iconCls: 'icon-search',
 				singleSelect: false,
 				url:'<%= request.getContextPath()%>/UserServlet?param=user-query',
 				method: 'post',
+				queryParams:{
+                    seq: $('#seq').val()
+                },
 				toolbar: [
 				    '-',
 				    {
@@ -130,7 +139,7 @@
             <tr>
                 <td>登录名:</td>
                 <td>
-                    <input class="easyui-textbox" type="text" id="staffcode" name="staffcode" data-options="required:true,validType:['username', 'remote[\'staffId\']']">
+                    <input class="easyui-textbox" type="text" id="staffcode" name="staffcode" data-options="required:true,validType:['username', 'remoteuser[\'staffId\', \'seq\']']">
                     </input>
                 </td>
             </tr>
