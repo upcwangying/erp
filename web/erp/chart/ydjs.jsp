@@ -1,5 +1,6 @@
 <%@ page import="com.erp.util.SystemConfig" %>
 <%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %>
 <%--
   Created by IntelliJ IDEA.
   User: wang_
@@ -9,6 +10,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -36,7 +40,8 @@
                     chart_lx: "line",
                     module_lx: 'ydjs',
                     width: 1500,
-                    height: 800
+                    height: 800,
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     console.log(data);
@@ -54,6 +59,7 @@
     </script>
 </head>
 <body bgcolor="#ffffff" onload="insertTable()">
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
 <table id="table" width="1500" border="0" cellspacing="0" cellpadding="0">
 </table>
 </body>

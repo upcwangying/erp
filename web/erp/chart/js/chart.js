@@ -19,7 +19,8 @@ function insertTable(wl) {
             chart_lx: "line",
             module_lx: 'chart',
             width: 1500,
-            height: 800
+            height: 800,
+            seq: $('#seq').val()
         },
         success: function (data) {
             console.log(data);
