@@ -68,18 +68,18 @@
 				    },
 				    '-',
 				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deleteGys();
-				        }
-				    },
-				    '-',
-				    {
 				        text: '修改',
 				        iconCls: 'icon-edit',
 				        handler: function () {
 				            updateGys();
+				        }
+				    },
+				    '-',
+				    {
+				        text: '删除',
+				        iconCls: 'icon-remove',
+				        handler: function () {
+				            deleteGys();
 				        }
 				    },
 				    '-'
