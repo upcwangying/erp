@@ -150,6 +150,11 @@ var flag = "init";
 function openYjDialog(type) {
     flag = type;
     $('#yj-dlg').dialog('open');
+    if (flag == 'insert') {
+        $('#yj-dlg').dialog('setTitle', '月度结算增加');
+    } else if ('edit') {
+        $('#yj-dlg').dialog('setTitle', '月度结算修改');
+    }
     $("#yjyf").datebox("setValue", getSysDate("yyyy-MM"));
     $('#yjzc').textbox('setValue', '');
     $('#yjhz').textbox('setValue', '');
