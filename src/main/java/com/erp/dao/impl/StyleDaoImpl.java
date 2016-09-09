@@ -31,7 +31,7 @@ public class StyleDaoImpl implements IStyleDao {
         ResultSet rst = null;
         List<Style> styleList = new ArrayList<>();
         try {
-            String sql = "select styleid,style,styledesc from style";
+            String sql = "select styleid,style,styledesc from " + TableNameConstant.STYLE;
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
             while (rst.next()) {
@@ -66,7 +66,7 @@ public class StyleDaoImpl implements IStyleDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update style set styledesc=? where styleid=? ";
+            String sql = "update " + TableNameConstant.STYLE + " set styledesc=? where styleid=? ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, style.getStyleDesc());
             ps.setLong(2, style.getStyleId());

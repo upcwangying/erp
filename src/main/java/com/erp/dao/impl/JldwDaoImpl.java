@@ -5,6 +5,7 @@ import com.erp.entity.Jldw;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
 import com.erp.util.StringUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -36,7 +37,7 @@ public class JldwDaoImpl implements IJldwDao {
         try {
             String query_sql = "select jldwid,jldwmc,jldwms,is_del," +
                     "create_staffid,create_date,update_staffid,update_date " +
-                    "from t_jldw where is_del='0' ";
+                    "from " + TableNameConstant.T_JLDW + " where is_del='0' ";
             ps = connection.prepareStatement(query_sql);
             rst = ps.executeQuery();
             while (rst.next()) {
@@ -80,7 +81,7 @@ public class JldwDaoImpl implements IJldwDao {
         try {
             String query_sql = "select jldwid,jldwmc,jldwms,is_del," +
                     "create_staffid,create_date,update_staffid,update_date " +
-                    "from t_jldw where is_del='0' and jldwmc=? and (0=? or jldwid!=?) ";
+                    "from " + TableNameConstant.T_JLDW + " where is_del='0' and jldwmc=? and (0=? or jldwid!=?) ";
             ps = connection.prepareStatement(query_sql);
             ps.setString(1, jldwmc);
             ps.setInt(2, StringUtil.isEmpty(jldwId)?0:1);
@@ -146,7 +147,7 @@ public class JldwDaoImpl implements IJldwDao {
      * @throws DAOException
      */
     private void insertJldw(Connection connection, Jldw jldw) throws SQLException {
-        String insert_sql = "insert into t_jldw(jldwmc,jldwms,is_del,create_staffid,create_date,update_staffid,update_date) " +
+        String insert_sql = "insert into " + TableNameConstant.T_JLDW + "(jldwmc,jldwms,is_del,create_staffid,create_date,update_staffid,update_date) " +
                 "values (?,?,'0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, jldw.getJldwmc());
@@ -164,7 +165,7 @@ public class JldwDaoImpl implements IJldwDao {
      * @throws DAOException
      */
     private void updateJldw(Connection connection, Jldw jldw) throws SQLException {
-        String update_sql = "update t_jldw set jldwmc=?,jldwms=?,update_staffid=?,update_date=getdate() " +
+        String update_sql = "update " + TableNameConstant.T_JLDW + " set jldwmc=?,jldwms=?,update_staffid=?,update_date=getdate() " +
                 "where jldwid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, jldw.getJldwmc());
@@ -186,7 +187,7 @@ public class JldwDaoImpl implements IJldwDao {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
         try {
-            String sql = "update t_jldw set is_del='1', update_staffid=?, update_date=getdate() " +
+            String sql = "update " + TableNameConstant.T_JLDW + " set is_del='1', update_staffid=?, update_date=getdate() " +
                     "where jldwid=? ";
             PreparedStatement ps = connection.prepareStatement(sql);
             for (String id : ids) {

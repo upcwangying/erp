@@ -4,6 +4,7 @@ import com.erp.dao.IYJDao;
 import com.erp.entity.YJ;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -194,8 +195,8 @@ public class YJDaoImpl implements IYJDao {
      */
     private double queryLastDataBeforeCurrent(Connection connection, String yjyf) throws SQLException {
         double yjye = 0D;
-        String sql = "select top 1 yjyf,yjzc,yjhz,yjye,yjlx from t_yj " +
-                "where is_del='0' and convert(varchar(7), yjyf,120)<? order by yjyf desc";
+        String sql = "select top 1 yjyf,yjzc,yjhz,yjye,yjlx from " +
+                TableNameConstant.T_YJ + " where is_del='0' and convert(varchar(7), yjyf,120)<? order by yjyf desc";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, yjyf);
         ResultSet rst = ps.executeQuery();
@@ -235,7 +236,7 @@ public class YJDaoImpl implements IYJDao {
      */
     private void updateYJDataAfterCurrent(Connection connection, String yjyf, double yjye_cy) throws SQLException {
         List<YJ> yjList = new ArrayList<>();
-        String sql = "update t_yj set yjye=yjye+?, update_date=getdate() " +
+        String sql = "update "+TableNameConstant.T_YJ+" set yjye=yjye+?, update_date=getdate() " +
                 "where is_del='0' and convert(varchar(7), yjyf,120)>? ";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setDouble(1, yjye_cy);
@@ -317,7 +318,7 @@ public class YJDaoImpl implements IYJDao {
      * @throws SQLException
      */
     private void insertYJData(Connection connection, YJ yj) throws SQLException {
-        String sql = "insert into t_yj (yjyf,yjzc,yjhz,yjye,staffid,is_del,yjlx,create_date,update_date) " +
+        String sql = "insert into "+TableNameConstant.T_YJ+" (yjyf,yjzc,yjhz,yjye,staffid,is_del,yjlx,create_date,update_date) " +
                 "values (?,?,?,?,?,'0',?,getdate(),getdate()) ";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, yj.getYjyf());
@@ -337,7 +338,7 @@ public class YJDaoImpl implements IYJDao {
      * @throws SQLException
      */
     private void updateYJData(Connection connection, YJ yj) throws SQLException {
-        String sql = "update t_yj set yjyf=?,yjzc=?,yjhz=?,yjye=?,staffid=?,update_date=getdate() " +
+        String sql = "update "+TableNameConstant.T_YJ+" set yjyf=?,yjzc=?,yjhz=?,yjye=?,staffid=?,update_date=getdate() " +
                 "where dbid=? ";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, yj.getYjyf());
@@ -358,7 +359,7 @@ public class YJDaoImpl implements IYJDao {
      * @throws SQLException
      */
     private void deleteYJData(Connection connection, String dbid) throws SQLException {
-        String sql = "update t_yj set is_del='1',update_date=getdate() where dbid=? ";
+        String sql = "update "+TableNameConstant.T_YJ+" set is_del='1',update_date=getdate() where dbid=? ";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setLong(1, Long.valueOf(dbid));
         ps.execute();
@@ -377,7 +378,7 @@ public class YJDaoImpl implements IYJDao {
         List<YJ> yjList = new ArrayList<>();
         String sql = "select yj.dbid,yj.yjyf,yj.yjzc,yj.yjhz,yj.yjye,yj.staffid," +
                 "yj.yjlx,yj.create_date,yj.update_date,s.staffname " +
-                "from t_yj yj left join staffinfo s " +
+                "from "+TableNameConstant.T_YJ+" yj left join "+TableNameConstant.STAFFINFO+" s " +
                 "on yj.staffid=s.staffid " +
                 "where yj.is_del='0' and s.is_del='0' " +
                 "and (0=? or convert(varchar(7), yj.yjyf,120)=?) " +

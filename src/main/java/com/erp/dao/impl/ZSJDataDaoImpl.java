@@ -5,6 +5,7 @@ import com.erp.entity.Gys;
 import com.erp.entity.WL;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
         List<WL> wlList = new ArrayList<WL>();
         try {
             String wl_sql = "select dbid,wlbm,wlmc,wlms,create_date,update_date " +
-                    "from t_wl where is_del='0' order by dbid asc";
+                    "from " + TableNameConstant.T_WL + " where is_del='0' order by dbid asc";
             preparedStatement = connection.prepareStatement(wl_sql);
             rst = preparedStatement.executeQuery();
             while (rst.next()) {
@@ -96,7 +97,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
      * @throws SQLException
      */
     private void insertWl(Connection connection, WL wl) throws SQLException {
-        String wl_sql = "insert into t_wl(wlbm,wlmc,wlms,is_del,create_staffid,create_date,update_staffid,update_date) " +
+        String wl_sql = "insert into " + TableNameConstant.T_WL + "(wlbm,wlmc,wlms,is_del,create_staffid,create_date,update_staffid,update_date) " +
                 "values(?,?,?,'0',?,getdate(),?,getdate())";
         PreparedStatement ps = connection.prepareStatement(wl_sql);
         ps.setString(1, wl.getWlbm());
@@ -115,7 +116,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
      * @throws SQLException
      */
     private void updateWl(Connection connection, WL wl) throws SQLException {
-        String wl_sql = "update t_wl set wlmc=?,wlms=?,update_staffid=?,update_date=getdate() where dbid=? ";
+        String wl_sql = "update " + TableNameConstant.T_WL + " set wlmc=?,wlms=?,update_staffid=?,update_date=getdate() where dbid=? ";
         PreparedStatement ps = connection.prepareStatement(wl_sql);
         ps.setString(1, wl.getWlmc());
         ps.setString(2, wl.getWlms());
@@ -137,7 +138,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String wl_sql = "update t_wl set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
+            String wl_sql = "update " + TableNameConstant.T_WL + " set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
             ps = connection.prepareStatement(wl_sql);
             for (String id : ids) {
                 ps.setLong(1, update_staffId);
@@ -170,7 +171,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
         List<Gys> gysList = new ArrayList<Gys>();
         try {
             String gys_sql = "select dbid,gysbm,gysmc,gysms,create_date,update_date " +
-                    "from t_gys where is_del='0' order by dbid asc";
+                    "from " + TableNameConstant.T_GYS + " where is_del='0' order by dbid asc";
             preparedStatement = connection.prepareStatement(gys_sql);
             rst = preparedStatement.executeQuery();
             while (rst.next()) {
@@ -233,7 +234,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
      * @throws SQLException
      */
     private void insertGys(Connection connection, Gys gys) throws SQLException {
-        String gys_sql = "insert into t_gys(gysbm,gysmc,gysms,is_del,create_staffid,create_date,update_staffid,update_date) " +
+        String gys_sql = "insert into " + TableNameConstant.T_GYS + "(gysbm,gysmc,gysms,is_del,create_staffid,create_date,update_staffid,update_date) " +
                 "values(?,?,?,'0',?,getdate(),?,getdate())";
         PreparedStatement ps = connection.prepareStatement(gys_sql);
         ps.setString(1, gys.getGysbm());
@@ -252,7 +253,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
      * @throws SQLException
      */
     private void updateGys(Connection connection, Gys gys) throws SQLException {
-        String gys_sql = "update t_gys set gysmc=?,gysms=?,update_staffid=?,update_date=getdate() where dbid=? ";
+        String gys_sql = "update " + TableNameConstant.T_GYS + " set gysmc=?,gysms=?,update_staffid=?,update_date=getdate() where dbid=? ";
         PreparedStatement ps = connection.prepareStatement(gys_sql);
         ps.setString(1, gys.getGysmc());
         ps.setString(2, gys.getGysms());
@@ -274,7 +275,7 @@ public class ZSJDataDaoImpl implements IZSJDataDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String gys_sql = "update t_gys set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
+            String gys_sql = "update " + TableNameConstant.T_GYS + " set is_del='1',update_staffid=?,update_date=getdate() where dbid=? ";
             ps = connection.prepareStatement(gys_sql);
             for (String id : ids) {
                 ps.setLong(1, update_staffId);

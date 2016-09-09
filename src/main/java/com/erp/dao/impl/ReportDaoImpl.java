@@ -5,6 +5,7 @@ import com.erp.entity.YW;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
 import com.erp.util.StringUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -105,7 +106,7 @@ public class ReportDaoImpl implements IReportDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update t_yw set is_del='1',update_date=getdate() where dbid=? ";
+            String sql = "update " + TableNameConstant.T_YW + " set is_del='1',update_date=getdate() where dbid=? ";
             ps = connection.prepareStatement(sql);
             for (String dbid : ids) {
                 ps.setString(1, dbid);
@@ -133,7 +134,8 @@ public class ReportDaoImpl implements IReportDao {
      * @throws DAOException
      */
     private void insertReportData(Connection connection, List<YW> ywList) throws SQLException {
-        String sql = "insert into t_yw (wlbm,gysbm,price,number,staffid,shoppingtime,is_del,create_date,update_date) " +
+        String sql = "insert into " + TableNameConstant.T_YW +
+                "(wlbm,gysbm,price,number,staffid,shoppingtime,is_del,create_date,update_date) " +
                 "values (?,?,?,?,?,?,'0',getdate(),getdate())";
         PreparedStatement ps = connection.prepareStatement(sql);
         for (YW yw : ywList) {
@@ -157,8 +159,8 @@ public class ReportDaoImpl implements IReportDao {
      * @throws DAOException
      */
     private void updateReportData(Connection connection, List<YW> ywList) throws SQLException {
-        String sql = "update t_yw set wlbm=?,gysbm=?,price=?,number=?,staffid=?,shoppingtime=?,update_date=getdate() " +
-                "where dbid=? ";
+        String sql = "update "+TableNameConstant.T_YW+" set wlbm=?,gysbm=?,price=?,number=?,staffid=?," +
+                "shoppingtime=?,update_date=getdate() where dbid=? ";
         PreparedStatement ps = connection.prepareStatement(sql);
         for (YW yw : ywList) {
             ps.setString(1, yw.getWlbm());
@@ -189,10 +191,10 @@ public class ReportDaoImpl implements IReportDao {
         try {
             String sql = "select yw.dbid,yw.wlbm,w.wlmc,yw.gysbm,g.gysmc,yw.price," +
                     "yw.number,yw.staffid,s.staffname,yw.shoppingtime,yw.create_date,yw.update_date " +
-                    "from t_yw yw " +
-                    "left join staffinfo s on yw.staffid=s.staffid " +
-                    "left join t_wl w on yw.wlbm=w.wlbm " +
-                    "left join t_gys g on yw.gysbm=g.gysbm " +
+                    "from "+TableNameConstant.T_YW+" yw " +
+                    "left join "+TableNameConstant.STAFFINFO+" s on yw.staffid=s.staffid " +
+                    "left join "+TableNameConstant.T_WL+" w on yw.wlbm=w.wlbm " +
+                    "left join "+TableNameConstant.T_GYS+" g on yw.gysbm=g.gysbm " +
                     "where yw.is_del='0' and (0=? or yw.dbid=?) and s.is_del='0' " +
                     "and w.is_del='0' and g.is_del='0' ";
             ps = connection.prepareStatement(sql);

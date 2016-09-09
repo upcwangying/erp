@@ -5,6 +5,7 @@ import com.erp.entity.Project;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
 import com.erp.util.StringUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -30,8 +31,8 @@ public class ProjectDaoImpl implements IProjectDao {
         ResultSet rst = null;
         List<Project> projectList = new ArrayList<Project>();
         try {
-            String sql ="select projectid,projectcode,projectname,styleid,projectdesc,status,url from project " +
-                    "where status='0' and ('0'=? or projectid=?) ";
+            String sql ="select projectid,projectcode,projectname,styleid,projectdesc,status,url from " +
+                    TableNameConstant.PROJECT+" where status='0' and ('0'=? or projectid=?) ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, projectId == null ? "0" : "1");
             ps.setInt(2, StringUtil.isEmpty(projectId) ? -1 : Integer.valueOf(projectId));

@@ -6,6 +6,7 @@ import com.erp.entity.Product;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
 import com.erp.util.StringUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -36,12 +37,12 @@ public class ProductDaoImpl implements IProductDao {
                     "p.price,t1.thumbnailurl,p.is_valid,p.create_staffid,p.create_date," +
                     "p.update_staffid,p.update_date,s.staffname as create_staffname," +
                     "s1.staffname as update_staffname " +
-                    "from t_product p " +
-                    "left join staffinfo s on p.create_staffid=s.staffid " +
-                    "left join staffinfo s1 on p.update_staffid = s1.staffid " +
-                    "left join t_jldw j on p.jldwid=j.jldwid " +
+                    "from "+TableNameConstant.T_PRODUCT+" p " +
+                    "left join "+TableNameConstant.STAFFINFO+" s on p.create_staffid=s.staffid " +
+                    "left join "+TableNameConstant.STAFFINFO+" s1 on p.update_staffid = s1.staffid " +
+                    "left join "+TableNameConstant.T_JLDW+" j on p.jldwid=j.jldwid " +
                     "left join (select max(t.thumbnailurl) as thumbnailurl," +
-                    "t.productid as productid from t_fileuploadlog t " +
+                    "t.productid as productid from "+TableNameConstant.T_FILEUPLOADLOG+" t " +
                     "where t.is_del='0' and t.is_pic_valid='1' group by t.productid) t1 on p.productid=t1.productid " +
                     "where p.is_del='0' and s.is_del='0' and s1.is_del='0' and j.is_del='0' ";
             ps = connection.prepareStatement(sql);
@@ -125,7 +126,7 @@ public class ProductDaoImpl implements IProductDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String update_sql = "update t_product set is_valid=?,update_staffid=?,update_date=getdate() " +
+            String update_sql = "update "+TableNameConstant.T_PRODUCT+" set is_valid=?,update_staffid=?,update_date=getdate() " +
                     "where productid=? ";
             ps = connection.prepareStatement(update_sql);
             for (String id : ids) {
@@ -156,7 +157,7 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void insertProduct(Connection connection, Product product) throws SQLException {
-        String insert_sql = "insert into t_product (productname,productdesc," +
+        String insert_sql = "insert into "+TableNameConstant.T_PRODUCT+" (productname,productdesc," +
                 "jldwid,price,is_valid,is_del,create_staffid,create_date,update_staffid,update_date) " +
                 "values (?,?,?,?,'0','0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
@@ -177,7 +178,7 @@ public class ProductDaoImpl implements IProductDao {
      * @throws DAOException
      */
     public void updateProduct(Connection connection, Product product) throws SQLException {
-        String update_sql = "update t_product set productname=?,productdesc=?," +
+        String update_sql = "update "+TableNameConstant.T_PRODUCT+" set productname=?,productdesc=?," +
                 "jldwid=?,price=?,update_staffid=?,update_date=getdate() where productid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, product.getProductName());
@@ -202,7 +203,7 @@ public class ProductDaoImpl implements IProductDao {
         PreparedStatement ps = null;
         JdbcUtil.beginTranaction();
         try {
-            String delete_sql = "update t_product set is_del='1',update_staffid=?,update_date=getdate() " +
+            String delete_sql = "update "+TableNameConstant.T_PRODUCT+" set is_del='1',update_staffid=?,update_date=getdate() " +
                     "where productid=? ";
             ps = connection.prepareStatement(delete_sql);
             for (String id: ids) {
@@ -241,7 +242,7 @@ public class ProductDaoImpl implements IProductDao {
         try {
             String query_sql = "select dbid,productid,name,url,thumbnailurl,deleteurl," +
                     "is_pic_valid,is_del,create_staffid,create_date,update_staffid,update_date " +
-                    "from t_fileuploadlog where (0=? or is_del=?) and productid=? ";
+                    "from "+TableNameConstant.T_FILEUPLOADLOG+" where (0=? or is_del=?) and productid=? ";
             ps = connection.prepareStatement(query_sql);
             ps.setInt(1, queryAll?0:1);
             ps.setString(2, "0");
@@ -290,7 +291,7 @@ public class ProductDaoImpl implements IProductDao {
         ResultSet rst = null;
         long dbid = 0;
         try {
-            String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl,deleteurl," +
+            String insert_sql = "insert into "+TableNameConstant.T_FILEUPLOADLOG+"(productid,name,url,thumbnailurl,deleteurl," +
                     "is_del,create_staffid,create_date,update_staffid,update_date) " +
                     "values (?,?,?,?,?,'1','0',?,getdate(),?,getdate()) ";
             ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
@@ -339,7 +340,7 @@ public class ProductDaoImpl implements IProductDao {
         ResultSet rst = null;
         long dbid = 0;
         try {
-            String insert_sql = "insert into t_fileuploadlog(productid,name,url,thumbnailurl," +
+            String insert_sql = "insert into "+TableNameConstant.T_FILEUPLOADLOG+"(productid,name,url,thumbnailurl," +
                     "is_pic_valid,is_del,create_staffid,create_date,update_staffid,update_date) " +
                     "values (?,?,?,?,'1','0',?,getdate(),?,getdate()) ";
             ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
@@ -383,7 +384,7 @@ public class ProductDaoImpl implements IProductDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String update_sql = "update t_fileuploadlog set deleteurl=?,update_staffid=?,update_date=getdate() " +
+            String update_sql = "update "+TableNameConstant.T_FILEUPLOADLOG+" set deleteurl=?,update_staffid=?,update_date=getdate() " +
                     "where dbid=? ";
             ps = connection.prepareStatement(update_sql);
             ps.setString(1, deleteUrl);
@@ -418,7 +419,7 @@ public class ProductDaoImpl implements IProductDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String resume_sql = "update t_fileuploadlog set is_pic_valid=?,is_del=?,update_staffid=?,update_date=getdate() " +
+            String resume_sql = "update " + TableNameConstant.T_FILEUPLOADLOG + " set is_pic_valid=?,is_del=?,update_staffid=?,update_date=getdate() " +
                     "where dbid=? ";
             ps = connection.prepareStatement(resume_sql);
             ps.setString(1, is_pic_valid);

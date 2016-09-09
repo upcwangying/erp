@@ -5,6 +5,7 @@ import com.erp.dao.IModuleDao;
 import com.erp.entity.Module;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -32,8 +33,7 @@ public class ModuleDaoImpl implements IModuleDao {
         List<Module> moduleList = new ArrayList<Module>();
         try {
             String sql = "select module_id,module_name,href,parentid,parenttype,display,dis_order,icon " +
-                    "from module " +
-                    "where (0=? or display='0') " +
+                    "from " + TableNameConstant.MODULE+ " where (0=? or display='0') " +
                     "order by parenttype desc,parentid asc, dis_order asc ";
             ps = connection.prepareStatement(sql);
             ps.setInt(1, flag ? 0 : 1);
@@ -75,7 +75,7 @@ public class ModuleDaoImpl implements IModuleDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "insert into module(module_name,href,parentid,parenttype,display,dis_order,icon) " +
+            String sql = "insert into " + TableNameConstant.MODULE + "(module_name,href,parentid,parenttype,display,dis_order,icon) " +
                     "values (?,?,?,?,'0',?,?) ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, module.getModuleName());
@@ -110,7 +110,7 @@ public class ModuleDaoImpl implements IModuleDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update module set module_name=?, href=?, dis_order=? where module_id=?";
+            String sql = "update " + TableNameConstant.MODULE + " set module_name=?, href=?, dis_order=? where module_id=?";
             ps = connection.prepareStatement(sql);
             ps.setString(1, module.getModuleName());
             ps.setString(2, module.getHref());
@@ -142,7 +142,7 @@ public class ModuleDaoImpl implements IModuleDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update module set display='0' where module_id=?";
+            String sql = "update " + TableNameConstant.MODULE + " set display='0' where module_id=?";
             ps = connection.prepareStatement(sql);
             ps.setString(1, id);
             ps.execute();
@@ -171,7 +171,7 @@ public class ModuleDaoImpl implements IModuleDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update module set display='1' where module_id=?";
+            String sql = "update " + TableNameConstant.MODULE + " set display='1' where module_id=?";
             ps = connection.prepareStatement(sql);
             for (String id : ids) {
                 ps.setString(1, id);

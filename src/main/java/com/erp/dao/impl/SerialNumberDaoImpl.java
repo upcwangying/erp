@@ -3,6 +3,7 @@ package com.erp.dao.impl;
 import com.erp.dao.ISerialNumberDao;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -29,7 +30,6 @@ public class SerialNumberDaoImpl implements ISerialNumberDao {
         long serialNumber = -1L;
         try {
             serialNumber = getSerialNumber(connection, name);
-//            System.out.println("serialNumber: " + serialNumber);
             if (serialNumber == -1L) {
                 insertSerialNumber(connection, name);
                 serialNumber = 1L;
@@ -59,7 +59,7 @@ public class SerialNumberDaoImpl implements ISerialNumberDao {
      */
     private long getSerialNumber(Connection connection, String name) throws SQLException {
         long serialNumber = -1L;
-        String serial_sql = "select name,value from serialnumber where name=?";
+        String serial_sql = "select name,value from "+ TableNameConstant.SERIALNUMBER+" where name=?";
         PreparedStatement ps = connection.prepareStatement(serial_sql);
         ps.setString(1, name);
         ResultSet rst = ps.executeQuery();
@@ -76,7 +76,8 @@ public class SerialNumberDaoImpl implements ISerialNumberDao {
      * @throws SQLException
      */
     public void insertSerialNumber(Connection connection, String name) throws SQLException {
-        String serial_sql = "insert into serialnumber(name,value,create_date,update_date) values (?, 1, getdate(), getdate()) ";
+        String serial_sql = "insert into "+TableNameConstant.SERIALNUMBER+"(name,value,create_date,update_date) " +
+                "values (?, 1, getdate(), getdate()) ";
         PreparedStatement ps = connection.prepareStatement(serial_sql);
         ps.setString(1, name);
         ps.execute();
@@ -89,7 +90,8 @@ public class SerialNumberDaoImpl implements ISerialNumberDao {
      * @throws SQLException
      */
     public void updateSerialNumber(Connection connection, String name) throws SQLException {
-        String serial_sql = "update serialnumber set value=value+1, update_date=getdate() where name=?";
+        String serial_sql = "update "+TableNameConstant.SERIALNUMBER+" set value=value+1, update_date=getdate() " +
+                "where name=?";
         PreparedStatement ps = connection.prepareStatement(serial_sql);
         ps.setString(1, name);
         ps.execute();
