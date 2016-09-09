@@ -23,7 +23,7 @@ function insertTable(wl) {
             seq: $('#seq').val()
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             var graphURL = root + "/servlet/DisplayServlet?filename=" + data.id;
             var html = "<tr><td><img src='" + graphURL + "' width=1500 height=800 border=0></td></tr>";
             $("#table").empty();
