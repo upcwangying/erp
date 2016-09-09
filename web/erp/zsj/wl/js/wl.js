@@ -149,7 +149,8 @@ function saveWl(dbid) {
             wlmc: $('#wlmc').textbox('getValue'),
             wlms: $('#wlms').textbox('getValue'),
             create_staffid: staffId,
-            update_staffid: staffId
+            update_staffid: staffId,
+            seq: $("#seq").val()
         },
         success: function (data) {
             alert(data.msg);
@@ -190,7 +191,8 @@ function deleteWl() {
                 data: {
                     param: 'delete',
                     dbids: ids,
-                    update_staffid: staffId
+                    update_staffid: staffId,
+                    seq: $("#seq").val()
                 },
                 success: function (data) {
                     alert(data.msg);

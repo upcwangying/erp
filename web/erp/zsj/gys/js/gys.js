@@ -141,7 +141,8 @@ function saveGys(dbid) {
             gysmc: $('#gysmc').textbox('getValue'),
             gysms: $('#gysms').textbox('getValue'),
             create_staffid: staffId,
-            update_staffid: staffId
+            update_staffid: staffId,
+            seq: $("#seq").val()
         },
         success: function (data) {
             alert(data.msg);
@@ -180,7 +181,8 @@ function deleteGys() {
                 data: {
                     param: 'delete',
                     dbids: ids,
-                    update_staffid: staffId
+                    update_staffid: staffId,
+                    seq: $("#seq").val()
                 },
                 success: function (data) {
                     alert(data.msg);
