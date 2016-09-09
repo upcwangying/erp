@@ -1,5 +1,6 @@
 <%@ page import="com.erp.util.SystemConfig" %>
-<%@ page import="com.erp.entity.StaffInfo" %><%--
+<%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %><%--
   Created by IntelliJ IDEA.
   User: wang_
   Date: 2016-07-22
@@ -8,6 +9,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -34,9 +38,9 @@
     </script>
 </head>
 <body>
-<div style="margin:10px 10px;">
-    <%--<a id="module-a" href="#" class="easyui-linkbutton" onclick="moduleAll()">展开节点</a>--%>
-</div>
+
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+
 <div class="easyui-panel" style="padding:5px; height: 100%" data-options="">
     <table id="module-tree" class="easyui-treegrid" style="height: 100%" data-options="
 				url: '<%= request.getContextPath()%>/ModuleServlet?param=query',

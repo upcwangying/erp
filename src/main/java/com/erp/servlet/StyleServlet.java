@@ -52,7 +52,7 @@ public class StyleServlet extends HttpServlet {
         String random_session = (String) request.getSession().getAttribute("random_session");
 
         if (!"query-combo".equals(param) && (random_session == null || seq == null || !seq.equals(random_session))) {
-            throw new IllegalArgumentException("非法请求方式.......");
+            throw new IllegalArgumentException("the request is illegal.");
         }
         String responseText = "";
         if ("query-combo".equals(param)) {

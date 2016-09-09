@@ -134,7 +134,8 @@ function deleteSelectedNodes() {
         traditional: true,
         data: {
             param: 'delete',
-            ids: ids
+            ids: ids,
+            seq: $('#seq').val()
         },
         success: function (data) {
             alert(data.msg);
@@ -167,7 +168,8 @@ function resumeModule() {
                 traditional: true,
                 data: {
                     param: 'resume',
-                    id: id
+                    id: id,
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     alert(data.msg);
@@ -252,7 +254,8 @@ function saveNode(param, id, text, url, parentId, parentType, order, icon) {
             parentId: parentId,
             parentType: parentType,
             disorder: order,
-            icon: icon
+            icon: icon,
+            seq: $('#seq').val()
         },
         success: function (data) {
             alert(data.msg);

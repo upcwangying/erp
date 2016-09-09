@@ -52,15 +52,22 @@ public class ModuleServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
+        String seq = request.getParameter("seq");
+        String random_session = (String) request.getSession().getAttribute("random_session");
+
+        if (!"query".equals(param) && (random_session == null || seq == null || !seq.equals(random_session))) {
+            throw new IllegalArgumentException("the request is illegal.");
+        }
         String responseText = "";
-        if (param != null) {
-            if ("query".equals(param)) {
-                String flag = request.getParameter("flag");
-                responseText = queryModules(Boolean.valueOf(flag));
-            } else if ("insert".equals(param) || "update".equals(param)
-                        || "delete".equals(param) || "resume".equals(param)) {
-                responseText = addOrUpdateOrDelModule(param, request);
-            }
+        if ("query".equals(param)) {
+            String flag = request.getParameter("flag");
+            responseText = queryModules(Boolean.valueOf(flag));
+        } else if ("insert".equals(param) || "update".equals(param)
+                || "delete".equals(param) || "resume".equals(param)) {
+            responseText = addOrUpdateOrDelModule(param, request);
         }
 
         PrintWriter writer = response.getWriter();
@@ -92,7 +99,6 @@ public class ModuleServlet extends HttpServlet {
     }
 
     /**
-     *
      * @param param
      * @param request
      * @return

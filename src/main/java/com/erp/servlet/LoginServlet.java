@@ -43,8 +43,11 @@ public class LoginServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
 
-        if (param != null && "login".equalsIgnoreCase(param)) {
+        if ("login".equals(param)) {
             String staffCode = request.getParameter("username");
             String pwd = request.getParameter("password");
 
@@ -63,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 e.printStackTrace();
             }
-        } else if (param != null && param.equalsIgnoreCase("loginout")) {
+        } else if ("loginout".equals(param)) {
             HttpSession session = request.getSession();
             session.removeAttribute("staffinfo");
             session.invalidate();

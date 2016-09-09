@@ -34,6 +34,10 @@ public class FileDownloadServlet extends HttpServlet {
         response.setContentType("application/json; charset=UTF-8");
 
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
+
         String productId = request.getParameter("productId");
         if (StringUtil.isEmpty(productId)) {
             throw new IllegalArgumentException("productId is null, please check your code in your jsp page.");

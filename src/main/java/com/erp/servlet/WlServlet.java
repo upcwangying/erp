@@ -46,16 +46,19 @@ public class WlServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
 
         if (random_session == null || seq == null || !seq.equals(random_session)) {
-            throw new IllegalArgumentException("非法请求方式.......");
+            throw new IllegalArgumentException("the request is illegal.");
         }
         boolean success = false;
         String msg = "";
         try {
-            if (param != null && "add".equalsIgnoreCase(param)) {
+            if ("add".equals(param)) {
                 String name = "WL";
                 String dbid = request.getParameter("dbid");
                 String wlmc = request.getParameter("wlmc");
@@ -75,7 +78,7 @@ public class WlServlet extends HttpServlet {
                 wl.setCreate_staffId(Long.valueOf(create_staffid));
                 wl.setUpdate_staffId(Long.valueOf(update_staffid));
                 ZSJService.insertOrUpdateWl(wl);
-            } else if (param != null && "delete".equalsIgnoreCase(param)) {
+            } else if ("delete".equals(param)) {
                 String[] dbids = request.getParameterValues("dbids");
                 String staffId = request.getParameter("update_staffid");
                 ZSJService.deleteWl(dbids, Long.valueOf(staffId));

@@ -42,11 +42,14 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
 
         if (random_session == null || seq == null || !seq.equals(random_session)) {
-            throw new IllegalArgumentException("非法请求方式.......");
+            throw new IllegalArgumentException("the request is illegal.");
         }
         String responseText = "";
         PrintWriter writer = response.getWriter();
