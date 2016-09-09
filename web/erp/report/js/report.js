@@ -4,6 +4,9 @@
 function queryReport() {
     $("#report-query").datagrid({
         url:root + '/ReportServlet?param=query',
+        queryParams:{
+            seq: $('#seq').val()
+        },
         method:'post'
     });
 }
@@ -14,6 +17,9 @@ function queryReport() {
 function queryAddReport() {
     $("#report-add").datagrid({
         url:root + '/ReportServlet?param=query',
+        queryParams:{
+            seq: $('#seq').val()
+        },
         method:'post'
     });
 }
@@ -177,7 +183,8 @@ function deleteReport() {
                 traditional: true,
                 data: {
                     param: 'delete',
-                    dbid: ids
+                    dbid: ids,
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     alert(data.msg);
@@ -242,7 +249,8 @@ function saveReport() {
             price: price,
             number: number,
             shoppingtime: shoppingtime,
-            staffId: staffId
+            staffId: staffId,
+            seq: $('#seq').val()
         },
         success: function (data) {
             alert(data.msg);

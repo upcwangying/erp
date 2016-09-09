@@ -4,6 +4,9 @@
 function queryAddYdjs() {
     $("#ydjs-add").datagrid({
         url:root + '/YJServlet?param=query',
+        queryParams:{
+            seq: $('#seq').val()
+        },
         method:'post'
     });
 }
@@ -59,7 +62,8 @@ function deleteYdjs() {
                 data: {
                     param: 'delete',
                     dbid: dbid,
-                    yjlx: yjlx
+                    yjlx: yjlx,
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     alert(data.msg);
@@ -123,7 +127,8 @@ function saveYJ(param, dbid, yjyf, yjlx) {
             yjyf: $('#yjyf').datebox('getValue'),
             yjzc: $('#yjzc').numberbox('getValue'),
             yjhz: $('#yjhz').numberbox('getValue'),
-            staffId: staffId
+            staffId: staffId,
+            seq: $('#seq').val()
         },
         success: function (data) {
             alert(data.msg);

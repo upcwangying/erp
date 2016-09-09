@@ -1,7 +1,11 @@
 <%@ page import="com.erp.util.SystemConfig" %>
 <%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -17,6 +21,7 @@
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/report/js/report.js?version=<%= version%>"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/map.js?version=<%= version%>"></script>
     <title>填报</title>
 
     <script>
@@ -27,21 +32,22 @@
             $("#report-add").datagrid('hideColumn', "dbid");
         });
 
-        $(function(){
-//            commonPaging("report-add");
-        })
-
     </script>
 </head>
 <body>
+
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+
 <table id="report-add" class="easyui-datagrid" title="填报" style="width:100%;height:100%"
        data-options="
 				iconCls: 'icon-edit',
 				singleSelect: false,
 				rownumbers:true,
-				<%--pagination:true,--%>
 				url:'<%= request.getContextPath()%>/ReportServlet?param=query',
 				method: 'post',
+				queryParams:{
+                    seq: $('#seq').val()
+                },
 				onDblClickCell: onClickReportCell,
 				onEndEdit: onEndReportEdit,
 				onRowContextMenu: function(e, rowIndex, rowData) {

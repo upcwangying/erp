@@ -48,6 +48,12 @@ public class ReportServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String param = request.getParameter("param");
+        String seq = request.getParameter("seq");
+        String random_session = (String) request.getSession().getAttribute("random_session");
+
+        if (random_session == null || seq == null || !seq.equals(random_session)) {
+            throw new IllegalArgumentException("非法请求方式.......");
+        }
 
         String responseText = "";
         if (param != null) {

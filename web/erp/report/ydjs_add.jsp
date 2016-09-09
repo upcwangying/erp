@@ -1,7 +1,11 @@
 <%@ page import="com.erp.util.SystemConfig" %>
 <%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     String websocket_enable = SystemConfig.getValue("websocket.enable");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
@@ -103,6 +107,9 @@
     </script>
 </head>
 <body onload="yjpageLoad()" onbeforeunload="yjpageBeforeUnload()" >
+
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
+
 <table id="ydjs-add" class="easyui-datagrid" title="月度结算" style="width:100%;height:100%;"
        data-options="
 				iconCls: 'icon-edit',
@@ -110,6 +117,9 @@
 				rownumbers:true,
 				url:'<%= request.getContextPath()%>/YJServlet?param=query',
 				method: 'post',
+				queryParams:{
+                    seq: $('#seq').val()
+                },
 				toolbar: '#tb'
 			">
     <thead>
