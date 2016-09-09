@@ -205,8 +205,8 @@
     <div id="menu-index-tabcloseall" data-options="name:2">全部关闭</div>
     <div id="menu-index-tabcloseother" data-options="name:3">关闭其他页面</div>
     <div class="menu-sep"></div>
-    <div id="menu-index-tabcloseright" data-options="name:4">关闭当前页右侧页面</div>
-    <div id="menu-index-tabcloseleft" data-options="name:5">关闭当前页左侧页面</div>
+    <div id="menu-index-tabcloseright" data-options="name:4">关闭右侧页面</div>
+    <div id="menu-index-tabcloseleft" data-options="name:5">关闭左侧页面</div>
 </div>
 
 </body>
