@@ -4,9 +4,9 @@
 function queryJldw() {
     $("#jldw-query").datagrid({
         url:root + '/JldwServlet?param=query',
-        // queryParams:{
-            // seq: $("#seq").val()
-        // },
+        queryParams:{
+            seq: $("#seq").val()
+        },
         method:'post'
     });
 }
@@ -53,7 +53,7 @@ function deleteOrResume() {
         traditional: true,
         data: {
             param: 'delete',
-            // seq: $("#seq").val(),
+            seq: $("#seq").val(),
             jldwId: dbids,
             staffId: staffId
         },
@@ -122,7 +122,7 @@ function ajaxSubmit(dbid) {
         traditional: true,
         data: {
             param: 'add',
-            // seq: $("#seq").val(),
+            seq: $("#seq").val(),
             jldwId: dbid,
             jldwmc: $('#jldwmc').val(),
             jldwms: $('#jldwms').val(),

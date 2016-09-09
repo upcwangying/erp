@@ -1,5 +1,6 @@
 <%@ page import="com.erp.util.SystemConfig" %>
-<%@ page import="com.erp.entity.StaffInfo" %><%--
+<%@ page import="com.erp.entity.StaffInfo" %>
+<%@ page import="java.security.SecureRandom" %><%--
   Created by IntelliJ IDEA.
   User: wang_
   Date: 2016-09-01
@@ -8,6 +9,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+    long seq = secureRandom.nextLong();
+    session.setAttribute("random_session", seq + "");
     String version = SystemConfig.getValue("project.version");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
 %>
@@ -31,12 +35,13 @@
         $(document).ready(function () {
             $("#jldw-query").datagrid('hideColumn', "jldwId");
 
-
         });
     </script>
 
 </head>
 <body>
+
+<input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
 
 <table id="jldw-query" class="easyui-datagrid" title="计量单位明细" style="width:100%;height:100%"
        data-options="
@@ -44,6 +49,9 @@
 				singleSelect: true,
 				url:'<%= request.getContextPath()%>/JldwServlet?param=query',
 				method: 'post',
+				queryParams:{
+                    seq: $('#seq').val()
+                },
 				toolbar: [
 				    '-',
 				    {
@@ -63,18 +71,18 @@
 				    },
 				    '-',
 				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-                            deleteJldw();
-				        }
-				    },
-				    '-',
-				    {
 				        text: '修改',
 				        iconCls: 'icon-edit',
 				        handler: function () {
                             updateJldw();
+				        }
+				    },
+				    '-',
+				    {
+				        text: '删除',
+				        iconCls: 'icon-remove',
+				        handler: function () {
+                            deleteJldw();
 				        }
 				    },
 				    '-'
@@ -122,7 +130,7 @@
             <tr>
                 <td>计量单位名称:</td>
                 <td>
-                    <input class="easyui-textbox" type="text" id="jldwmc" name="jldwmc" data-options="required:true,validType:'remotejldwmc[\'jldwId\']'">
+                    <input class="easyui-textbox" type="text" id="jldwmc" name="jldwmc" data-options="required:true,validType:'remotejldwmc[\'jldwId\', \'seq\']'">
                     </input>
                 </td>
             </tr>

@@ -217,7 +217,8 @@ $.extend($.fn.validatebox.defaults.rules, {
                 data: {
                     param: 'valid',
                     jldwmc: _46,
-                    jldwId: $("#" + _47[0]).val()
+                    jldwId: $("#" + _47[0]).val(),
+                    seq: $("#" + _47[1]).val()
                 },
                 async: false,
                 cache: false,
