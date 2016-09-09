@@ -45,17 +45,24 @@ public class StyleServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String param = request.getParameter("param");
+        if (param == null) {
+            throw new IllegalArgumentException("the request parameter param is null, please check your request path is correct.");
+        }
+        String seq = request.getParameter("seq");
+        String random_session = (String) request.getSession().getAttribute("random_session");
+
+        if (!"query-combo".equals(param) && (random_session == null || seq == null || !seq.equals(random_session))) {
+            throw new IllegalArgumentException("非法请求方式.......");
+        }
         String responseText = "";
-        if (param != null) {
-            if ("query-combo".equals(param)) {
-                responseText = queryStyleData(false);
-            } else if ("query".equals(param)) {
-                responseText = queryStyleData(true);
-            } else if ("insert".equals(param)
-                        || "delete".equals(param)
-                            || "update".equals(param)) {
-                responseText = insertOrUpdateStyle(param, request);
-            }
+        if ("query-combo".equals(param)) {
+            responseText = queryStyleData(false);
+        } else if ("query".equals(param)) {
+            responseText = queryStyleData(true);
+        } else if ("insert".equals(param)
+                || "delete".equals(param)
+                || "update".equals(param)) {
+            responseText = insertOrUpdateStyle(param, request);
         }
 
         PrintWriter pw = response.getWriter();

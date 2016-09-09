@@ -2,6 +2,9 @@
 function queryStyle() {
     $("#style-query").datagrid({
         url: root + '/StyleServlet?param=query',
+        queryParams:{
+            seq: $('#seq').val()
+        },
         method: 'post'
     });
 }
@@ -60,7 +63,8 @@ function saveStyleForm() {
                 data: {
                     param: "update",
                     styleid: id,
-                    styleDesc: $('#styleDesc').textbox('getValue')
+                    styleDesc: $('#styleDesc').textbox('getValue'),
+                    seq: $('#seq').val()
                 },
                 success: function (data) {
                     alert(data.msg);
