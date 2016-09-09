@@ -64,6 +64,9 @@ public class ModuleServlet extends HttpServlet {
         String responseText = "";
         if ("query".equals(param)) {
             String flag = request.getParameter("flag");
+            if (flag == null) {
+                throw new IllegalArgumentException("the request parameter flag is null, please check your request path is correct.");
+            }
             responseText = queryModules(Boolean.valueOf(flag));
         } else if ("insert".equals(param) || "update".equals(param)
                 || "delete".equals(param) || "resume".equals(param)) {
