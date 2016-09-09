@@ -58,6 +58,7 @@
 				onContextMenu: function(e, row){
 				    e.preventDefault();
 				    var leaf = row.leaf;
+				    var display = row.display;
 				    $(this).treegrid('select',row.id);
 				    $('#module-tree-menu').menu('show', {
                         left: e.pageX,
@@ -67,6 +68,14 @@
 				        $('#module-tree-menu').menu('disableItem', $('#addItem'));
                     } else {
                         $('#module-tree-menu').menu('enableItem', $('#addItem'));
+                    }
+
+                    if (display == '0') {
+                        $('#module-tree-menu').menu('disableItem', $('#resumeItem'));
+                        $('#module-tree-menu').menu('enableItem', $('#deleteItem'));
+                    } else {
+                        $('#module-tree-menu').menu('disableItem', $('#deleteItem'));
+                        $('#module-tree-menu').menu('enableItem', $('#resumeItem'));
                     }
 
 				}
