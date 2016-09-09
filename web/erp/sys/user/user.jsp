@@ -71,18 +71,18 @@
 				    },
 				    '-',
 				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-                            deleteUser();
-				        }
-				    },
-				    '-',
-				    {
 				        text: '修改',
 				        iconCls: 'icon-edit',
 				        handler: function () {
                             updateUser();
+				        }
+				    },
+				    '-',
+				    {
+				        text: '删除',
+				        iconCls: 'icon-remove',
+				        handler: function () {
+                            deleteUser();
 				        }
 				    },
 				    '-'
