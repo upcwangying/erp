@@ -64,18 +64,18 @@
 				    },
 				    '-',
 				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deleteWl();
-				        }
-				    },
-				    '-',
-				    {
 				        text: '修改',
 				        iconCls: 'icon-edit',
 				        handler: function () {
 				            updateWl();
+				        }
+				    },
+				    '-',
+				    {
+				        text: '删除',
+				        iconCls: 'icon-remove',
+				        handler: function () {
+				            deleteWl();
 				        }
 				    },
 				    '-'
