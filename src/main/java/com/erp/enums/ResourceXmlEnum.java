@@ -8,7 +8,8 @@ import com.erp.util.ResourcePathUtil;
 public enum ResourceXmlEnum {
 
     path_chart("charts.xml"),
-    path_datesource("datasource.xml");
+    path_datasource("datasource.xml"),
+    path_beanconfig("beanconfig.xml");
 
     private String value;
 

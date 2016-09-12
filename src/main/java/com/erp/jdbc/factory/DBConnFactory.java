@@ -36,7 +36,7 @@ public class DBConnFactory {
     }
 
     public static void init() {
-        init(ResourceXmlEnum.path_datesource.getValue());
+        init(ResourceXmlEnum.path_datasource.getValue());
     }
 
     public static void init(String file) {
