@@ -2,6 +2,8 @@ package com.erp.enums;
 
 import com.erp.util.ResourcePathUtil;
 
+import java.io.File;
+
 /**
  * Created by wang_ on 2016-09-02.
  */
@@ -18,7 +20,7 @@ public enum ResourceXmlEnum {
     }
 
     public String getValue() {
-        return ResourcePathUtil.getResourcePath(value);
+        return ResourcePathUtil.getResourcePath()+File.separatorChar+value;
     }
 
     @Override

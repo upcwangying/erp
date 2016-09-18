@@ -12,6 +12,10 @@ import java.net.URLDecoder;
 public class ResourcePathUtil {
     private static Logger logger = Logger.getLogger(ResourcePathUtil.class);
 
+    public static String getResourcePath() {
+        return getResourcePath("");
+    }
+
     public static String getResourcePath(String name) {
         String resource_root = Thread.currentThread().getContextClassLoader().getResource(name).getFile();
         try {
