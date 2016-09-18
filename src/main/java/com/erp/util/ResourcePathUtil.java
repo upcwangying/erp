@@ -17,6 +17,9 @@ public class ResourcePathUtil {
     }
 
     public static String getResourcePath(String name) {
+        if (name == null) {
+            return null;
+        }
         String resource_root = Thread.currentThread().getContextClassLoader().getResource(name).getFile();
         try {
             resource_root = URLDecoder.decode(resource_root, "UTF-8");
