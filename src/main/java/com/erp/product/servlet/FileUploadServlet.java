@@ -87,12 +87,13 @@ public class FileUploadServlet extends HttpServlet {
 		StringBuffer savePath = new StringBuffer(request.getServletContext().getRealPath("/"));
 		savePath.append("upload/");
 
+		String scheme = request.getScheme();
 		String host = request.getLocalAddr();
 		int port = request.getLocalPort();
 		String path = request.getContextPath();
 
-		StringBuffer basePath = new StringBuffer("http://");
-		basePath.append(host).append(":").append(port).append(path);
+		StringBuffer basePath = new StringBuffer();
+		basePath.append(scheme).append("://").append(host).append(":").append(port).append(path);
 
 		//文件保存目录URL
 		StringBuffer saveUrl = new StringBuffer();
