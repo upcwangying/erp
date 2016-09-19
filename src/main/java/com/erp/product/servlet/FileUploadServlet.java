@@ -44,7 +44,19 @@ public class FileUploadServlet extends HttpServlet {
 
 		if (delfiles != null && delfiles.length > 0) {
 			String parentFile = delfiles[0].substring(0,8);
-			String delPath = request.getServletContext().getRealPath("/") + "upload/" + parentFile + "/";
+			String basePath = request.getServletContext().getRealPath("/");
+
+			boolean fileserverEnable = SystemConfig.getBooleanValue("fileupload.fileserverEnable", false);
+			if (fileserverEnable) {
+				String fileserver = SystemConfig.getValue("fileupload.fileserver");
+				if (StringUtil.isEmpty(fileserver)) {
+					throw new IllegalArgumentException("fileserver is null, please check your settings in the system-config.");
+				}
+
+				basePath = fileserver;
+			}
+
+			String delPath = basePath + "upload/" + parentFile + "/";
 
 			for (String delFile : delfiles) {
 				File file = new File(delPath, delFile);
@@ -93,11 +105,22 @@ public class FileUploadServlet extends HttpServlet {
 		String path = request.getContextPath();
 
 		StringBuffer basePath = new StringBuffer();
-		basePath.append(scheme).append("://").append(host).append(":").append(port).append(path);
+		basePath.append(scheme).append("://").append(host);
+		basePath.append(":").append(port).append(path).append("/");
+
+		boolean fileserverEnable = SystemConfig.getBooleanValue("fileupload.fileserverEnable", false);
+		String _basePath = basePath.toString();
+		if (fileserverEnable) {
+			String fileserver = SystemConfig.getValue("fileupload.fileserver");
+			if (StringUtil.isEmpty(fileserver)) {
+				throw new IllegalArgumentException("fileserver is null, please check your settings in the system-config.");
+			}
+			_basePath = fileserver;
+		}
 
 		//文件保存目录URL
 		StringBuffer saveUrl = new StringBuffer();
-		saveUrl.append(basePath).append("/upload/");
+		saveUrl.append(_basePath).append("upload/");
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String ymd = sdf.format(new Date());
