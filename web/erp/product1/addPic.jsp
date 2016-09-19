@@ -1,7 +1,6 @@
 ﻿<%
     String productId = request.getParameter("productId");
     String staffId = request.getParameter("staffId");
-    System.out.println("productId=" + productId);
     String path = request.getContextPath()+"/FileUploadServlet?productId="+productId+"&staffId="+staffId;
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
