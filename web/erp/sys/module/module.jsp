@@ -110,7 +110,12 @@
                     } else {
                         return '不显示';
                     }
-				}
+				},
+				styler: function(value,row,index){
+				    if (value != '0'){
+					    return 'color:red;';
+				    }
+			    }
             " width="150">是否显示</th>
         </tr>
         </thead>
