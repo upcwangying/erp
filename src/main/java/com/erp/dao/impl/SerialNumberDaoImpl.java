@@ -35,6 +35,7 @@ public class SerialNumberDaoImpl implements ISerialNumberDao {
                 serialNumber = 1L;
             } else {
                 updateSerialNumber(connection, name);
+                serialNumber++;
             }
             JdbcUtil.commit();
         } catch (Exception e) {
