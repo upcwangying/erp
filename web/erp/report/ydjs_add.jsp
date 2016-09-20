@@ -20,10 +20,17 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/extension/datagrid-filter/datagrid-filter.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/report/js/ydjs.js?version=<%= version%>"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
     <title>月结填报</title>
+
+    <style>
+        .icon-filter{
+            background:url('../../jquery-easyui-1.4.5/extension/datagrid-filter/filter.png') no-repeat center center;
+        }
+    </style>
 
     <script>
         var root = '<%= request.getContextPath()%>';
@@ -104,6 +111,8 @@
             alert(msg);
         }
 
+
+
     </script>
 </head>
 <body onload="yjpageLoad()" onbeforeunload="yjpageBeforeUnload()" >
@@ -149,6 +158,7 @@
     <a href="javascript:void(0)" id="addYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addYdjs()">添加</a>
     <a href="javascript:void(0)" id="updateYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateYdjs()">编辑</a>
     <a href="javascript:void(0)" id="deleteYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteYdjs()">删除</a>
+    <a href="javascript:void(0)" id="filterYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-filter',plain:true" onclick="ydjsAll()">过滤</a>
 </div>
 
 <div id="yj-dlg" class="easyui-dialog" title="初始化" style="width:450px;height:300px;padding:10px"
@@ -209,13 +219,13 @@
             </tr>
             <tr>
                 <td>月结支出:</td>
-                <td><input class="easyui-numberbox" type="number" id="yjzc" name="yjzc" data-options="required:true,min:0">
+                <td><input class="easyui-numberbox" type="number" id="yjzc" name="yjzc" data-options="required:true,min:0,precision:2">
                     </input>
                 </td>
             </tr>
             <tr>
                 <td>月结划转:</td>
-                <td><input class="easyui-numberbox" type="number" id="yjhz" name="yjhz" data-options="required:true,min:0">
+                <td><input class="easyui-numberbox" type="number" id="yjhz" name="yjhz" data-options="required:true,min:0,precision:2">
                     </input>
                 </td>
             </tr>

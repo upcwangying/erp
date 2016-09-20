@@ -11,6 +11,83 @@ function queryAddYdjs() {
     });
 }
 
+var ydjs_flag = true;
+function ydjsAll() {
+    if (ydjs_flag) {
+        $('#filterYdjs').linkbutton({text: '取消过滤'});
+        filterYdjs();
+        ydjs_flag = false;
+    } else {
+        $('#filterYdjs').linkbutton({text: '过滤'});
+        disableFilterYdjs();
+        ydjs_flag = true;
+    }
+}
+
+/**
+ *过滤
+ */
+function filterYdjs() {
+    var dg = $('#ydjs-add').datagrid({
+        filterBtnIconCls:'icon-filter'
+    });
+    dg.datagrid('enableFilter', [{
+        field:'yjyf',
+        type:'textbox'
+    },{
+        field:'yjzc',
+        type:'numberbox',
+        options:{precision:2},
+        op:['equal','notequal','less','greater']
+    },{
+        field:'yjhz',
+        type:'numberbox',
+        options:{precision:2},
+        op:['equal','notequal','less','greater']
+    },{
+        field:'yjye',
+        type:'numberbox',
+        options:{precision:2},
+        op:['equal','notequal','less','greater']
+    },{
+        field:'staffName',
+        type:'textbox'
+    },{
+        field:'yjlx',
+        type:'textbox'
+    }/*,{
+     field:'status',
+     type:'combobox',
+     options:{
+     panelHeight:'auto',
+     data:[{value:'',text:'All'},{value:'P',text:'P'},{value:'N',text:'N'}],
+     onChange:function(value){
+     if (value == ''){
+     dg.datagrid('removeFilterRule', 'status');
+     } else {
+     dg.datagrid('addFilterRule', {
+     field: 'status',
+     op: 'equal',
+     value: value
+     });
+     }
+     dg.datagrid('doFilter');
+     }
+     }
+     }*/]);
+}
+
+/**
+ * 取消过滤
+ */
+function disableFilterYdjs() {
+    var fields = ['yjyf','yjzc','yjhz','yjye','staffName','yjlx'];
+    for (var i=0;i<fields.length;i++) {
+        $('#ydjs-add').datagrid('removeFilterRule', fields[i]);
+    }
+    $('#ydjs-add').datagrid('disableFilter');
+}
+
 /**
  * 增加月度结算
  */
