@@ -33,22 +33,23 @@ function filterYdjs() {
     });
     dg.datagrid('enableFilter', [{
         field:'yjyf',
-        type:'textbox'
+        type:'textbox',
+        op:['contains','beginwith','endwith']
     },{
         field:'yjzc',
         type:'numberbox',
         options:{precision:2},
-        op:['equal','notequal','less','greater']
+        op:['equal','notequal','less','lessorequal','greater','greaterorequal']
     },{
         field:'yjhz',
         type:'numberbox',
         options:{precision:2},
-        op:['equal','notequal','less','greater']
+        op:['equal','notequal','less','lessorequal','greater','greaterorequal']
     },{
         field:'yjye',
         type:'numberbox',
         options:{precision:2},
-        op:['equal','notequal','less','greater']
+        op:['equal','notequal','less','lessorequal','greater','greaterorequal']
     },{
         field:'staffName',
         type:'textbox'
