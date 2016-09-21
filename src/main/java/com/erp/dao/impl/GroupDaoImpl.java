@@ -4,6 +4,7 @@ import com.erp.dao.IGroupDao;
 import com.erp.entity.Group;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.StringUtil;
 import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
@@ -63,6 +64,52 @@ public class GroupDaoImpl implements IGroupDao {
             }
         }
         return groupList;
+    }
+
+    /**
+     * @param groupCode
+     * @param groupId
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public Group queryGroupByGroupId(String groupCode, String groupId) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        Group group = null;
+        try {
+            String query_sql = "select groupid,groupcode,groupdesc,modules,is_del," +
+                    "create_staffid,create_date,update_staffid,update_date " +
+                    "from " + TableNameConstant.T_SYS_GROUP + " " +
+                    "where is_del='0' and groupcode=? and (0=? or groupid!=?) ";
+            ps = connection.prepareStatement(query_sql);
+            ps.setString(1, groupCode);
+            ps.setInt(2, StringUtil.isEmpty(groupId)?0:1);
+            ps.setString(3, StringUtil.isEmpty(groupId)?"-1":groupId);
+            rst = ps.executeQuery();
+            while (rst.next()) {
+                group = new Group();
+                group.setGroupId(rst.getLong("groupid"));
+                group.setGroupCode(rst.getString("groupcode"));
+                group.setGroupDesc(rst.getString("groupdesc"));
+                group.setModules(rst.getString("modules"));
+                group.setIs_del(rst.getString("is_del"));
+                group.setCreate_staffId(rst.getLong("create_staffid"));
+                group.setCreate_date(new Date(rst.getDate("create_date").getTime()));
+                group.setUpdate_staffId(rst.getLong("update_staffid"));
+                group.setUpdate_date(new Date(rst.getDate("update_date").getTime()));
+            }
+        } catch (Exception e) {
+            logger.error("查询组数据失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("查询组数据失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+        return group;
     }
 
     /**

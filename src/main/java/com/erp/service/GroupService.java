@@ -50,6 +50,26 @@ public class GroupService {
     }
 
     /**
+     *
+     * @param groupCode
+     * @param groupId
+     * @return
+     * @throws ServiceException
+     */
+    public static Group queryGroupByGroupId(String groupCode, String groupId) throws ServiceException {
+        IGroupDao groupDao = new GroupDaoImpl();
+        Group group = null;
+        try {
+            group = groupDao.queryGroupByGroupId(groupCode, groupId);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+
+        return group;
+    }
+
+    /**
      * 增加或修改
      *
      * @param group

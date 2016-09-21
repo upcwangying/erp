@@ -18,6 +18,15 @@ public interface IGroupDao {
     List<Group> queryGroups() throws DAOException;
 
     /**
+     *
+     * @param groupCode
+     * @param groupId
+     * @return
+     * @throws DAOException
+     */
+    Group queryGroupByGroupId(String groupCode, String groupId) throws DAOException;
+
+    /**
      * 增加或修改
      * @param group
      * @throws DAOException
