@@ -74,6 +74,8 @@ function updateGroup() {
     var row = rows[0];
 
     openGroupDialog('edit');
+    $('#group-dlg').dialog('setTitle','组修改');
+
     $('#groupId').val(row.groupId);
     $('#groupCode').textbox('setValue', row.groupCode);
     $('#groupDesc').textbox('setValue', row.groupDesc);
