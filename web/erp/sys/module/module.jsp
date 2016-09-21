@@ -100,7 +100,7 @@
 					    // return {class:'c1',style:'color:red'}
 				    }
 			    }
-            " width="150">是否显示</th>
+            " width="150">节点类型</th>
         <th data-options="field:'order'" width="100" align="right">排序</th>
         <th data-options="field:'display',
                 formatter:function(value){
