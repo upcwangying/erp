@@ -6,6 +6,7 @@ import com.erp.enums.TextEnum;
 import com.erp.exception.ServiceException;
 import com.erp.service.ModuleService;
 import com.erp.util.JSONUtil;
+import com.erp.util.ModuleUtil;
 import com.erp.util.SystemConfig;
 import net.sf.json.JSONArray;
 import org.apache.log4j.Logger;
@@ -86,15 +87,14 @@ public class ModuleServlet extends HttpServlet {
     private String queryModules(boolean flag) {
         try {
             logger.info("----------- The Module begin init -----------");
-            ModuleService.initModules(flag);
+            ModuleUtil.initModules(flag, null);
             logger.info("----------- The Module init success -----------");
         } catch (ServiceException e) {
             logger.error("----------- The Module init failure:" + e.getMessage() + " -----------");
             e.printStackTrace();
         }
 
-        int projectId = Integer.valueOf(SystemConfig.getValue("project.id"));
-        Set<Module> modules = ModuleService.getModuleByProjectId(projectId);
+        Set<Module> modules = ModuleUtil.getModuleByProjectId();
         JSONArray moduleArray = JSONUtil.parseToJson(modules);
 
         ResponseBean responseBean = new ResponseBean(moduleArray);

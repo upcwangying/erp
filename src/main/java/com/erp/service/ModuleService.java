@@ -12,67 +12,6 @@ import java.util.*;
  * Created by wang_ on 2016-07-02.
  */
 public class ModuleService {
-    private static Map<Integer, Set<Module>> projectModuleMaps;
-    private static Map<Integer, Module> moduleMaps;
-
-    /**
-     *
-     * @param flag
-     * @return
-     * @throws ServiceException
-     */
-    public static List<Module> initModules(boolean flag) throws ServiceException{
-        IModuleDao moduleDao = new ModuleDaoImpl();
-        List<Module> modules = null;
-        try {
-            modules = moduleDao.queryModules(flag);
-
-            if (projectModuleMaps == null) {
-                projectModuleMaps = new HashMap<Integer, Set<Module>>();
-                moduleMaps = new HashMap<Integer, Module>();
-            } else {
-                projectModuleMaps.clear();
-                moduleMaps.clear();
-            }
-
-            for (Module m : modules) {
-                if (m.getParentType().equalsIgnoreCase("P")) {
-                    Set<Module> ms = projectModuleMaps.get(m.getParentId());
-                    if (ms == null) {
-                        ms = new TreeSet<Module>();
-                        projectModuleMaps.put(m.getParentId(), ms);
-                    }
-                    ms.add(m);
-                }
-                moduleMaps.put(m.getModuleId(), m);
-            }
-
-            for (Module m : modules) {
-                if (m.getParentType().equalsIgnoreCase("m")) {
-                    moduleMaps.get(m.getParentId()).addChild(m);
-                }
-            }
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        return modules;
-    }
-
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public static Set<Module> getModuleByProjectId(int id) {
-        Set<Module> children = projectModuleMaps.get(id);
-        if (children == null) {
-            children = new HashSet<Module>();
-            projectModuleMaps.put(id, children);
-        }
-        return children;
-
-    }
 
     /**
      * ²åÈëÄ£¿é
