@@ -41,8 +41,7 @@
 
 <input type="hidden" id="seq" name="seq" value="<%= seq%>"/>
 
-<div class="easyui-panel" style="padding:5px; height: 100%" data-options="">
-    <table id="module-tree" class="easyui-treegrid" style="height: 100%" data-options="
+<table id="module-tree" class="easyui-treegrid" style="height: 100%" data-options="
 				url: '<%= request.getContextPath()%>/ModuleServlet?param=query',
 				method: 'post',
 				queryParams: {
@@ -80,13 +79,13 @@
 
 				}
 			">
-        <thead>
-        <tr>
-            <th data-options="field:'id'" width="220"></th>
-            <th data-options="field:'parentId'" width="220"></th>
-            <th data-options="field:'text'" width="220">模块名</th>
-            <th data-options="field:'url'" width="250">链接</th>
-            <th data-options="field:'leaf',
+    <thead>
+    <tr>
+        <th data-options="field:'id'" width="220"></th>
+        <th data-options="field:'parentId'" width="220"></th>
+        <th data-options="field:'text'" width="220">模块名</th>
+        <th data-options="field:'url'" width="250">链接</th>
+        <th data-options="field:'leaf',
                 formatter:function(value){
                     if (value == 'file') {
                         return '叶子结点';
@@ -102,8 +101,8 @@
 				    }
 			    }
             " width="150">是否显示</th>
-            <th data-options="field:'order'" width="100" align="right">排序</th>
-            <th data-options="field:'display',
+        <th data-options="field:'order'" width="100" align="right">排序</th>
+        <th data-options="field:'display',
                 formatter:function(value){
                     if (value == '0') {
                         return '显示';
@@ -117,10 +116,9 @@
 				    }
 			    }
             " width="150">是否显示</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+    </tr>
+    </thead>
+</table>
 
 <div id="module-tree-menu" class="easyui-menu" style="width:120px;">
     <div onclick="addNode()" id="addItem" data-options="iconCls:'icon-add'">增加节点</div>
