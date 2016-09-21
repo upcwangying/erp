@@ -16,6 +16,8 @@ public class Group implements Serializable {
 
     private String groupDesc;
 
+    private String module;
+
     private String modules;
 
     private String is_del;
@@ -50,6 +52,14 @@ public class Group implements Serializable {
 
     public void setGroupDesc(String groupDesc) {
         this.groupDesc = groupDesc;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getModules() {
@@ -114,6 +124,7 @@ public class Group implements Serializable {
                 "groupId=" + groupId +
                 ", groupCode='" + groupCode + '\'' +
                 ", groupDesc='" + groupDesc + '\'' +
+                ", module='" + module + '\'' +
                 ", modules='" + modules + '\'' +
                 ", is_del='" + is_del + '\'' +
                 ", create_staffId=" + create_staffId +

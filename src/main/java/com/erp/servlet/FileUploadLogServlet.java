@@ -41,9 +41,9 @@ public class FileUploadLogServlet extends HttpServlet {
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
 
-        if (random_session == null || seq == null || !seq.equals(random_session)) {
-            throw new IllegalArgumentException("the request is illegal.");
-        }
+//        if (random_session == null || seq == null || !seq.equals(random_session)) {
+//            throw new IllegalArgumentException("the request is illegal.");
+//        }
 
         String responseText = "";
         if ("query".equals(param)) {

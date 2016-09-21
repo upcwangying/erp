@@ -47,9 +47,9 @@ public class ChartsServlet extends HttpServlet {
         String seq = request.getParameter("seq");
         String random_session = (String) request.getSession().getAttribute("random_session");
 
-        if (random_session == null || seq == null || !seq.equals(random_session)) {
-            throw new IllegalArgumentException("the request is illegal.");
-        }
+//        if (random_session == null || seq == null || !seq.equals(random_session)) {
+//            throw new IllegalArgumentException("the request is illegal.");
+//        }
         String wlbm = request.getParameter("wlbm");
         String chart_lx = request.getParameter("chart_lx");
         String module_lx = request.getParameter("module_lx");

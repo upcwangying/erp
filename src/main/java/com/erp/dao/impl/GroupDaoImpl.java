@@ -35,7 +35,7 @@ public class GroupDaoImpl implements IGroupDao {
         ResultSet rst = null;
         List<Group> groupList = new ArrayList<>();
         try {
-            String query_sql = "select groupid,groupcode,groupdesc,modules," +
+            String query_sql = "select groupid,groupcode,groupdesc,module,modules," +
                     "is_del,create_staffid,create_date,update_staffid,update_date " +
                     "from " + TableNameConstant.T_SYS_GROUP + " where is_del='0' " +
                     "order by create_date asc";
@@ -46,6 +46,7 @@ public class GroupDaoImpl implements IGroupDao {
                 group.setGroupId(rst.getLong("groupid"));
                 group.setGroupCode(rst.getString("groupcode"));
                 group.setGroupDesc(rst.getString("groupdesc"));
+                group.setModule(rst.getString("module"));
                 group.setModules(rst.getString("modules"));
                 group.setIs_del(rst.getString("is_del"));
                 group.setCreate_staffId(rst.getLong("create_staffid"));
@@ -79,7 +80,7 @@ public class GroupDaoImpl implements IGroupDao {
         ResultSet rst = null;
         Group group = null;
         try {
-            String query_sql = "select groupid,groupcode,groupdesc,modules,is_del," +
+            String query_sql = "select groupid,groupcode,groupdesc,module,modules,is_del," +
                     "create_staffid,create_date,update_staffid,update_date " +
                     "from " + TableNameConstant.T_SYS_GROUP + " " +
                     "where is_del='0' and groupcode=? and (0=? or groupid!=?) ";
@@ -93,6 +94,7 @@ public class GroupDaoImpl implements IGroupDao {
                 group.setGroupId(rst.getLong("groupid"));
                 group.setGroupCode(rst.getString("groupcode"));
                 group.setGroupDesc(rst.getString("groupdesc"));
+                group.setModule(rst.getString("module"));
                 group.setModules(rst.getString("modules"));
                 group.setIs_del(rst.getString("is_del"));
                 group.setCreate_staffId(rst.getLong("create_staffid"));
@@ -149,14 +151,15 @@ public class GroupDaoImpl implements IGroupDao {
      */
     private void insertGroup(Connection connection, Group group) throws SQLException {
         String insert_sql = "insert into " + TableNameConstant.T_SYS_GROUP +
-                "(groupcode,groupdesc,modules,is_del,create_staffid,create_date,update_staffid,update_date) " +
-                "values(?,?,?,'0',?,getdate(),?,getdate()) ";
+                "(groupcode,groupdesc,module,modules,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values(?,?,?,?,'0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, group.getGroupCode());
         ps.setString(2, group.getGroupDesc());
-        ps.setString(3, group.getModules());
-        ps.setLong(4, group.getCreate_staffId());
-        ps.setLong(5, group.getUpdate_staffId());
+        ps.setString(3, group.getModule());
+        ps.setString(4, group.getModules());
+        ps.setLong(5, group.getCreate_staffId());
+        ps.setLong(6, group.getUpdate_staffId());
         ps.execute();
     }
 
@@ -168,13 +171,14 @@ public class GroupDaoImpl implements IGroupDao {
      */
     private void updateGroup(Connection connection, Group group) throws SQLException {
         String update_sql = "update " + TableNameConstant.T_SYS_GROUP + " set " +
-                "groupdesc=?,modules=?,update_staffid=?,update_date=getdate() " +
+                "groupdesc=?,module=?,modules=?,update_staffid=?,update_date=getdate() " +
                 "where groupid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, group.getGroupDesc());
-        ps.setString(2, group.getModules());
-        ps.setLong(3, group.getUpdate_staffId());
-        ps.setLong(4, group.getGroupId());
+        ps.setString(2, group.getModule());
+        ps.setString(3, group.getModules());
+        ps.setLong(4, group.getUpdate_staffId());
+        ps.setLong(5, group.getGroupId());
         ps.execute();
     }
 
