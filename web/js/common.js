@@ -227,6 +227,25 @@ $.extend($.fn.validatebox.defaults.rules, {
             return _48;
         },
         message: '该计量编号名称已被占用！'
+    },
+    remotegroupcode: {
+        validator: function (_46, _47) {
+            var _48 = $.ajax({
+                url: root + '/GroupServlet',
+                dataType: "json",
+                data: {
+                    param: 'valid',
+                    groupCode: _46,
+                    groupId: $("#" + _47[0]).val(),
+                    seq: $("#" + _47[1]).val()
+                },
+                async: false,
+                cache: false,
+                type: "post"
+            }).responseJSON.success;
+            return _48;
+        },
+        message: '该计量编号名称已被占用！'
     }
 
 });
