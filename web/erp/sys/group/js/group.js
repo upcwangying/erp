@@ -91,6 +91,7 @@ function saveGroupForm() {
     var groupName = $('#groupName').textbox('getValue');
     var groupDesc = $('#groupDesc').textbox('getValue');
     var module = $('#module').combotree('getValues');
+    var tree = $('#module').combotree('tree');
 
     if (groupCode == "" || groupCode == undefined) {
         $.messager.alert('提示', '‘组编号’不允许为空!', 'info');
@@ -112,10 +113,17 @@ function saveGroupForm() {
         return;
     }
 
+    var nodes = tree.tree('getChecked', ['checked','indeterminate']);
+    var modules=[];
+    for (var i=0;i<nodes.length;i++) {
+        modules.push(nodes[i].id);
+    }
+
+    console.log(modules);
     if (flag == 'add') {
         $.messager.confirm('保存确认框', '确定保存数据吗?', function (r) {
             if (r) {
-                saveGroup("", module);
+                saveGroup("", module, modules);
             }
         });
     } else if (flag == 'edit') {
@@ -123,7 +131,7 @@ function saveGroupForm() {
         var id = rows[0].groupId;
         $.messager.confirm('修改确认框', '确定修改数据吗?', function (r) {
             if (r) {
-                saveGroup(id, module);
+                saveGroup(id, module, modules);
             }
         });
     }
@@ -132,9 +140,9 @@ function saveGroupForm() {
 /**
  *
  */
-function saveGroup(dbid, module) {
-    var tree = $('#module').combotree('tree');
-    var modules = getAllSelectedNode(tree);
+function saveGroup(dbid, module, modules) {
+    // var tree = $('#module').combotree('tree');
+    // var modules = getAllSelectedNode(tree);
     $.ajax({
         url: root + "/GroupServlet",
         type: 'post',
@@ -188,7 +196,6 @@ function getAllSelectedNode(tree) {
 function get2SelectedNode(tree, root, set) {
     var children2 = tree.tree('getChildren', root.target);
     if (children2.length > 0) {
-        // console.log(children2.length);
         for (var i = 0; i < children2.length; i++) {
             var child2 = children2[i];
             if (child2.parentId == root.id) { // 2级节点
