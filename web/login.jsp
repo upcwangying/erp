@@ -62,7 +62,7 @@
 
         </script>
     </head>
-    <body>
+    <body onload="document.getElementById('username').focus()">
         <div class="page-container">
             <h1>登录</h1>
             <form action="<%=request.getContextPath()%>/LoginServlet?param=login" method="post">
