@@ -78,6 +78,7 @@ function updateGroup() {
 
     $('#groupId').val(row.groupId);
     $('#groupCode').textbox('setValue', row.groupCode);
+    $('#groupName').textbox('setValue', row.groupName);
     $('#groupDesc').textbox('setValue', row.groupDesc);
     $('#module').combotree('setValues', row.module.split(","));
 }
@@ -87,12 +88,17 @@ function updateGroup() {
  */
 function saveGroupForm() {
     var groupCode = $('#groupCode').textbox('getValue');
+    var groupName = $('#groupName').textbox('getValue');
     var groupDesc = $('#groupDesc').textbox('getValue');
     var module = $('#module').combotree('getValues');
 
-    console.log(groupCode)
     if (groupCode == "" || groupCode == undefined) {
         $.messager.alert('提示', '‘组编号’不允许为空!', 'info');
+        return;
+    }
+
+    if (groupName == "" || groupName == undefined) {
+        $.messager.alert('提示', '‘组名称’不允许为空!', 'info');
         return;
     }
 
@@ -139,6 +145,7 @@ function saveGroup(dbid, module) {
             param: "add",
             groupId: dbid,
             groupCode: $('#groupCode').textbox('getValue'),
+            groupName: $('#groupName').textbox('getValue'),
             groupDesc: $('#groupDesc').textbox('getValue'),
             module: module,
             modules: modules,
@@ -226,6 +233,7 @@ function openGroupDialog(type) {
     flag = type;
     $('#group-dlg').dialog('open');
     $('#groupCode').textbox('setValue', '');
+    $('#groupName').textbox('setValue', '');
     $('#groupDesc').textbox('setValue', '');
     $('#module').combotree('setValues', '');
 }
@@ -235,6 +243,7 @@ function openGroupDialog(type) {
  */
 function closeGroupDialog() {
     $('#groupCode').textbox('setValue', '');
+    $('#groupName').textbox('setValue', '');
     $('#groupDesc').textbox('setValue', '');
     $('#module').combotree('setValues', '');
     $('#group-dlg').dialog('close');

@@ -89,12 +89,14 @@ public class GroupServlet extends HttpServlet {
                 Group group = new Group();
                 String groupId = request.getParameter("groupId");
                 String groupCode = request.getParameter("groupCode");
+                String groupName = request.getParameter("groupName");
                 String groupDesc = request.getParameter("groupDesc");
                 String[] module = request.getParameterValues("module");
                 String[] modules = request.getParameterValues("modules");
                 String staffId = request.getParameter("staffId");
                 group.setGroupId(StringUtil.isEmpty(groupId) ? 0L : Long.valueOf(groupId));
                 group.setGroupCode(groupCode);
+                group.setGroupName(groupName);
                 group.setGroupDesc(groupDesc);
                 group.setModule(array2String(module));
                 group.setModules(array2String(modules));

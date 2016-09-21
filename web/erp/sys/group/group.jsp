@@ -94,6 +94,7 @@
     <tr>
         <th data-options="field:'groupId',width:100"></th>
         <th data-options="field:'groupCode',width:100">组编号</th>
+        <th data-options="field:'groupName',width:100">组名称</th>
         <th data-options="field:'groupDesc',width:100">组说明</th>
         <th data-options="field:'module',width:100"></th>
         <th data-options="field:'modules',width:100"></th>
@@ -135,6 +136,13 @@
                 <td>组编号:</td>
                 <td>
                     <input class="easyui-textbox" id="groupCode" name="groupCode" data-options="width:250,required:true,validType:'remotegroupcode[\'groupId\', \'seq\']'">
+                    </input>
+                </td>
+            </tr>
+            <tr>
+                <td>组名称:</td>
+                <td>
+                    <input class="easyui-textbox" id="groupName" name="groupName" data-options="width:250,required:true">
                     </input>
                 </td>
             </tr>

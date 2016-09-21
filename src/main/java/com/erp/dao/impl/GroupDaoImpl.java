@@ -35,9 +35,9 @@ public class GroupDaoImpl implements IGroupDao {
         ResultSet rst = null;
         List<Group> groupList = new ArrayList<>();
         try {
-            String query_sql = "select groupid,groupcode,groupdesc,module,modules," +
+            String query_sql = "select groupid,groupcode,groupname,groupdesc,module,modules," +
                     "is_del,create_staffid,create_date,update_staffid,update_date " +
-                    "from " + TableNameConstant.T_SYS_GROUP + " where is_del='0' " +
+                    "from " + TableNameConstant.T_SYS_MODULE_GROUP + " where is_del='0' " +
                     "order by create_date asc";
             ps = connection.prepareStatement(query_sql);
             rst = ps.executeQuery();
@@ -45,6 +45,7 @@ public class GroupDaoImpl implements IGroupDao {
                 Group group = new Group();
                 group.setGroupId(rst.getLong("groupid"));
                 group.setGroupCode(rst.getString("groupcode"));
+                group.setGroupName(rst.getString("groupname"));
                 group.setGroupDesc(rst.getString("groupdesc"));
                 group.setModule(rst.getString("module"));
                 group.setModules(rst.getString("modules"));
@@ -80,9 +81,9 @@ public class GroupDaoImpl implements IGroupDao {
         ResultSet rst = null;
         Group group = null;
         try {
-            String query_sql = "select groupid,groupcode,groupdesc,module,modules,is_del," +
+            String query_sql = "select groupid,groupcode,groupname,groupdesc,module,modules,is_del," +
                     "create_staffid,create_date,update_staffid,update_date " +
-                    "from " + TableNameConstant.T_SYS_GROUP + " " +
+                    "from " + TableNameConstant.T_SYS_MODULE_GROUP + " " +
                     "where is_del='0' and groupcode=? and (0=? or groupid!=?) ";
             ps = connection.prepareStatement(query_sql);
             ps.setString(1, groupCode);
@@ -93,6 +94,7 @@ public class GroupDaoImpl implements IGroupDao {
                 group = new Group();
                 group.setGroupId(rst.getLong("groupid"));
                 group.setGroupCode(rst.getString("groupcode"));
+                group.setGroupName(rst.getString("groupname"));
                 group.setGroupDesc(rst.getString("groupdesc"));
                 group.setModule(rst.getString("module"));
                 group.setModules(rst.getString("modules"));
@@ -150,16 +152,17 @@ public class GroupDaoImpl implements IGroupDao {
      * @throws SQLException
      */
     private void insertGroup(Connection connection, Group group) throws SQLException {
-        String insert_sql = "insert into " + TableNameConstant.T_SYS_GROUP +
-                "(groupcode,groupdesc,module,modules,is_del,create_staffid,create_date,update_staffid,update_date) " +
-                "values(?,?,?,?,'0',?,getdate(),?,getdate()) ";
+        String insert_sql = "insert into " + TableNameConstant.T_SYS_MODULE_GROUP +
+                "(groupcode,groupname,groupdesc,module,modules,is_del,create_staffid,create_date,update_staffid,update_date) " +
+                "values(?,?,?,?,?,'0',?,getdate(),?,getdate()) ";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, group.getGroupCode());
-        ps.setString(2, group.getGroupDesc());
-        ps.setString(3, group.getModule());
-        ps.setString(4, group.getModules());
-        ps.setLong(5, group.getCreate_staffId());
-        ps.setLong(6, group.getUpdate_staffId());
+        ps.setString(2, group.getGroupName());
+        ps.setString(3, group.getGroupDesc());
+        ps.setString(4, group.getModule());
+        ps.setString(5, group.getModules());
+        ps.setLong(6, group.getCreate_staffId());
+        ps.setLong(7, group.getUpdate_staffId());
         ps.execute();
     }
 
@@ -170,15 +173,16 @@ public class GroupDaoImpl implements IGroupDao {
      * @throws SQLException
      */
     private void updateGroup(Connection connection, Group group) throws SQLException {
-        String update_sql = "update " + TableNameConstant.T_SYS_GROUP + " set " +
-                "groupdesc=?,module=?,modules=?,update_staffid=?,update_date=getdate() " +
+        String update_sql = "update " + TableNameConstant.T_SYS_MODULE_GROUP + " set " +
+                "groupname=?,groupdesc=?,module=?,modules=?,update_staffid=?,update_date=getdate() " +
                 "where groupid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
-        ps.setString(1, group.getGroupDesc());
-        ps.setString(2, group.getModule());
-        ps.setString(3, group.getModules());
-        ps.setLong(4, group.getUpdate_staffId());
-        ps.setLong(5, group.getGroupId());
+        ps.setString(1, group.getGroupName());
+        ps.setString(2, group.getGroupDesc());
+        ps.setString(3, group.getModule());
+        ps.setString(4, group.getModules());
+        ps.setLong(5, group.getUpdate_staffId());
+        ps.setLong(6, group.getGroupId());
         ps.execute();
     }
 
@@ -195,7 +199,7 @@ public class GroupDaoImpl implements IGroupDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String delete_sql = "update " + TableNameConstant.T_SYS_GROUP + " set " +
+            String delete_sql = "update " + TableNameConstant.T_SYS_MODULE_GROUP + " set " +
                     "is_del='1',update_staffid=?,update_date=getdate() " +
                     "where groupid=? ";
             ps = connection.prepareStatement(delete_sql);
