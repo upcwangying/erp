@@ -17,5 +17,7 @@ public class TableNameConstant {
     public static final String T_YJ = "t_yj";
     public static final String T_WL = "t_wl";
     public static final String T_GYS = "t_gys";
+    public static final String T_SYS_MODULE_GROUP = "t_sys_module_group";
+    public static final String T_SYS_PERMISSION = "t_sys_permission";
 
 }
