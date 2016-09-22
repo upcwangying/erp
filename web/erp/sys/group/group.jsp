@@ -135,7 +135,8 @@
             <tr>
                 <td>组编号:</td>
                 <td>
-                    <input class="easyui-textbox" id="groupCode" name="groupCode" data-options="width:250,required:true,validType:'remotegroupcode[\'groupId\', \'seq\']'">
+                    <input class="easyui-textbox" id="groupCode" name="groupCode"
+                           data-options="width:250,required:true,validType:'remotegroupcode[\'groupId\', \'seq\']'">
                     </input>
                 </td>
             </tr>
