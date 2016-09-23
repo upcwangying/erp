@@ -34,8 +34,8 @@
         var staffId = '<%= staffInfo.getStaffId()%>';
 
         $(document).ready(function () {
-            $("#permission-query").treegrid('hideColumn', "permissionId");
-            $("#permission-query").treegrid('hideColumn', "moduleId");
+            $("#permission-query").datagrid('hideColumn', "permissionId");
+            $("#permission-query").datagrid('hideColumn', "moduleId");
         });
 
     </script>

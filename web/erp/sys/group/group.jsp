@@ -34,9 +34,9 @@
         var staffId = '<%= staffInfo.getStaffId()%>';
 
         $(document).ready(function () {
-            $("#group-query").treegrid('hideColumn', "groupId");
-            $("#group-query").treegrid('hideColumn', "module");
-            $("#group-query").treegrid('hideColumn', "modules");
+            $("#group-query").datagrid('hideColumn', "groupId");
+            $("#group-query").datagrid('hideColumn', "module");
+            $("#group-query").datagrid('hideColumn', "modules");
         });
     </script>
 
