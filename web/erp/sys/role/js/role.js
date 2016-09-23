@@ -16,6 +16,7 @@ function queryRole() {
  */
 function addRole() {
     openRoleDialog('add');
+    $('#roleId').val('');
 }
 
 /**
@@ -169,6 +170,21 @@ function saveRole(roleId, is_init_permission, flag_) {
 
 /**
  *
+ */
+function addRolePermission() {
+    openRolePermissionDialog();
+    $("#role-permission-query").datagrid('hideColumn', "permissionId");
+    $("#role-permission-query").datagrid('hideColumn', "moduleId");
+    $("#role-permission-role-query").datagrid('hideColumn', "dbid");
+    $("#role-permission-role-query").datagrid('hideColumn', "permissionId");
+}
+
+function saveRolePermission() {
+    
+}
+
+/**
+ *
  * @type {undefined}
  */
 var flag=undefined;
@@ -188,4 +204,36 @@ function closeRoleDialog() {
     $('#roleName').textbox('setValue', '');
     $('#roleDesc').textbox('setValue', '');
     $('#role-dlg').dialog('close');
+}
+
+/**
+ *
+ * @param id
+ */
+function queryPermission(id) {
+    $("#role-permission-query").datagrid({
+        url:root + '/PermissionServlet?param=query',
+        queryParams:{
+            moduleId: id
+        },
+        method:'post',
+        onLoadSuccess: function (data) {
+            console.log(data);
+            // $("#role-permission-query").datagrid('selectRow', 0);
+        }
+    });
+}
+
+/**
+ *
+ */
+function openRolePermissionDialog() {
+    $('#role-permission-dlg').dialog('open');
+}
+
+/**
+ *
+ */
+function closeRolePermissionDialog() {
+    $('#role-permission-dlg').dialog('close');
 }
