@@ -27,13 +27,14 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/sys/role/js/role.js?version=<%= version%>"></script>
-    <%--<script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>--%>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
     <script type="text/javascript">
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
 
         $(document).ready(function () {
             $("#role-query").treegrid('hideColumn', "roleId");
+            $("#role-query").treegrid('hideColumn', "groupId");
         });
         $(function () {
             $("#roleGroupCode").bind('click', function(){
@@ -51,8 +52,8 @@
 				iconCls: 'icon-search',
 				singleSelect: true,
 				rownumbers: true,
-				<%--url:'<%= request.getContextPath()%>/GroupServlet?param=query',--%>
-				<%--method: 'post',--%>
+				url:'<%= request.getContextPath()%>/RoleServlet?param=query',
+				method: 'post',
 				<%--queryParams:{--%>
                     <%--seq: $('#seq').val()--%>
                 <%--},--%>
@@ -97,6 +98,7 @@
         <th data-options="field:'roleId',width:100"></th>
         <th data-options="field:'roleCode',width:100">角色编码</th>
         <th data-options="field:'roleName',width:100">角色名称</th>
+        <th data-options="field:'groupId',width:100"></th>
         <th data-options="field:'groupName',width:100">组名称</th>
         <th data-options="field:'permissionCount',width:100">权限数量</th>
         <th data-options="field:'is_init_permission',width:100">是否分配权限</th>
@@ -133,18 +135,27 @@
 			">
     <form id="role-form" method="post" style="width:auto">
         <input type="hidden" id="roleId" />
+        <input type="hidden" id="groupId" />
         <table cellpadding="5">
             <tr>
                 <td>角色编码:</td>
                 <td>
-                    <input class="easyui-textbox" id="roleCode" name="roleCode" data-options="width:250,required:true">
+                    <input class="easyui-textbox" id="roleCode" name="roleCode" data-options="width:250,required:true,
+                           validType:'remotepermissioncode[\'roleId\', \'seq\']'">
+                    </input>
+                </td>
+            </tr>
+            <tr>
+                <td>角色名称:</td>
+                <td>
+                    <input class="easyui-textbox" id="roleName" name="roleName" data-options="width:250,required:true">
                     </input>
                 </td>
             </tr>
             <tr>
                 <td>角色描述:</td>
                 <td>
-                    <input class="easyui-textbox" id="roleDesc" name="roleDesc" data-options="width:250,required:true">
+                    <input class="easyui-textbox" id="roleDesc" name="roleDesc" data-options="height:50,width:250,multiline:true,required:true">
                     </input>
                 </td>
             </tr>
@@ -158,10 +169,7 @@
                            url: '<%= request.getContextPath()%>/GroupServlet?param=query-combo',
 				           method: 'post',
 				           valueField: 'groupId',
-				           textField: 'groupCode',
-				           onClickButton: function(){
-				               console.log('add');
-				           }
+				           textField: 'groupCode'
                            ">
                     </input>
                 </td>

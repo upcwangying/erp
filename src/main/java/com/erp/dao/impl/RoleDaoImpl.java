@@ -161,7 +161,7 @@ public class RoleDaoImpl implements IRoleDao {
                 "values (?,?,?,?,'0','0')";
         PreparedStatement ps = connection.prepareStatement(insert_sql);
         ps.setString(1, role.getRoleCode());
-        ps.setString(2, role.getGroupName());
+        ps.setString(2, role.getRoleName());
         ps.setString(3, role.getRoleDesc());
         ps.setLong(4, role.getGroupId());
         ps.execute();

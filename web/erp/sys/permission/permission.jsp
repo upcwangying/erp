@@ -188,7 +188,7 @@
                 </tr>
                 <tr>
                     <td>权限描述:</td>
-                    <td><input class="easyui-textbox" id="permissionDesc" name="permissionDesc" data-options="required:true">
+                    <td><input class="easyui-textbox" id="permissionDesc" name="permissionDesc" data-options="height:50,multiline:true,required:true">
                         </input>
                     </td>
                 </tr>
