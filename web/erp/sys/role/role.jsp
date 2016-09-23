@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/jquery-easyui-1.4.5/themes/icon.css">
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/collections.min.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/sys/role/js/role.js?version=<%= version%>"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
@@ -244,7 +245,7 @@
 				        text: '添加',
 				        iconCls: 'icon-save',
 				        handler: function () {
-
+                            addPermissionToRole();
 				        }
 				    },
 				    '-',
@@ -274,8 +275,6 @@
             <table id="role-permission-role-query" class="easyui-datagrid"
                    data-options="
 				iconCls: 'icon-search',
-				selectOnCheck: true,
-				checkOnSelect: true,
 				rownumbers: true,
 				fit: true,
 				<%--url:'<%= request.getContextPath()%>/GroupServlet?param=query',--%>
@@ -283,7 +282,22 @@
 				<%--queryParams:{--%>
                     <%--seq: $('#seq').val()--%>
                 <%--},--%>
+                rowStyler: function(index,row){
+		            if (row.dbid==''){
+			            return 'color:red;'; // return inline style
+			            // the function can return predefined css class and inline style
+			            // return {class:'r1', style:{'color:#fff'}};
+		            }
+	            },
 				toolbar: [
+				    '-',
+				    {
+				        text: '查询',
+				        iconCls: 'icon-search',
+				        handler: function () {
+				            queryRolePermission();
+				        }
+				    },
 				    '-',
 				    {
 				        text: '保存',
@@ -297,7 +311,7 @@
 				        text: '删除',
 				        iconCls: 'icon-remove',
 				        handler: function () {
-				            <%--deleteRolePermission();--%>
+				            deleteRolePermission();
 				        }
 				    },
 				    '-',
@@ -313,7 +327,6 @@
 			">
                 <thead>
                 <tr>
-                    <th data-options="field:'ck',checkbox:true"></th>
                     <th data-options="field:'dbid',width:100"></th>
                     <th data-options="field:'permissionId',width:100"></th>
                     <th data-options="field:'permissionCode',width:100">权限编码</th>
@@ -324,8 +337,6 @@
             </table>
         </div>
     </div>
-
 </div>
-
 </body>
 </html>

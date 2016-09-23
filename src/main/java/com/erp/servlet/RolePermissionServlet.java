@@ -91,6 +91,7 @@ public class RolePermissionServlet extends HttpServlet {
                         RolePermission rolePermission = new RolePermission();
                         rolePermission.setRoleId(Long.valueOf(roleId));
                         rolePermission.setPermissionId(Long.valueOf(permissionIds[i]));
+                        rolePermissionList.add(rolePermission);
                     }
                     RoleService.insertRolePermission(rolePermissionList);
                 }
