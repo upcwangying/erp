@@ -13,6 +13,12 @@ public class RolePermission implements Serializable {
 
     private long permissionId;
 
+    private String permissionCode;
+
+    private String permissionName;
+
+    private String permissionDesc;
+
     private String is_del;
 
     public long getDbid() {
@@ -39,6 +45,30 @@ public class RolePermission implements Serializable {
         this.permissionId = permissionId;
     }
 
+    public String getPermissionCode() {
+        return permissionCode;
+    }
+
+    public void setPermissionCode(String permissionCode) {
+        this.permissionCode = permissionCode;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
+
+    public String getPermissionDesc() {
+        return permissionDesc;
+    }
+
+    public void setPermissionDesc(String permissionDesc) {
+        this.permissionDesc = permissionDesc;
+    }
+
     public String getIs_del() {
         return is_del;
     }
@@ -53,6 +83,9 @@ public class RolePermission implements Serializable {
                 "dbid=" + dbid +
                 ", roleId=" + roleId +
                 ", permissionId=" + permissionId +
+                ", permissionCode='" + permissionCode + '\'' +
+                ", permissionName='" + permissionName + '\'' +
+                ", permissionDesc='" + permissionDesc + '\'' +
                 ", is_del='" + is_del + '\'' +
                 '}';
     }

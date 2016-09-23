@@ -4,6 +4,7 @@ import com.erp.dao.IRoleDao;
 import com.erp.dao.impl.RoleDaoImpl;
 import com.erp.entity.Permission;
 import com.erp.entity.Role;
+import com.erp.entity.RolePermission;
 import com.erp.exception.DAOException;
 import com.erp.exception.ServiceException;
 import net.sf.json.JSONArray;
@@ -76,22 +77,6 @@ public class RoleService {
     }
 
     /**
-     * 增加角色对应的权限
-     *
-     * @param permission
-     * @throws ServiceException
-     */
-    public static void insertRolePermission(Permission permission) throws ServiceException {
-        IRoleDao roleDao = new RoleDaoImpl();
-        try {
-            roleDao.insertRolePermission(permission);
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * 删除
      *
      * @param roleId
@@ -108,16 +93,56 @@ public class RoleService {
     }
 
     /**
+     * 查询角色对应的权限
+     * @param roleId
+     * @throws ServiceException
+     */
+    public static JSONArray queryRolePermission(String roleId) throws ServiceException {
+        IRoleDao roleDao = new RoleDaoImpl();
+        JSONArray array = new JSONArray();
+        try {
+            List<RolePermission> rolePermissionList = roleDao.queryRolePermission(roleId);
+            if (rolePermissionList != null && rolePermissionList.size() > 0) {
+                for (RolePermission rolePermission : rolePermissionList) {
+                    JSONObject object = JSONObject.fromObject(rolePermission);
+                    array.add(object);
+                }
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+        return array;
+    }
+
+    /**
+     * 增加角色对应的权限
+     *
+     * @param rolePermissionList
+     * @throws ServiceException
+     */
+    public static void insertRolePermission(List<RolePermission> rolePermissionList) throws ServiceException {
+        IRoleDao roleDao = new RoleDaoImpl();
+        try {
+            roleDao.insertRolePermission(rolePermissionList);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * 删除权限
      *
+     * @param roleId
      * @param dbid
      * @param flag
      * @throws ServiceException
      */
-    public static void deleteRolePermission(String[] dbid, boolean flag) throws ServiceException {
+    public static void deleteRolePermission(String roleId, String[] dbid, boolean flag) throws ServiceException {
         IRoleDao roleDao = new RoleDaoImpl();
         try {
-            roleDao.deleteRolePermission(dbid, flag);
+            roleDao.deleteRolePermission(roleId, dbid, flag);
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException(e);

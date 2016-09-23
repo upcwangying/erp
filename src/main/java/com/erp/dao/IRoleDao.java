@@ -2,6 +2,7 @@ package com.erp.dao;
 
 import com.erp.entity.Permission;
 import com.erp.entity.Role;
+import com.erp.entity.RolePermission;
 import com.erp.exception.DAOException;
 
 import java.util.List;
@@ -36,13 +37,6 @@ public interface IRoleDao {
     void insertOrUpdateRole(Role role, boolean flag) throws DAOException;
 
     /**
-     * 增加角色对应的权限
-     * @param permission
-     * @throws DAOException
-     */
-    void insertRolePermission(Permission permission) throws DAOException;
-
-    /**
      * 删除
      * @param roleId
      * @throws DAOException
@@ -50,11 +44,26 @@ public interface IRoleDao {
     void deleteRole(String[] roleId) throws DAOException;
 
     /**
+     * 查询角色对应的权限
+     * @param roleId
+     * @throws DAOException
+     */
+    List<RolePermission> queryRolePermission(String roleId) throws DAOException;
+
+    /**
+     * 增加角色对应的权限
+     * @param rolePermissionList
+     * @throws DAOException
+     */
+    void insertRolePermission(List<RolePermission> rolePermissionList) throws DAOException;
+
+    /**
      * 删除权限
+     * @param roleId
      * @param dbid
      * @param flag 删除的权限是否为最后几条，若为true：删除后，该角色下无对应权限
      * @throws DAOException
      */
-    void deleteRolePermission(String[] dbid, boolean flag) throws DAOException;
+    void deleteRolePermission(String roleId, String[] dbid, boolean flag) throws DAOException;
 
 }
