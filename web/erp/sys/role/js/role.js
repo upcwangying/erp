@@ -367,12 +367,66 @@ function deleteRolePermission() {
         return;
     } else if (!hasUnsavedData()) { // 都是已保存的数据
         console.log('!hasUnsavedData');
-        $.messager.confirm('删除确认框', '选中的数据全是‘已保存’的数据，是否删除‘已保存’的数据吗？', function (r) {
-            if (r) {
-
-            }
-        });
+        delRolePermission();
     }
+}
+
+function delRolePermission() {
+    var rows = $('#role-permission-role-query').datagrid('getSelections');
+
+    var roleRows = $('#role-query').datagrid('getSelections');
+    var roleId = roleRows[0].roleId;
+
+    var dbids=[];
+    for (var i=0;i<rows.length;i++) {
+        dbids.push(rows[i].dbid);
+    }
+    var count = getSavedDataCount();
+
+    $.messager.confirm('删除确认框', '选中的数据全是‘已保存’的数据，是否删除‘已保存’的数据吗？', function (r) {
+        if (r) {
+            $.ajax({
+                url: root + "/RolePermissionServlet",
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                traditional: true,
+                data: {
+                    param: "delete",
+                    roleId: roleId,
+                    dbid: dbids,
+                    flag: (dbids.length==count),
+                    seq: $('#seq').val()
+                },
+                success: function (data) {
+                    alert(data.msg);
+                    if (data.success) {
+                        queryRolePermission();
+                    }
+                },
+                error: function () {
+                    alert("网络错误！")
+                }
+            });
+        }
+    });
+
+}
+
+/**
+ *
+ * @returns {*}
+ */
+function getSavedDataCount() {
+    var count=0;
+    var rightRows = $('#role-permission-role-query').datagrid('getRows');
+    for (var j=0;j<rightRows.length;j++) {
+        var rightRow = rightRows[j];
+        if (rightRow.permissionId != '') {
+            count++;
+        }
+    }
+    return count;
 }
 
 /**
