@@ -192,11 +192,10 @@ public class ReportDaoImpl implements IReportDao {
             String sql = "select yw.dbid,yw.wlbm,w.wlmc,yw.gysbm,g.gysmc,yw.price," +
                     "yw.number,yw.staffid,s.staffname,yw.shoppingtime,yw.create_date,yw.update_date " +
                     "from "+TableNameConstant.T_YW+" yw " +
-                    "left join "+TableNameConstant.STAFFINFO+" s on yw.staffid=s.staffid " +
-                    "left join "+TableNameConstant.T_WL+" w on yw.wlbm=w.wlbm " +
-                    "left join "+TableNameConstant.T_GYS+" g on yw.gysbm=g.gysbm " +
-                    "where yw.is_del='0' and (0=? or yw.dbid=?) and s.is_del='0' " +
-                    "and w.is_del='0' and g.is_del='0' ";
+                    "left join "+TableNameConstant.STAFFINFO+" s on yw.staffid=s.staffid and s.is_del='0' " +
+                    "left join "+TableNameConstant.T_WL+" w on yw.wlbm=w.wlbm and w.is_del='0' " +
+                    "left join "+TableNameConstant.T_GYS+" g on yw.gysbm=g.gysbm and g.is_del='0' " +
+                    "where yw.is_del='0' and (0=? or yw.dbid=?) ";
             ps = connection.prepareStatement(sql);
             ps.setInt(1, StringUtil.isEmpty(dbid) ? 0 : 1);
             ps.setInt(2, StringUtil.isEmpty(dbid) ? -1 : Integer.valueOf(dbid));

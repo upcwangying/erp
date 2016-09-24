@@ -38,13 +38,13 @@ public class ProductDaoImpl implements IProductDao {
                     "p.update_staffid,p.update_date,s.staffname as create_staffname," +
                     "s1.staffname as update_staffname " +
                     "from "+TableNameConstant.T_PRODUCT+" p " +
-                    "left join "+TableNameConstant.STAFFINFO+" s on p.create_staffid=s.staffid " +
-                    "left join "+TableNameConstant.STAFFINFO+" s1 on p.update_staffid = s1.staffid " +
-                    "left join "+TableNameConstant.T_JLDW+" j on p.jldwid=j.jldwid " +
+                    "left join "+TableNameConstant.STAFFINFO+" s on p.create_staffid=s.staffid and s.is_del='0' " +
+                    "left join "+TableNameConstant.STAFFINFO+" s1 on p.update_staffid = s1.staffid and s1.is_del='0' " +
+                    "left join "+TableNameConstant.T_JLDW+" j on p.jldwid=j.jldwid and j.is_del='0' " +
                     "left join (select max(t.thumbnailurl) as thumbnailurl," +
                     "t.productid as productid from "+TableNameConstant.T_FILEUPLOADLOG+" t " +
                     "where t.is_del='0' and t.is_pic_valid='1' group by t.productid) t1 on p.productid=t1.productid " +
-                    "where p.is_del='0' and s.is_del='0' and s1.is_del='0' and j.is_del='0' ";
+                    "where p.is_del='0' ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
             while (rst.next()) {

@@ -234,9 +234,9 @@ public class RoleDaoImpl implements IRoleDao {
             String query_sql = "select rp.dbid,rp.roleid,rp.permissionid,rp.is_del," +
                     "p.permissioncode,p.permissionname,p.permissiondesc " +
                     "from "+TableNameConstant.T_SYS_ROLE_PERMISSION+" rp " +
-                    "left join "+TableNameConstant.T_SYS_PERMISSION +" p " +
+                    "left join "+TableNameConstant.T_SYS_PERMISSION +" p and p.is_del='0' " +
                     "on rp.permissionid=p.permissionid "+
-                    "where rp.is_del='0' and p.is_del='0' and rp.roleid=? ";
+                    "where rp.is_del='0' and rp.roleid=? ";
             ps = connection.prepareStatement(query_sql);
             ps.setLong(1, Long.valueOf(roleId));
             rst = ps.executeQuery();

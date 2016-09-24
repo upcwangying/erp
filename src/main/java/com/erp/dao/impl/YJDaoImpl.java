@@ -378,12 +378,10 @@ public class YJDaoImpl implements IYJDao {
         List<YJ> yjList = new ArrayList<>();
         String sql = "select yj.dbid,yj.yjyf,yj.yjzc,yj.yjhz,yj.yjye,yj.staffid," +
                 "yj.yjlx,yj.create_date,yj.update_date,s.staffname " +
-                "from "+TableNameConstant.T_YJ+" yj left join "+TableNameConstant.STAFFINFO+" s " +
-                "on yj.staffid=s.staffid " +
-                "where yj.is_del='0' and s.is_del='0' " +
-                "and (0=? or convert(varchar(7), yj.yjyf,120)=?) " +
-                "and (0=? or yj.dbid=?) " +
-                "order by yj.yjyf asc";
+                "from "+TableNameConstant.T_YJ+" yj " +
+                "left join "+TableNameConstant.STAFFINFO+" s on yj.staffid=s.staffid and s.is_del='0' " +
+                "where yj.is_del='0' and (0=? or convert(varchar(7), yj.yjyf,120)=?) " +
+                "and (0=? or yj.dbid=?) order by yj.yjyf asc";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, yjyf == null ? 0 : 1);
         ps.setString(2, yjyf == null ? "0000-00" : yjyf);
