@@ -1,11 +1,15 @@
 package com.erp.servlet;
 
 import com.erp.bean.ResponseBean;
+import com.erp.entity.Module;
 import com.erp.entity.RolePermission;
 import com.erp.enums.TextEnum;
 import com.erp.exception.ServiceException;
 import com.erp.service.RoleService;
+import com.erp.util.JSONUtil;
+import com.erp.util.ModuleUtil;
 import net.sf.json.JSONArray;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wang_ on 2016-09-23.
@@ -23,6 +28,7 @@ import java.util.List;
 @WebServlet(name = "RolePermissionServlet",
         urlPatterns = {"/RolePermissionServlet"})
 public class RolePermissionServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(RolePermissionServlet.class);
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -43,11 +49,39 @@ public class RolePermissionServlet extends HttpServlet {
             responseText = queryRolePermission(roleId);
         } else if ("insert".equals(param) || "delete".equals(param)) {
             responseText = editRolePermission(request, param);
+        } else if ("query-modules".equals(param)) {
+            String modules = request.getParameter("modules");
+            if (modules != null) {
+                String[] moduleId = modules.split(",");
+                responseText = queryModules(moduleId);
+            }
         }
 
         PrintWriter writer = response.getWriter();
         writer.write(responseText);
         writer.close();
+    }
+
+    /**
+     * ²éÑ¯Ä£¿é
+     *
+     * @return
+     */
+    private String queryModules(String[] moduleId) {
+        try {
+            logger.info("----------- The Module begin init -----------");
+            ModuleUtil.initModules(false, moduleId);
+            logger.info("----------- The Module init success -----------");
+        } catch (ServiceException e) {
+            logger.error("----------- The Module init failure:" + e.getMessage() + " -----------");
+            e.printStackTrace();
+        }
+
+        Set<Module> modules = ModuleUtil.getModuleByProjectId();
+        JSONArray moduleArray = JSONUtil.parseToJson(modules);
+
+        ResponseBean responseBean = new ResponseBean(moduleArray);
+        return responseBean.getResponseArray(false);
     }
 
     /**

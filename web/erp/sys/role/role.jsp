@@ -109,6 +109,7 @@
         <th data-options="field:'roleName',width:100">角色名称</th>
         <th data-options="field:'groupId',width:100"></th>
         <th data-options="field:'groupName',width:100">组名称</th>
+        <th data-options="field:'modules',width:100">模块名</th>
         <th data-options="field:'permissionCount',width:100">权限数量</th>
         <th data-options="field:'is_init_permission',width:100">是否分配权限</th>
     </tr>
@@ -202,28 +203,7 @@
 			">
     <div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'west',title:'模块列表',split:true" style="width:10%;height: 100%;">
-            <table id="role-permission-tree" class="easyui-tree" style="height: 100%" data-options="
-				url: '<%= request.getContextPath()%>/ModuleServlet?param=query',
-				animate: true,
-				method: 'post',
-				queryParams: {
-				    flag: 'false'
-				},
-				onSelect: function(node) {
-				    var leaf = node.leaf;
-				    if (leaf == 'file') {
-                        var id = node.id;
-                        queryPermission(id);
-				    } else {
-				        var state = node.state;
-				        if(state == 'open') {
-				            $(this).tree('collapse', node.target);
-				        } else {
-				            $(this).tree('expand', node.target);
-				        }
-				    }
-				}
-			">
+            <table id="role-permission-tree" class="easyui-tree" style="height: 100%">
             </table>
         </div>
         <div data-options="region:'center',title:'模块权限管理'" style="width:40%;height: 100%;padding:5px;background:#eee;">

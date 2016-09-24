@@ -201,6 +201,32 @@ function addRolePermission() {
     $("#role-permission-role-query").datagrid('hideColumn', "dbid");
     $("#role-permission-role-query").datagrid('hideColumn', "permissionId");
 
+    var rows = $('#role-query').datagrid('getSelections');
+    var modules = rows[0].modules;
+    console.log(modules);
+    $('#role-permission-tree').tree({
+        url: root+'/RolePermissionServlet?param=query-modules',
+        animate: true,
+        method: 'post',
+        queryParams: {
+            modules: modules
+        },
+        onSelect: function(node) {
+            var leaf = node.leaf;
+            if (leaf == 'file') {
+                var id = node.id;
+                queryPermission(id);
+            } else {
+                var state = node.state;
+                if(state == 'open') {
+                    $(this).tree('collapse', node.target);
+                } else {
+                    $(this).tree('expand', node.target);
+                }
+            }
+        }
+    });
+
     queryRolePermission();
 }
 

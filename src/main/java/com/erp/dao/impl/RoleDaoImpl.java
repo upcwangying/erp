@@ -38,7 +38,7 @@ public class RoleDaoImpl implements IRoleDao {
         List<Role> roleList = new ArrayList<>();
         try {
             String query_sql = "select r.roleid,r.rolecode,r.rolename,r.roledesc," +
-                    "r.groupid,r.is_del as r_is_del,r.is_init_permission,g.groupname," +
+                    "r.groupid,r.is_del as r_is_del,r.is_init_permission,g.groupname,g.modules," +
                     "p1.permissionids from " + TableNameConstant.T_SYS_ROLE + " r " +
                     "left join " +TableNameConstant.T_SYS_MODULE_GROUP+ " g on r.groupid=g.groupid " +
                     "left join (select count(p.permissionid) as permissionids,p.roleid from "+
@@ -54,6 +54,7 @@ public class RoleDaoImpl implements IRoleDao {
                 role.setRoleDesc(rst.getString("roledesc"));
                 role.setGroupId(rst.getLong("groupid"));
                 role.setGroupName(rst.getString("groupname"));
+                role.setModules(rst.getString("modules"));
                 role.setIs_del(rst.getString("r_is_del"));
                 role.setIs_init_permission(rst.getString("is_init_permission"));
                 role.setPermissionCount(rst.getInt("permissionids"));
@@ -235,8 +236,9 @@ public class RoleDaoImpl implements IRoleDao {
                     "from "+TableNameConstant.T_SYS_ROLE_PERMISSION+" rp " +
                     "left join "+TableNameConstant.T_SYS_PERMISSION +" p " +
                     "on rp.permissionid=p.permissionid "+
-                    "where rp.is_del='0' and p.is_del='0' ";
+                    "where rp.is_del='0' and p.is_del='0' and rp.roleid=? ";
             ps = connection.prepareStatement(query_sql);
+            ps.setLong(1, Long.valueOf(roleId));
             rst = ps.executeQuery();
             while (rst.next()) {
                 RolePermission rolePermission = new RolePermission();

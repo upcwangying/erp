@@ -19,6 +19,8 @@ public class Role implements Serializable {
 
     private String groupName;
 
+    private String modules;
+
     private String is_del;
 
     private String is_init_permission;
@@ -73,6 +75,14 @@ public class Role implements Serializable {
         this.groupName = groupName;
     }
 
+    public String getModules() {
+        return modules;
+    }
+
+    public void setModules(String modules) {
+        this.modules = modules;
+    }
+
     public String getIs_del() {
         return is_del;
     }
@@ -106,6 +116,7 @@ public class Role implements Serializable {
                 ", roleDesc='" + roleDesc + '\'' +
                 ", groupId=" + groupId +
                 ", groupName='" + groupName + '\'' +
+                ", modules='" + modules + '\'' +
                 ", is_del='" + is_del + '\'' +
                 ", is_init_permission='" + is_init_permission + '\'' +
                 ", permissionCount=" + permissionCount +
