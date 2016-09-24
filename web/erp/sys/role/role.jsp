@@ -183,7 +183,7 @@
                            url: '<%= request.getContextPath()%>/GroupServlet?param=query-combo',
 				           method: 'post',
 				           valueField: 'groupId',
-				           textField: 'groupCode'
+				           textField: 'groupName'
                            ">
                     </input>
                 </td>
