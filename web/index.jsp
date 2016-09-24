@@ -23,7 +23,9 @@
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
         var is_init = '<%= staffInfo.getIsInit()%>';
+        var modules = '<%= staffInfo.getModules()%>';
 
+        console.log(modules);
         $(document).ready(function () {
             $('#tabs').tabs({
                 onClose:function (title) {
@@ -113,6 +115,7 @@
             id.innerHTML = getSysDateTime();
         }
 
+        var url = (modules=='' || modules=='null' || modules==undefined)?"/ModuleServlet?param=query":"/RolePermissionServlet?param=query-modules";
         $(function(){
             //初始化accordion
             $("#RightAccordion").accordion({
@@ -122,13 +125,15 @@
                 animate:false
             });
             $.ajax({
-                url: root + "/ModuleServlet?param=query",
+//                url: root + "/ModuleServlet?param=query",
+                url: root + url,
                 type: 'post',
                 cache: false,
                 dataType: 'json',
                 traditional: true,
                 data: {
-                    flag: 'false'
+                    flag: 'false',
+                    modules: modules
                 },
                 success: function (data) {
 //                    if (data == "0") {
