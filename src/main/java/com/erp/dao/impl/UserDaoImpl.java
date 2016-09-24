@@ -33,9 +33,11 @@ public class UserDaoImpl implements IUserDao {
         StaffInfo staffInfo = null;
         try {
             String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.is_init," +
-                    "s.styleid,style.style,s.create_date,s.update_date,s.last_login_time " +
-                    "from staffinfo s left join style style " +
-                    "on s.styleid=style.styleid " +
+                    "s.styleid,style.style,s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
+                    "from "+TableNameConstant.STAFFINFO+" s " +
+                    "left join "+TableNameConstant.STYLE+" style on s.styleid=style.styleid " +
+                    "left join "+TableNameConstant.T_SYS_ROLE+" role on s.roleid=role.roleid and role.is_del='0' " +
+                    "left join "+TableNameConstant.T_SYS_MODULE_GROUP+" g on role.groupid=g.groupid and g.is_del='0' " +
                     "where s.is_del='0' and s.staffcode=? and (0=? or s.staffid!=?) ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, staffCode);
@@ -53,6 +55,9 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setDelete(true);
                 staffInfo.setStyleId(rst.getLong("styleid"));
                 staffInfo.setStyle(rst.getString("style"));
+                staffInfo.setRoleId(rst.getLong("roleid"));
+                staffInfo.setRoleName(rst.getString("rolename"));
+                staffInfo.setModules(rst.getString("modules"));
                 staffInfo.setCreateDate(rst.getDate("create_date"));
                 staffInfo.setUpdateDate(rst.getDate("update_date"));
                 staffInfo.setLastLoginTime(rst.getDate("last_login_time"));
@@ -82,7 +87,7 @@ public class UserDaoImpl implements IUserDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update staffinfo set last_login_time=getdate() where staffcode=? ";
+            String sql = "update "+TableNameConstant.STAFFINFO+" set last_login_time=getdate() where staffcode=? ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, staffCode);
             ps.execute();
@@ -114,11 +119,12 @@ public class UserDaoImpl implements IUserDao {
         List<StaffInfo> staffInfoList = new ArrayList<StaffInfo>();
         try {
             String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.is_init," +
-                    "s.styleid,style.style,s.create_date,s.update_date,s.last_login_time " +
-                    "from staffinfo s left join style style " +
-                    "on s.styleid=style.styleid " +
-                    "where s.is_del='0' and (0=? or s.staffid=?) " +
-                    "order by s.staffid asc ";
+                    "s.styleid,style.style,s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
+                    "from "+TableNameConstant.STAFFINFO+" s " +
+                    "left join "+TableNameConstant.STYLE+" style on s.styleid=style.styleid " +
+                    "left join "+TableNameConstant.T_SYS_ROLE+" role on s.roleid=role.roleid and role.is_del='0' " +
+                    "left join "+TableNameConstant.T_SYS_MODULE_GROUP+" g on role.groupid=g.groupid and g.is_del='0' " +
+                    "where s.is_del='0' and (0=? or s.staffid=?) order by s.staffid asc ";
             ps = connection.prepareStatement(sql);
             ps.setInt(1, StringUtil.isEmpty(dbid) ? 0 : 1);
             ps.setString(2, StringUtil.isEmpty(dbid) ? "-1" : dbid);
@@ -134,6 +140,9 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setDelete(false);
                 staffInfo.setStyleId(rst.getLong("styleid"));
                 staffInfo.setStyle(rst.getString("style"));
+                staffInfo.setRoleId(rst.getLong("roleid"));
+                staffInfo.setRoleName(rst.getString("rolename"));
+                staffInfo.setModules(rst.getString("modules"));
                 staffInfo.setCreateDate(DateUtil.getDateByType(rst.getString("create_date")));
                 staffInfo.setUpdateDate(DateUtil.getDateByType(rst.getString("update_date")));
                 if (!StringUtil.isEmpty(rst.getString("last_login_time"))) {
@@ -217,7 +226,7 @@ public class UserDaoImpl implements IUserDao {
         JdbcUtil.beginTranaction();
         PreparedStatement ps = null;
         try {
-            String sql = "update staffinfo set is_del='1',update_date=getdate() where staffid=? ";
+            String sql = "update "+TableNameConstant.STAFFINFO+" set is_del='1',update_date=getdate() where staffid=? ";
             ps = connection.prepareStatement(sql);
             for (String id : ids) {
                 ps.setString(1, id);
@@ -246,14 +255,26 @@ public class UserDaoImpl implements IUserDao {
      * @throws Exception
      */
     private void insertUserData(Connection connection, StaffInfo staffInfo) throws Exception {
-        String sql = "insert into staffinfo(staffcode,staffname,password,telphone,is_init,is_del,styleid,create_date,update_date) " +
-                "values (?,?,?,?,'0','0',?,getdate(),getdate()) ";
-        PreparedStatement ps = connection.prepareStatement(sql);
+        StringBuffer insert_sql = new StringBuffer("insert into ");
+        insert_sql.append(TableNameConstant.STAFFINFO).append("(staffcode,staffname,password,telphone,is_init,is_del,styleid,");
+        if (staffInfo.getRoleId() != 0) {
+            insert_sql.append("roleid,");
+        }
+        insert_sql.append("create_date,update_date) ");
+        insert_sql.append("values (?,?,?,?,'0','0',?,");
+        if (staffInfo.getRoleId() != 0) {
+            insert_sql.append("?,");
+        }
+        insert_sql.append("getdate(),getdate()) ");
+        PreparedStatement ps = connection.prepareStatement(insert_sql.toString());
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
         ps.setString(3, staffInfo.getPassword());
         ps.setString(4, staffInfo.getTelephone());
         ps.setLong(5, staffInfo.getStyleId());
+        if (staffInfo.getRoleId() != 0) {
+            ps.setLong(6, staffInfo.getRoleId());
+        }
         ps.execute();
     }
 
@@ -265,15 +286,24 @@ public class UserDaoImpl implements IUserDao {
      * @throws Exception
      */
     private void updateUserData(Connection connection, StaffInfo staffInfo) throws Exception {
-        String sql = "update staffinfo set staffcode=?,staffname=?,password=?,telphone=?,styleid=?,update_date=getdate() " +
-                "where staffid=? ";
-        PreparedStatement ps = connection.prepareStatement(sql);
+        StringBuffer update_sql = new StringBuffer("update ");
+        update_sql.append(TableNameConstant.STAFFINFO).append(" set staffcode=?,staffname=?,password=?,telphone=?,styleid=?,");
+        if (staffInfo.getRoleId() != 0) {
+            update_sql.append("roleid=?,");
+        }
+        update_sql.append("update_date=getdate() where staffid=? ");
+        PreparedStatement ps = connection.prepareStatement(update_sql.toString());
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
         ps.setString(3, staffInfo.getPassword());
         ps.setString(4, staffInfo.getTelephone());
         ps.setLong(5, staffInfo.getStyleId());
-        ps.setLong(6, staffInfo.getStaffId());
+        if (staffInfo.getRoleId() != 0) {
+            ps.setLong(6, staffInfo.getRoleId());
+            ps.setLong(7, staffInfo.getStaffId());
+        } else {
+            ps.setLong(6, staffInfo.getStaffId());
+        }
         ps.execute();
     }
 

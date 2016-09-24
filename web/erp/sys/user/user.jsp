@@ -35,6 +35,8 @@
             $("#user-query").datagrid('hideColumn', "staffId");
             $("#user-query").datagrid('hideColumn', "password");
             $("#user-query").datagrid('hideColumn', "styleId");
+            $("#user-query").datagrid('hideColumn', "roleId");
+            $("#user-query").datagrid('hideColumn', "modules");
         });
     </script>
 
@@ -98,6 +100,9 @@
         <th data-options="field:'telephone',width:100">手机号</th>
         <th data-options="field:'styleId',width:100"></th>
         <th data-options="field:'style',width:100">界面样式</th>
+        <th data-options="field:'roleId',width:100"></th>
+        <th data-options="field:'roleName',width:100">角色名称</th>
+        <th data-options="field:'modules',width:100"></th>
         <th data-options="field:'createDate',width:150">创建时间</th>
         <th data-options="field:'updateDate',width:150">更新时间</th>
         <th data-options="field:'lastLoginTime',width:150">最后登录时间</th>
@@ -106,7 +111,7 @@
     </thead>
 </table>
 
-<div id="user-dlg" class="easyui-dialog" title="用户增加" style="width:450px;height:300px;padding:10px"
+<div id="user-dlg" class="easyui-dialog" title="用户增加" style="width:450px;height:350px;padding:10px"
      data-options="
 				iconCls: 'icon-save',
 				maximizable:true,
@@ -180,6 +185,20 @@
 				           method: 'post',
 				           valueField: 'styleId',
 				           textField: 'style'
+                           ">
+                    </input>
+                </td>
+            </tr>
+            <tr>
+                <td>角色配置:</td>
+                <td>
+                    <input class="easyui-combobox" id="roleId" name="roleId"
+                           data-options="
+                           <%--required:true,--%>
+                           url: '<%= request.getContextPath()%>/RoleServlet?param=query-combo',
+				           method: 'post',
+				           valueField: 'roleId',
+				           textField: 'roleName'
                            ">
                     </input>
                 </td>

@@ -35,6 +35,12 @@ public class StaffInfo implements Serializable {
     // 主题样式
     private String style;
 
+    private long roleId;
+
+    private String roleName;
+
+    private String modules;
+
     // 创建时间
     private Date createDate;
 
@@ -116,6 +122,30 @@ public class StaffInfo implements Serializable {
         this.style = style;
     }
 
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getModules() {
+        return modules;
+    }
+
+    public void setModules(String modules) {
+        this.modules = modules;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -149,11 +179,15 @@ public class StaffInfo implements Serializable {
                 ", password='" + password + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", isInit='" + isInit + '\'' +
-                ", delete='" + delete + '\'' +
+                ", delete=" + delete +
+                ", styleId=" + styleId +
                 ", style='" + style + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
-                ", lastLoginTime='" + lastLoginTime +
+                ", roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", modules='" + modules + '\'' +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                ", lastLoginTime=" + lastLoginTime +
                 '}';
     }
 

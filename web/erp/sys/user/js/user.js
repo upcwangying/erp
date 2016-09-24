@@ -51,14 +51,14 @@ function saveUserForm() {
 
     if (flag == 'add') {
         if (checkUserData()) {
-            saveUser("insert", "", staffcode, staffname, pwd, telphone, styleid);
+            saveUser("insert", "");
         }
     } else if (flag == 'edit') {
         var rows = $('#user-query').datagrid('getSelections');
         var id = rows[0].staffId;
         $.messager.confirm('修改确认框', '你确定修改选中的数据吗?', function (r) {
             if (r) {
-                saveUser("update", id, staffcode, staffname, pwd, telphone, styleid);
+                saveUser("update", id);
             }
         });
     }
@@ -133,10 +133,11 @@ function updateUser() {
     $('#pwd-again').textbox('setValue', rows[0].password);
     $('#telphone').textbox('setValue', rows[0].telephone);
     $('#styleid').combobox('setValue', rows[0].styleId);
+    $('#roleId').combobox('setValue', rows[0].roleId=='0'?'':rows[0].roleId);
 
 }
 
-function saveUser(param, dbid, staffcode, staffname, pwd, telphone, styleid) {
+function saveUser(param, dbid) {
     $.ajax({
         url: root + "/UserServlet",
         type: 'post',
@@ -151,6 +152,7 @@ function saveUser(param, dbid, staffcode, staffname, pwd, telphone, styleid) {
             pwd: $('#pwd').textbox('getValue'),
             telphone: $('#telphone').textbox('getValue'),
             styleid: $('#styleid').combobox('getValue'),
+            roleId: $('#roleId').combobox('getValue'),
             seq: $('#seq').val()
         },
         success: function (data) {
