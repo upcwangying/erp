@@ -501,7 +501,7 @@ function getSysTime(){
 
 /**
  * 获取系统当前时间
- * Author:LYoung
+ * Author:
  * return:'yyyy-MM-dd hh:mm:ss'
  */
 function getSysDateTime() {
@@ -510,11 +510,101 @@ function getSysDateTime() {
 
 /**
  * 获取系统本月第一天
- * Author:LYoung
+ * Author:
  * return:'yyyy-MM-dd'
  */
 function getMonthFirstDay() {
     var nowdate = new Date();
     var monthFirstDay = new Date(nowdate.getFullYear(), nowdate.getMonth(), 1);
     return monthFirstDay.Format('yyyy-MM-dd');
+}
+
+/**
+ *
+ * @param permissionCode
+ * @returns {boolean}
+ */
+function hasPermission(permissionCode) {
+
+    var parent_win = window;
+    if (typeof(parent_win.is_admin) == "undefined" && opener) {
+        parent_win = opener.parent.window;
+        if (typeof(parent_win.is_admin) == "undefined" ) {
+            parent_win = opener.parent.window.parent.window;
+        }
+        if (typeof(parent_win.is_admin) == "undefined" ) {
+            parent_win = opener.parent.window.parent.window.parent.window;
+        }
+    }
+    if (typeof(parent_win.is_admin) == "undefined" ) {
+        parent_win = parent.window;
+    }
+    if (typeof(parent_win.is_admin) == "undefined" ) {
+        parent_win = parent.window.parent.window;
+    }
+    if (typeof(parent_win.is_admin) == "undefined" ) {
+        parent_win = parent.window.parent.window.parent.window;
+    }
+    if (parent_win.is_admin) {
+        return true;
+    }
+    var permissions = parent_win.staff_permission_codes;
+    for (var i = 0; i < permissions.length; i++) {
+//        alert(permissions[i] +"--"+permissionCode)
+        if (permissions[i] == permissionCode) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ *
+ * @param items
+ */
+function hasPermissionItems(items) {
+    if (items instanceof Array) {
+        for (var i = 0; i < items.length; i++) {
+            hasPermissionItem(items[i]);
+        }
+    } else {
+        hasPermissionItem(items);
+    }
+}
+
+/**
+ *
+ * @param item
+ */
+function hasPermissionItem(item) {
+    if (typeof(item) == 'string') {
+        item = $('#'+item);
+        if (item == null) {
+            return;
+        }
+    }
+    var pcode = item.attr('permission');
+    // console.log("pcode:"+pcode);
+    if (pcode == null || pcode == "") {
+        item.linkbutton('enable');
+    } else {
+        if (pcode instanceof Array) {
+            for (var j = 0; j < pcode.length; j++) {
+                var result = hasPermission(pcode[j]);
+                if (result) {
+                    item.linkbutton('enable');
+                    return;
+                }
+            }
+            item.linkbutton('disable');
+        } else {
+            var result = hasPermission(pcode);
+            if (!result) {
+                item.linkbutton('disable');
+            } else {
+                item.linkbutton('enable');
+            }
+
+        }
+    }
 }
