@@ -2,6 +2,8 @@ package com.erp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by wang_ on 2016-06-28.
@@ -49,6 +51,8 @@ public class StaffInfo implements Serializable {
 
     // 最后登录时间
     private Date lastLoginTime;
+
+    private Set<Permission> permissions = new HashSet<>();
 
     public long getStaffId() {
         return staffId;
@@ -168,6 +172,18 @@ public class StaffInfo implements Serializable {
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void addPermission(Permission permission) {
+        this.permissions.add(permission);
     }
 
     @Override

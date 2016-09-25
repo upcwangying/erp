@@ -68,6 +68,25 @@ public class Permission implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Permission that = (Permission) o;
+
+        if (permissionId != that.permissionId) return false;
+        return permissionCode.equals(that.permissionCode);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (permissionId ^ (permissionId >>> 32));
+        result = 31 * result + permissionCode.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Permission{" +
                 "permissionId=" + permissionId +
