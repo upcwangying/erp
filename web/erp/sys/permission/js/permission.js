@@ -72,7 +72,44 @@ function deletePermission() {
         $.messager.alert('提示', '未选中数据!', 'info');
         return;
     }
-    var row = rows[0];
+    var permissionId=[];
+    for (var i=0;i<rows.length;i++) {
+        permissionId.push(rows[i].permissionId);
+    }
+
+    $.messager.confirm('删除确认框', '，将同时删除角色中已分配的该权限信息，确定删除该权限吗?', function (r) {
+        if (r) {
+            deletePermission(permissionId);
+        }
+    });
+}
+
+/**
+ *
+ * @param permissionId
+ */
+function deletePermission(permissionId) {
+    $.ajax({
+        url: root + "/PermissionServlet",
+        type: 'post',
+        cache: false,
+        dataType: 'json',
+        traditional: true,
+        data: {
+            param: "delete",
+            permissionId: permissionId,
+            seq: $('#seq').val()
+        },
+        success: function (data) {
+            alert(data.msg);
+            if (data.success) {
+                queryPermission();
+            }
+        },
+        error: function () {
+            alert("网络错误！")
+        }
+    });
 }
 
 /**

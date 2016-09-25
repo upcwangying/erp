@@ -183,16 +183,9 @@ public class PermissionDaoImpl implements IPermissionDao {
     public void deletePermission(String[] permissionId) throws DAOException {
         Connection connection = JdbcUtil.getConnection();
         JdbcUtil.beginTranaction();
-        PreparedStatement ps = null;
         try {
-            String delete_sql = "update " + TableNameConstant.T_SYS_PERMISSION + " set " +
-                    "is_del='1' where permissionid=? ";
-            ps = connection.prepareStatement(delete_sql);
-            for (String permissionID : permissionId) {
-                ps.setLong(1, Long.valueOf(permissionID));
-                ps.addBatch();
-            }
-            ps.executeBatch();
+            deletePermission(connection, permissionId);
+            deleteRolePermissionByPermissionId(connection, permissionId);
             JdbcUtil.commit();
         } catch (Exception e) {
             JdbcUtil.rollback();
@@ -204,5 +197,43 @@ public class PermissionDaoImpl implements IPermissionDao {
                 JdbcUtil.close();
             }
         }
+    }
+
+    /**
+     * 删除
+     *
+     * @param connection
+     * @param permissionId
+     * @throws DAOException
+     */
+    private void deletePermission(Connection connection, String[] permissionId) throws SQLException {
+        String delete_sql = "update " + TableNameConstant.T_SYS_PERMISSION + " set " +
+                "is_del='1' where permissionid=? ";
+        PreparedStatement ps = connection.prepareStatement(delete_sql);
+        for (String permissionID : permissionId) {
+            ps.setLong(1, Long.valueOf(permissionID));
+            ps.addBatch();
+        }
+        ps.executeBatch();
+
+    }
+
+    /**
+     * 删除角色下分配的该权限
+     *
+     * @param connection
+     * @param permissionId
+     * @throws SQLException
+     */
+    private void deleteRolePermissionByPermissionId(Connection connection, String[] permissionId) throws SQLException {
+        String delete_sql = "update " + TableNameConstant.T_SYS_ROLE_PERMISSION + " set " +
+                "is_del='1' where permissionid=? ";
+        PreparedStatement ps = connection.prepareStatement(delete_sql);
+        for (String permissionID : permissionId) {
+            ps.setLong(1, Long.valueOf(permissionID));
+            ps.addBatch();
+        }
+        ps.executeBatch();
+
     }
 }

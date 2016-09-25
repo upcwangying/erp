@@ -126,7 +126,7 @@
 				        text: '删除',
 				        iconCls: 'icon-remove',
 				        handler: function () {
-				            <%--deletePermission();--%>
+				            deletePermission();
 				        }
 				    },
 				    '-'
