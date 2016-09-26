@@ -42,11 +42,11 @@ public class LineChart extends BaseChart{
                 RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         /*------------配置图表属性--------------*/
         // 1,设置整个图表背景颜色
-        chart.setBackgroundPaint(Color.pink);
+        chart.setBackgroundPaint(Color.white);
         /*------------设定Plot参数-------------*/
         CategoryPlot plot = chart.getCategoryPlot();
         // 2,设置详细图表的显示细节部分的背景颜色
-        plot.setBackgroundPaint(Color.PINK);
+        plot.setBackgroundPaint(Color.white);
         // 3,设置垂直网格线颜色
         plot.setDomainGridlinePaint(Color.black);
         // 4,设置是否显示垂直网格线

@@ -30,7 +30,9 @@ public class BarChart extends BaseChart{
                 this.getChartBean().isTooltips(),
                 this.getChartBean().isUrls()
         );
+        chart.setBackgroundPaint(Color.white);
         CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.white);
 
         // 设置无数据时的信息显示、显示颜色
         plot.setNoDataMessage(this.getChartBean().getNoDataMessage());

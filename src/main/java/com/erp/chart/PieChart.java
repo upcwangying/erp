@@ -25,7 +25,7 @@ public class PieChart extends BaseChart{
                 this.getChartBean().isTooltips(),
                 this.getChartBean().isUrls()
         );
-        chart.setBackgroundPaint(Color.pink);
+        chart.setBackgroundPaint(Color.white);
 
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
 
@@ -47,6 +47,7 @@ public class PieChart extends BaseChart{
         }
 
         plot.setLabelFont(new Font("SansSerif", Font.TRUETYPE_FONT, 12));
+        plot.setBackgroundPaint(Color.white);
 
         // 指定图片的透明度(0.0-1.0)
         plot.setForegroundAlpha(0.65f);
