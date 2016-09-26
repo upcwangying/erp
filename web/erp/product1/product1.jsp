@@ -39,6 +39,8 @@
             $("#product1").datagrid('hideColumn', "productId");
             $("#product1").datagrid('hideColumn', "jldwid");
             $("#product1-grid").datagrid('hideColumn', "dbid");
+
+            hasPermissionItems(["addProduct","updateProduct","deleteProduct","up","down","deletePics","resumePics"]);
         });
     </script>
 </head>
@@ -73,7 +75,12 @@
 				        $('#product1-tree-menu').menu('disableItem', $('#uploadPic'));
                     } else {
                         $('#product1-tree-menu').menu('enableItem', $('#openWindow'));
-                        $('#product1-tree-menu').menu('enableItem', $('#uploadPic'));
+                        if(hasPermission($('#uploadPic').attr('permission'))) {
+                            $('#product1-tree-menu').menu('enableItem', $('#uploadPic'));
+                        } else {
+                            $('#product1-tree-menu').menu('disableItem', $('#uploadPic'));
+                        }
+
                     }
 				}
 			">
@@ -112,18 +119,25 @@
 <input type="hidden" id="productId" name="productId"/>
 
 <div id="product1-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="queryProdtct" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryProdtct()">查询</a>
-    <a href="javascript:void(0)" id="addProduct" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addProduct()">添加</a>
-    <a href="javascript:void(0)" id="updateProduct" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateProduct()">编辑</a>
-    <a href="javascript:void(0)" id="up" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="upProduct()">上架</a>
-    <a href="javascript:void(0)" id="down" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="downProduct()">下架</a>
-    <a href="javascript:void(0)" id="deleteProduct" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteProduct()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="addProduct" permission="product_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addProduct()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="updateProduct" permission="product_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateProduct()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="up" permission="product_up" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="upProduct()">上架</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="down" permission="product_down" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="downProduct()">下架</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="deleteProduct" permission="product_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteProduct()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 
 <div id="product1-tree-menu" class="easyui-menu" style="width:120px;">
     <div onclick="lookPic()" id="lookPic" data-options="iconCls:'icon-remove'">查看图片</div>
     <div class="menu-sep"></div>
-    <div onclick="uploadPic()" id="uploadPic" data-options="iconCls:'icon-add'">上传图片</div>
+    <div onclick="uploadPic()" id="uploadPic" permission="product_pic_upload" data-options="iconCls:'icon-add'">上传图片</div>
     <div class="menu-sep"></div>
     <div onclick="openWindow()" id="openWindow" data-options="iconCls:'icon-remove'">删除图片</div>
 </div>
@@ -239,10 +253,15 @@
 </div>
 
 <div id="product1-tb-grid" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="queryPics" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryPics()">查询</a>
-    <a href="javascript:void(0)" id="deletePics" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deletePics()">删除</a>
-    <a href="javascript:void(0)" id="resumePics" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="resumePics()">恢复</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="deletePics" permission="product_pic_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deletePics()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="resumePics" permission="product_pic_resume" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="resumePics()">恢复</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="closeWindow" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="closeWindow()">关闭窗口</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 
 </body>
