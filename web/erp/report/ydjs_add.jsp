@@ -10,6 +10,10 @@
     String websocket_enable = SystemConfig.getValue("websocket.enable");
     StaffInfo staffInfo = (StaffInfo) session.getAttribute("staffinfo");
     String initYJ = (String) application.getAttribute("initYJ");
+
+    StringBuffer basePath = new StringBuffer();
+    basePath.append("ws://").append(request.getLocalAddr());
+    basePath.append(":").append(request.getLocalPort()).append(request.getContextPath()).append("/");
 %>
 <html>
 <head>
@@ -37,6 +41,8 @@
         var staffId = '<%= staffInfo.getStaffId()%>';
         var initYJ = '<%= initYJ%>';
         var ws_enable = '<%= websocket_enable%>';
+        var ws_base_url= '<%= basePath.toString()%>';
+        var init_flag = true;
 
         $(document).ready(function () {
             $("#ydjs-add").datagrid('hideColumn', "dbid");
@@ -47,6 +53,7 @@
                 closeYjDialog();
             } else {
                 if (!hasPermission('ydjs_init')) {
+                    init_flag = false;
                     closeYjDialog();
                     $("#addYdjs").linkbutton("disable");
                     $("#updateYdjs").linkbutton("disable");
@@ -62,7 +69,7 @@
                 console.log("WebSocket服务未启用！");
                 return;
             }
-            var url = "ws://localhost:8080/erp/websocket/" + staffId + "/" + is_init;
+            var url = ws_base_url+"websocket/" + staffId + "/" + init_flag;
             //判断当前浏览器是否支持WebSocket
             if('WebSocket' in window) {
                 websocket = new WebSocket(url);
