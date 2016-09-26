@@ -179,6 +179,7 @@ function openRoleDialog(type) {
     $('#roleCode').textbox('setValue', '');
     $('#roleName').textbox('setValue', '');
     $('#roleDesc').textbox('setValue', '');
+    $('#roleGroupCode').combobox('setValue', '');
 }
 
 /**
@@ -188,6 +189,7 @@ function closeRoleDialog() {
     $('#roleCode').textbox('setValue', '');
     $('#roleName').textbox('setValue', '');
     $('#roleDesc').textbox('setValue', '');
+    $('#roleGroupCode').combobox('setValue', '');
     $('#role-dlg').dialog('close');
 }
 
