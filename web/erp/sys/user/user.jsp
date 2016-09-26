@@ -37,6 +37,8 @@
             $("#user-query").datagrid('hideColumn', "styleId");
             $("#user-query").datagrid('hideColumn', "roleId");
             $("#user-query").datagrid('hideColumn', "modules");
+
+            hasPermissionItems(["user-add","user-update","user-delete"]);
         });
     </script>
 
@@ -54,41 +56,7 @@
 				queryParams:{
                     seq: $('#seq').val()
                 },
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-                            queryUser();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-                            openUserDialog('add');
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-                            updateUser();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-                            deleteUser();
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#user-tb'
 			">
     <thead>
     <tr>
@@ -110,6 +78,18 @@
     </tr>
     </thead>
 </table>
+
+<div id="user-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="user-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryUser()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="user-add" permission="user_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openUserDialog('add')">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="user-update" permission="user_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateUser()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="user-delete" permission="user_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteUser()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+</div>
 
 <div id="user-dlg" class="easyui-dialog" title="用户增加" style="width:450px;height:350px;padding:10px"
      data-options="

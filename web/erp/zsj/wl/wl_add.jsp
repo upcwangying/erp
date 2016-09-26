@@ -26,12 +26,15 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/zsj/wl/js/wl.js?version=<%= version%>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
 
     <script>
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
         $(document).ready(function () {
             $("#wl-add").datagrid('hideColumn', "wlId");
+
+            hasPermissionItems(["wl-add-button","wl-update","wl-delete"]);
         });
     </script>
 </head>
@@ -45,55 +48,32 @@
 				singleSelect: false,
 				url:'<%= request.getContextPath()%>/combo/ComboBoxServlet?param=wl-query',
 				method: 'post',
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-				            queryAddWl();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-                            openWlDialog('add');
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-				            updateWl();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deleteWl();
-				        }
-				    },
-				    '-'
-				],
+				toolbar: '#wl-tb',
 				rownumbers:true,
 				method: 'post'
 			">
     <thead>
     <tr>
-
         <th data-options="field:'wlId',width:80">主键</th>
         <%--<th data-options="field:'wlbm',width:80">物料编码</th>--%>
         <th data-options="field:'wlmc',width:100,editor:'textbox'">物料名称</th>
         <th data-options="field:'wlms',width:100,editor:'textbox'">物料描述</th>
-
     </tr>
     </thead>
 </table>
+
+<div id="wl-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="wl-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddWl()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="wl-add-button" permission="wl-add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openWlDialog('add')">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="wl-update" permission="wl-update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateWl()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="wl-delete" permission="wl-delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteWl()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+</div>
+
 
 <div id="wl-dlg" class="easyui-dialog" title="物料增加" style="width:400px;height:200px;padding:10px"
      data-options="

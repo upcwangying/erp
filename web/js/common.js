@@ -563,12 +563,28 @@ function hasPermission(permissionCode) {
  * @param items
  */
 function hasPermissionItems(items) {
+    hasPermissionItemsByButtonType(items, 'linkbutton');
+}
+
+/**
+ *
+ * @param items
+ */
+function hasPermissionItemsByButtonType(items, buttonType, menuId) {
     if (items instanceof Array) {
         for (var i = 0; i < items.length; i++) {
-            hasPermissionItem(items[i]);
+            hasPermissionItemByButtonType(items[i], buttonType, menuId);
         }
     } else {
-        hasPermissionItem(items);
+        hasPermissionItemByButtonType(items, buttonType, menuId);
+    }
+}
+
+function hasPermissionItemByButtonType(items, buttonType, menuId) {
+    if (buttonType == 'linkbutton') {
+        hasLinkButtonPermissionItem(items);
+    } else if (buttonType == 'menu') {
+        hasMenuPermissionItem(items, menuId)
     }
 }
 
@@ -576,7 +592,7 @@ function hasPermissionItems(items) {
  *
  * @param item
  */
-function hasPermissionItem(item) {
+function hasLinkButtonPermissionItem(item) {
     if (typeof(item) == 'string') {
         item = $('#'+item);
         if (item == null) {
@@ -603,6 +619,44 @@ function hasPermissionItem(item) {
                 item.linkbutton('disable');
             } else {
                 item.linkbutton('enable');
+            }
+
+        }
+    }
+}
+
+/**
+ *
+ * @param item
+ * @param menuId
+ */
+function hasMenuPermissionItem(item, menuId) {
+    if (typeof(item) == 'string') {
+        item = $('#'+item);
+        if (item == null) {
+            return;
+        }
+    }
+    var pcode = item.attr('permission');
+    console.log("pcode:"+pcode);
+    if (pcode == null || pcode == "") {
+        $('#'+menuId).menu('enableItem', item);
+    } else {
+        if (pcode instanceof Array) {
+            for (var j = 0; j < pcode.length; j++) {
+                var result = hasPermission(pcode[j]);
+                if (result) {
+                    $('#'+menuId).menu('enableItem', item);
+                    return;
+                }
+            }
+            $('#'+menuId).menu('disableItem', item);
+        } else {
+            var result = hasPermission(pcode);
+            if (!result) {
+                $('#'+menuId).menu('disableItem', item);
+            } else {
+                $('#'+menuId).menu('enableItem', item);
             }
 
         }

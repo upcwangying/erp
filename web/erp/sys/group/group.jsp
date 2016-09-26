@@ -37,7 +37,10 @@
             $("#group-query").datagrid('hideColumn', "groupId");
             $("#group-query").datagrid('hideColumn', "module");
             $("#group-query").datagrid('hideColumn', "modules");
+//            console.log($('#group-search').attr('permission'));
+            hasPermissionItems(["group-add","group-update","group-delete"]);
         });
+
     </script>
 
 </head>
@@ -54,41 +57,7 @@
 				<%--queryParams:{--%>
                     <%--seq: $('#seq').val()--%>
                 <%--},--%>
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-                            queryGroup();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-				            addGroup();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-				            updateGroup();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            <%--deleteGroup();--%>
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#group-tb'
 			">
     <thead>
     <tr>
@@ -101,6 +70,34 @@
     </tr>
     </thead>
 </table>
+
+<div id="group-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="group-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryGroup()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="group-add" permission="group_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addGroup()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="group-update" permission="group_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateGroup()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="group-delete" permission="group_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteGroup()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+</div>
+
+<%--<div id="toolbar">--%>
+    <%--<table cellspacing="0" cellpadding="0">--%>
+        <%--<tr>--%>
+            <%--<td>--%>
+                <%--<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onClick="javascript:addNew();">新增</a>--%>
+            <%--</td>--%>
+            <%--<td>--%>
+                <%--<div class="datagrid-btn-separator"></div>--%>
+            <%--</td>--%>
+            <%--<td>--%>
+                <%--<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onClick="javascript:updateInfo();">修改</a>--%>
+            <%--</td>--%>
+        <%--</tr>--%>
+    <%--</table>--%>
+<%--</div>--%>
 
 <div id="group-dlg" class="easyui-dialog" title="增加组" style="width:500px;height:400px;padding:10px"
      data-options="

@@ -26,6 +26,7 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
 
     <script type="text/javascript" src="<%= request.getContextPath()%>/erp/zsj/gys/js/gys.js?version=<%= version%>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/common.js?version=<%= version%>"></script>
 
     <script>
         var root = '<%= request.getContextPath()%>';
@@ -33,6 +34,8 @@
 
         $(document).ready(function () {
             $("#gys-add").datagrid('hideColumn', "gysId");
+
+            hasPermissionItems(["gys-add-button","gys-update","gys-delete"]);
         });
     </script>
 </head>
@@ -45,57 +48,32 @@
 				iconCls: 'icon-edit',
 				singleSelect: false,
 				rownumbers:true,
-				<%--toolbar: '#gys-add-bar',--%>
 				url:'<%= request.getContextPath()%>/combo/ComboBoxServlet?param=gys-query',
 				method: 'post',
 				<%--onClickCell: onClickGysCell,--%>
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-				            queryAddGys();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-                            openGysDialog('add');
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-				            updateGys();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deleteGys();
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#gys-tb'
 			">
     <thead>
     <tr>
-
         <th data-options="field:'gysId',width:80"></th>
         <%--<th data-options="field:'gysbm',width:80">供应商编码</th>--%>
         <th data-options="field:'gysmc',width:100,editor:'textbox'">供应商名称</th>
         <th data-options="field:'gysms',width:100,editor:'textbox'">供应商描述</th>
-
     </tr>
     </thead>
 </table>
+
+<div id="gys-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="gys-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddGys()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="gys-add-button" permission="gys-add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openGysDialog('add')">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="gys-update" permission="gys-update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateGys()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="gys-delete" permission="gys-delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteGys()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+</div>
 
 <div id="gys-dlg" class="easyui-dialog" title="供应商增加" style="width:400px;height:200px;padding:10px"
      data-options="

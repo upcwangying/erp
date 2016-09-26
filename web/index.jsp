@@ -24,6 +24,8 @@
         var staffId = '<%= staffInfo.getStaffId()%>';
         var is_init = '<%= staffInfo.getIsInit()%>';
         var modules = '<%= staffInfo.getModules()%>';
+//        var is_admin=false;
+        var staff_permission_codes=['group-search','group-del','module-add', 'module_update'];
 
         console.log(modules);
         $(document).ready(function () {
