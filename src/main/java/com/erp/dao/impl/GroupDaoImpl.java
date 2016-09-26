@@ -204,8 +204,8 @@ public class GroupDaoImpl implements IGroupDao {
                     "where groupid=? ";
             ps = connection.prepareStatement(delete_sql);
             for (String groupID : groupId) {
-                ps.setLong(1, Long.valueOf(groupID));
-                ps.setLong(2, Long.valueOf(update_staffId));
+                ps.setLong(1, Long.valueOf(update_staffId));
+                ps.setLong(2, Long.valueOf(groupID));
                 ps.addBatch();
             }
             ps.executeBatch();
