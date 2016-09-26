@@ -55,6 +55,8 @@
 				    $(this).treegrid('select',row.id);
 				    if(hasPermission('module_update')) {
 				        editNode(row);
+				    } else {
+				        alert('您没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！');
 				    }
 				},
 				onContextMenu: function(e, row){
@@ -71,6 +73,9 @@
                     } else {
                         if(hasPermission($('#addItem').attr('permission'))) {
                             $('#module-tree-menu').menu('enableItem', $('#addItem'));
+                        } else {
+                            $('#module-tree-menu').menu('disableItem', $('#addItem'));
+                            <%--console.log('您没有增加权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
                         }
                     }
 
@@ -80,6 +85,7 @@
                             $('#module-tree-menu').menu('enableItem', $('#deleteItem'));
                         } else {
                             $('#module-tree-menu').menu('disableItem', $('#deleteItem'));
+                            <%--console.log('您没有删除权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
                         }
                     } else {
                         $('#module-tree-menu').menu('disableItem', $('#deleteItem'));
@@ -87,6 +93,7 @@
                             $('#module-tree-menu').menu('enableItem', $('#resumeItem'));
                         } else {
                             $('#module-tree-menu').menu('disableItem', $('#resumeItem'));
+                            <%--console.log('您没有数据恢复权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
                         }
                     }
 				}
