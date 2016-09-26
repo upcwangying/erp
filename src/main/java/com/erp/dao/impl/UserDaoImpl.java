@@ -1,6 +1,8 @@
 package com.erp.dao.impl;
 
 import com.erp.dao.IUserDao;
+import com.erp.entity.Permission;
+import com.erp.entity.RolePermission;
 import com.erp.entity.StaffInfo;
 import com.erp.exception.DAOException;
 import com.erp.util.*;
@@ -9,8 +11,11 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wang_ on 2016-06-28.
@@ -46,6 +51,8 @@ public class UserDaoImpl implements IUserDao {
             rst = ps.executeQuery();
             while (rst.next()) {
                 staffInfo = new StaffInfo();
+                long roleId = rst.getLong("roleid");
+                Set<Permission> permissionSet = queryPermission(connection, roleId);
                 staffInfo.setStaffId(rst.getLong("staffid"));
                 staffInfo.setStaffCode(staffCode);
                 staffInfo.setStaffName(rst.getString("staffname"));
@@ -55,9 +62,10 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setDelete(true);
                 staffInfo.setStyleId(rst.getLong("styleid"));
                 staffInfo.setStyle(rst.getString("style"));
-                staffInfo.setRoleId(rst.getLong("roleid"));
+                staffInfo.setRoleId(roleId);
                 staffInfo.setRoleName(rst.getString("rolename"));
                 staffInfo.setModules(rst.getString("modules"));
+                staffInfo.setPermissions(permissionSet);
                 staffInfo.setCreateDate(rst.getDate("create_date"));
                 staffInfo.setUpdateDate(rst.getDate("update_date"));
                 staffInfo.setLastLoginTime(rst.getDate("last_login_time"));
@@ -305,6 +313,36 @@ public class UserDaoImpl implements IUserDao {
             ps.setLong(6, staffInfo.getStaffId());
         }
         ps.execute();
+    }
+
+    /**
+     * 查询角色对应的权限
+     *
+     * @param connection
+     * @param roleId
+     * @throws SQLException
+     */
+    private Set<Permission> queryPermission(Connection connection, long roleId) throws SQLException {
+        Set<Permission> permissionSet = new HashSet<>();
+        String query_sql = "select rp.dbid,rp.roleid,rp.permissionid,rp.is_del," +
+                "p.permissioncode,p.permissionname,p.permissiondesc " +
+                "from " + TableNameConstant.T_SYS_ROLE_PERMISSION + " rp " +
+                "left join " + TableNameConstant.T_SYS_PERMISSION + " p  " +
+                "on rp.permissionid=p.permissionid and p.is_del='0' " +
+                "where rp.is_del='0' and rp.roleid=? ";
+        PreparedStatement ps = connection.prepareStatement(query_sql);
+        ps.setLong(1, roleId);
+        ResultSet rst = ps.executeQuery();
+        while (rst.next()) {
+            Permission permission = new Permission();
+            permission.setPermissionId(rst.getLong("permissionid"));
+            permission.setPermissionCode(rst.getString("permissioncode"));
+            permission.setPermissionName(rst.getString("permissionname"));
+            permission.setPermissionDesc(rst.getString("permissiondesc"));
+            permissionSet.add(permission);
+        }
+
+        return permissionSet;
     }
 
 }
