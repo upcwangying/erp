@@ -36,12 +36,14 @@
         $(document).ready(function () {
             $("#role-query").datagrid('hideColumn', "roleId");
             $("#role-query").datagrid('hideColumn', "groupId");
+
+            hasPermissionItems(["role-add","role-update","role-delete","role_permission_add","role_permission_delete"]);
         });
-        $(function () {
-            $("#roleGroupCode").bind('click', function(){
-                alert("绑定单击事件");
-            });
-        });
+//        $(function () {
+//            $("#roleGroupCode").bind('click', function(){
+//                alert("绑定单击事件");
+//            });
+//        });
     </script>
 </head>
 <body>
@@ -66,41 +68,7 @@
                         top: e.pageY
                     });
                 },
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-                            queryRole();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-				            addRole();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-				            updateRole();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            <%--deleteRole();--%>
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#role-tb'
 			">
     <thead>
     <tr>
@@ -115,6 +83,18 @@
     </tr>
     </thead>
 </table>
+
+<div id="role-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="role-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryRole()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="role-add" permission="role_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addRole()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="role-update" permission="role_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateRole()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="role-delete" permission="role_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteRole()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+</div>
 
 <div id="role-tree-menu" class="easyui-menu" style="width:120px;">
     <div onclick="addRolePermission()" id="addRolePermission" data-options="iconCls:'icon-add'">分配权限</div>
@@ -223,7 +203,7 @@
 				    '-',
 				    {
 				        text: '添加',
-				        iconCls: 'icon-save',
+				        iconCls: 'icon-add',
 				        handler: function () {
                             addPermissionToRole();
 				        }
@@ -269,41 +249,7 @@
 			            // return {class:'r1', style:{'color:#fff'}};
 		            }
 	            },
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-				            queryRolePermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '保存',
-				        iconCls: 'icon-save',
-				        handler: function () {
-				            saveRolePermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deleteRolePermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '取消',
-				        iconCls: 'icon-undo',
-				        handler: function () {
-				            closeRolePermissionDialog();
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#role-permission-tb'
 			">
                 <thead>
                 <tr>
@@ -315,6 +261,19 @@
                 </tr>
                 </thead>
             </table>
+
+            <div id="role-permission-tb" style="height:auto">
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+                <a href="javascript:void(0)" id="role-permission-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryRolePermission()">查询</a>
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+                <a href="javascript:void(0)" id="role-permission-add" permission="role_permission_add" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="saveRolePermission()">添加</a>
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+                <a href="javascript:void(0)" id="role-permission-delete" permission="role_permission_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteRolePermission()">删除</a>
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+                <a href="javascript:void(0)" id="role-permission-undo" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="closeRolePermissionDialog()">取消</a>
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+            </div>
+
         </div>
     </div>
 </div>

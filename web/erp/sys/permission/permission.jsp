@@ -36,8 +36,9 @@
         $(document).ready(function () {
             $("#permission-query").datagrid('hideColumn', "permissionId");
             $("#permission-query").datagrid('hideColumn', "moduleId");
-        });
 
+            hasPermissionItems(["permission-add","permission-update","permission-delete"]);
+        });
     </script>
 </head>
 
@@ -96,41 +97,7 @@
 				<%--queryParams:{--%>
                     <%--seq: $('#seq').val()--%>
                 <%--},--%>
-				toolbar: [
-				    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-                            queryPermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-				            addPermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '修改',
-				        iconCls: 'icon-edit',
-				        handler: function () {
-				            updatePermission();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-				            deletePermission();
-				        }
-				    },
-				    '-'
-				]
+				toolbar: '#permission-tb'
 			">
         <thead>
         <tr>
@@ -142,6 +109,18 @@
         </tr>
         </thead>
     </table>
+
+    <div id="permission-tb" style="height:auto">
+        <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+        <a href="javascript:void(0)" id="permission-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryPermission()">查询</a>
+        <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+        <a href="javascript:void(0)" id="permission-add" permission="permission_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addPermission()">添加</a>
+        <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+        <a href="javascript:void(0)" id="permission-update" permission="permission_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updatePermission()">编辑</a>
+        <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+        <a href="javascript:void(0)" id="permission-delete" permission="permission_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deletePermission()">删除</a>
+        <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    </div>
 
     <div id="permission-dlg" class="easyui-dialog" title="权限增加" style="width:400px;height:300px;padding:10px"
          data-options="

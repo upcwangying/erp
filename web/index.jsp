@@ -25,9 +25,18 @@
         var is_init = '<%= staffInfo.getIsInit()%>';
         var modules = '<%= staffInfo.getModules()%>';
 //        var is_admin=false;
-        var staff_permission_codes=['group-search','group-del','module-add', 'module_update'];
+        var staff_permission_codes=[];
+        <%
+            for (Permission permission : staffInfo.getPermissions()) {
+                String permissionCode=permission.getPermissionCode();
+        %>
+                staff_permission_codes.push('<%= permissionCode%>');
+        <%
+            }
+        %>
 
-        console.log(modules);
+        console.log("staff_permission_codes:"+staff_permission_codes);
+        console.log("modules:"+modules);
         $(document).ready(function () {
             $('#tabs').tabs({
                 onClose:function (title) {
