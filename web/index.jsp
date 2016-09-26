@@ -23,7 +23,7 @@
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
         var modules = '<%= staffInfo.getModules()%>';
-//        var is_admin=false;
+        var is_admin=false;
         var staff_permission_codes=[];
         <%
             for (Permission permission : staffInfo.getPermissions()) {
