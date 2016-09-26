@@ -22,7 +22,6 @@
     <script type="text/javascript">
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
-        var is_init = '<%= staffInfo.getIsInit()%>';
         var modules = '<%= staffInfo.getModules()%>';
 //        var is_admin=false;
         var staff_permission_codes=[];
