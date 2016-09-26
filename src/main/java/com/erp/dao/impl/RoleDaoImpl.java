@@ -40,10 +40,10 @@ public class RoleDaoImpl implements IRoleDao {
             String query_sql = "select r.roleid,r.rolecode,r.rolename,r.roledesc," +
                     "r.groupid,r.is_del as r_is_del,r.is_init_permission,g.groupname,g.modules," +
                     "p1.permissionids from " + TableNameConstant.T_SYS_ROLE + " r " +
-                    "left join " +TableNameConstant.T_SYS_MODULE_GROUP+ " g on r.groupid=g.groupid " +
+                    "left join " +TableNameConstant.T_SYS_MODULE_GROUP+ " g on r.groupid=g.groupid and g.is_del='0' " +
                     "left join (select count(p.permissionid) as permissionids,p.roleid from "+
                     TableNameConstant.T_SYS_ROLE_PERMISSION+" p where p.is_del='0' group by p.roleid) p1 " +
-                    "on r.roleid=p1.roleid where r.is_del='0' and g.is_del='0' ";
+                    "on r.roleid=p1.roleid where r.is_del='0' ";
             ps = connection.prepareStatement(query_sql);
             rst = ps.executeQuery();
             while (rst.next()) {
@@ -88,8 +88,8 @@ public class RoleDaoImpl implements IRoleDao {
             String query_sql = "select r.roleid,r.rolecode,r.rolename,r.roledesc," +
                     "r.groupid,r.is_del as r_is_del,r.is_init_permission,g.groupname " +
                     "from " + TableNameConstant.T_SYS_ROLE + " r " +
-                    "left join " +TableNameConstant.T_SYS_MODULE_GROUP+ " g on r.groupid=g.groupid " +
-                    "where r.is_del='0' and g.is_del='0' and r.rolecode=? and (0=? or r.roleid!=?) ";
+                    "left join " +TableNameConstant.T_SYS_MODULE_GROUP+ " g on r.groupid=g.groupid and g.is_del='0' " +
+                    "where r.is_del='0' and r.rolecode=? and (0=? or r.roleid!=?) ";
             ps = connection.prepareStatement(query_sql);
             ps.setString(1, roleCode);
             ps.setInt(2, StringUtil.isEmpty(roleId)?0:1);
