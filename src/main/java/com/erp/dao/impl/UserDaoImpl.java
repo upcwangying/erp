@@ -37,8 +37,8 @@ public class UserDaoImpl implements IUserDao {
         ResultSet rst = null;
         StaffInfo staffInfo = null;
         try {
-            String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.is_init," +
-                    "s.styleid,style.style,s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
+            String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.styleid,style.style," +
+                    "s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
                     "from "+TableNameConstant.STAFFINFO+" s " +
                     "left join "+TableNameConstant.STYLE+" style on s.styleid=style.styleid " +
                     "left join "+TableNameConstant.T_SYS_ROLE+" role on s.roleid=role.roleid and role.is_del='0' " +
@@ -58,7 +58,6 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setStaffName(rst.getString("staffname"));
                 staffInfo.setPassword(rst.getString("password"));
                 staffInfo.setTelephone(rst.getString("telphone"));
-                staffInfo.setIsInit(rst.getString("is_init"));
                 staffInfo.setDelete(true);
                 staffInfo.setStyleId(rst.getLong("styleid"));
                 staffInfo.setStyle(rst.getString("style"));
@@ -126,8 +125,8 @@ public class UserDaoImpl implements IUserDao {
         ResultSet rst = null;
         List<StaffInfo> staffInfoList = new ArrayList<StaffInfo>();
         try {
-            String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.is_init," +
-                    "s.styleid,style.style,s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
+            String sql = "select s.staffid,s.staffcode,s.staffname,s.password,s.telphone,s.styleid,style.style," +
+                    "s.roleid,role.rolename,g.modules,s.create_date,s.update_date,s.last_login_time " +
                     "from "+TableNameConstant.STAFFINFO+" s " +
                     "left join "+TableNameConstant.STYLE+" style on s.styleid=style.styleid " +
                     "left join "+TableNameConstant.T_SYS_ROLE+" role on s.roleid=role.roleid and role.is_del='0' " +
@@ -144,7 +143,6 @@ public class UserDaoImpl implements IUserDao {
                 staffInfo.setStaffName(rst.getString("staffname"));
                 staffInfo.setPassword(rst.getString("password"));
                 staffInfo.setTelephone(rst.getString("telphone"));
-                staffInfo.setIsInit(rst.getString("is_init"));
                 staffInfo.setDelete(false);
                 staffInfo.setStyleId(rst.getLong("styleid"));
                 staffInfo.setStyle(rst.getString("style"));
@@ -264,12 +262,12 @@ public class UserDaoImpl implements IUserDao {
      */
     private void insertUserData(Connection connection, StaffInfo staffInfo) throws Exception {
         StringBuffer insert_sql = new StringBuffer("insert into ");
-        insert_sql.append(TableNameConstant.STAFFINFO).append("(staffcode,staffname,password,telphone,is_init,is_del,styleid,");
+        insert_sql.append(TableNameConstant.STAFFINFO).append("(staffcode,staffname,password,telphone,is_del,styleid,");
         if (staffInfo.getRoleId() != 0) {
             insert_sql.append("roleid,");
         }
         insert_sql.append("create_date,update_date) ");
-        insert_sql.append("values (?,?,?,?,'0','0',?,");
+        insert_sql.append("values (?,?,?,?,'0',?,");
         if (staffInfo.getRoleId() != 0) {
             insert_sql.append("?,");
         }

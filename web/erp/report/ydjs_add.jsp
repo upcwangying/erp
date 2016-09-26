@@ -35,17 +35,18 @@
     <script>
         var root = '<%= request.getContextPath()%>';
         var staffId = '<%= staffInfo.getStaffId()%>';
-        var is_init = '<%= staffInfo.getIsInit()%>';
         var initYJ = '<%= initYJ%>';
         var ws_enable = '<%= websocket_enable%>';
 
         $(document).ready(function () {
             $("#ydjs-add").datagrid('hideColumn', "dbid");
 
+            hasPermissionItems(["addYdjs","updateYdjs","deleteYdjs"]);
+
             if (initYJ == "1") {
                 closeYjDialog();
             } else {
-                if (is_init == "0") {
+                if (!hasPermission('ydjs_init')) {
                     closeYjDialog();
                     $("#addYdjs").linkbutton("disable");
                     $("#updateYdjs").linkbutton("disable");
@@ -154,11 +155,17 @@
 </table>
 
 <div id="tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="queryAddYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddYdjs()">查询</a>
-    <a href="javascript:void(0)" id="addYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addYdjs()">添加</a>
-    <a href="javascript:void(0)" id="updateYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateYdjs()">编辑</a>
-    <a href="javascript:void(0)" id="deleteYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteYdjs()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="addYdjs" permission="ydjs_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addYdjs()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="updateYdjs" permission="ydjs_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateYdjs()">编辑</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="deleteYdjs" permission="ydjs_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteYdjs()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="filterYdjs" class="easyui-linkbutton" data-options="iconCls:'icon-filter',plain:true" onclick="ydjsAll()">过滤</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 
 <div id="yj-dlg" class="easyui-dialog" title="初始化" style="width:450px;height:300px;padding:10px"

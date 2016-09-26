@@ -25,9 +25,6 @@ public class StaffInfo implements Serializable {
     // 手机号
     private String telephone;
 
-    // 是否有初始化月结权限,1为有，0为没有
-    private String isInit;
-
     // 是否删除
     private boolean delete;
 
@@ -92,14 +89,6 @@ public class StaffInfo implements Serializable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public String getIsInit() {
-        return isInit;
-    }
-
-    public void setIsInit(String isInit) {
-        this.isInit = isInit;
     }
 
     public boolean isDelete() {
@@ -194,7 +183,6 @@ public class StaffInfo implements Serializable {
                 ", staffName='" + staffName + '\'' +
                 ", password='" + password + '\'' +
                 ", telephone='" + telephone + '\'' +
-                ", isInit='" + isInit + '\'' +
                 ", delete=" + delete +
                 ", styleId=" + styleId +
                 ", style='" + style + '\'' +
