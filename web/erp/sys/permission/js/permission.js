@@ -77,9 +77,9 @@ function deletePermission() {
         permissionId.push(rows[i].permissionId);
     }
 
-    $.messager.confirm('删除确认框', '，将同时删除角色中已分配的该权限信息，确定删除该权限吗?', function (r) {
+    $.messager.confirm('删除确认框', '将同时删除角色中已分配的该权限信息，确定删除该权限吗?', function (r) {
         if (r) {
-            deletePermission(permissionId);
+            deletePermissions(permissionId);
         }
     });
 }
@@ -88,7 +88,7 @@ function deletePermission() {
  *
  * @param permissionId
  */
-function deletePermission(permissionId) {
+function deletePermissions(permissionId) {
     $.ajax({
         url: root + "/PermissionServlet",
         type: 'post',
