@@ -54,6 +54,10 @@ function endReportEdit() {
  * @param field
  */
 function onClickReportCell(index, field) {
+    if (!hasPermission('report_update')) {
+        alert('没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！');
+        return;
+    }
     if (editReportIndex != index){
         if (endReportEditing()) {
             $('#report-add').datagrid('selectRow', index)
@@ -163,7 +167,7 @@ function deleteReport() {
         return;
     }
     if (delrows.length == 0) {
-        $.messager.alert('提示','没有修改的数据!','info');
+        $.messager.alert('提示','没有删除的数据!','info');
         return;
     }
 

@@ -30,6 +30,8 @@
 
         $(document).ready(function () {
             $("#report-add").datagrid('hideColumn', "dbid");
+
+            hasPermissionItems(["report-add-button","report-save-button","report-delete"]);
         });
 
     </script>
@@ -50,64 +52,7 @@
                 },
 				onDblClickCell: onClickReportCell,
 				onEndEdit: onEndReportEdit,
-				onRowContextMenu: function(e, rowIndex, rowData) {
-                    e.preventDefault();
-                    $('#report-menu').menu('show', {
-                        left: e.pageX,
-                        top: e.pageY
-                    });
-                },
-                toolbar: [
-                    '-',
-				    {
-				        text: '查询',
-				        iconCls: 'icon-search',
-				        handler: function () {
-				            queryAddReport();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '添加',
-				        iconCls: 'icon-add',
-				        handler: function () {
-                            appendReport();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '保存',
-				        iconCls: 'icon-save',
-				        handler: function () {
-                            saveReport();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '确认修改',
-				        iconCls: 'icon-ok',
-				        handler: function () {
-                            endReportEdit();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '取消修改',
-				        iconCls: 'icon-undo',
-				        handler: function () {
-                            rejectReport();
-				        }
-				    },
-				    '-',
-				    {
-				        text: '删除',
-				        iconCls: 'icon-remove',
-				        handler: function () {
-                            deleteReport();
-				        }
-				    },
-				    '-'
-                ]
+                toolbar: '#report-tb'
 			">
     <thead>
     <tr>
@@ -151,8 +96,20 @@
     </thead>
 </table>
 
-<div id="report-menu" class="easyui-menu" style="width:120px;">
-    <div onclick="endReportEdit()" data-options="iconCls:'icon-ok'">确认修改</div>
+<div id="report-tb" style="height:auto">
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddReport()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-add-button" permission="report_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="appendReport()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-save-button" permission="report_save" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="saveReport()">保存</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-update_ok" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" onclick="endReportEdit()">确认修改</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-update_undo" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="rejectReport()">取消修改</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+    <a href="javascript:void(0)" id="report-delete" permission="report_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteReport()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 
 </body>
