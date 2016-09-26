@@ -67,11 +67,11 @@
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="gys-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddGys()">查询</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="gys-add-button" permission="gys-add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openGysDialog('add')">添加</a>
+    <a href="javascript:void(0)" id="gys-add-button" permission="gys_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openGysDialog('add')">添加</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="gys-update" permission="gys-update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateGys()">编辑</a>
+    <a href="javascript:void(0)" id="gys-update" permission="gys_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateGys()">编辑</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="gys-delete" permission="gys-delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteGys()">删除</a>
+    <a href="javascript:void(0)" id="gys-delete" permission="gys_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteGys()">删除</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 

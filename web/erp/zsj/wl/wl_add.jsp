@@ -66,11 +66,11 @@
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
     <a href="javascript:void(0)" id="wl-search" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="queryAddWl()">查询</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="wl-add-button" permission="wl-add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openWlDialog('add')">添加</a>
+    <a href="javascript:void(0)" id="wl-add-button" permission="wl_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openWlDialog('add')">添加</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="wl-update" permission="wl-update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateWl()">编辑</a>
+    <a href="javascript:void(0)" id="wl-update" permission="wl_update" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateWl()">编辑</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
-    <a href="javascript:void(0)" id="wl-delete" permission="wl-delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteWl()">删除</a>
+    <a href="javascript:void(0)" id="wl-delete" permission="wl_delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteWl()">删除</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
 </div>
 
