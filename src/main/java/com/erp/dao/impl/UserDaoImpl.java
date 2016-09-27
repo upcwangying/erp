@@ -265,15 +265,7 @@ public class UserDaoImpl implements IUserDao {
     private void insertUserData(Connection connection, StaffInfo staffInfo) throws Exception {
         StringBuffer insert_sql = new StringBuffer("insert into ");
         insert_sql.append(TableNameConstant.STAFFINFO).append("(staffcode,staffname,password,telphone,stafftype,is_del,styleid,");
-        if (staffInfo.getRoleId() != 0) {
-            insert_sql.append("roleid,");
-        }
-        insert_sql.append("create_date,update_date) ");
-        insert_sql.append("values (?,?,?,?,?,'0',?,");
-        if (staffInfo.getRoleId() != 0) {
-            insert_sql.append("?,");
-        }
-        insert_sql.append("getdate(),getdate()) ");
+        insert_sql.append("roleid,create_date,update_date) values (?,?,?,?,?,'0',?,?,getdate(),getdate()) ");
         PreparedStatement ps = connection.prepareStatement(insert_sql.toString());
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
@@ -281,9 +273,7 @@ public class UserDaoImpl implements IUserDao {
         ps.setString(4, staffInfo.getTelephone());
         ps.setString(5, staffInfo.getStaffType());
         ps.setLong(6, staffInfo.getStyleId());
-        if (staffInfo.getRoleId() != 0) {
-            ps.setLong(7, staffInfo.getRoleId());
-        }
+        ps.setLong(7, staffInfo.getRoleId());
         ps.execute();
     }
 
@@ -297,10 +287,7 @@ public class UserDaoImpl implements IUserDao {
     private void updateUserData(Connection connection, StaffInfo staffInfo) throws Exception {
         StringBuffer update_sql = new StringBuffer("update ");
         update_sql.append(TableNameConstant.STAFFINFO).append(" set staffcode=?,staffname=?,password=?,telphone=?,stafftype=?,styleid=?,");
-        if (staffInfo.getRoleId() != 0) {
-            update_sql.append("roleid=?,");
-        }
-        update_sql.append("update_date=getdate() where staffid=? ");
+        update_sql.append("roleid=?,update_date=getdate() where staffid=? ");
         PreparedStatement ps = connection.prepareStatement(update_sql.toString());
         ps.setString(1, staffInfo.getStaffCode());
         ps.setString(2, staffInfo.getStaffName());
@@ -308,12 +295,8 @@ public class UserDaoImpl implements IUserDao {
         ps.setString(4, staffInfo.getTelephone());
         ps.setString(5, staffInfo.getStaffType());
         ps.setLong(6, staffInfo.getStyleId());
-        if (staffInfo.getRoleId() != 0) {
-            ps.setLong(7, staffInfo.getRoleId());
-            ps.setLong(8, staffInfo.getStaffId());
-        } else {
-            ps.setLong(7, staffInfo.getStaffId());
-        }
+        ps.setLong(7, staffInfo.getRoleId());
+        ps.setLong(8, staffInfo.getStaffId());
         ps.execute();
     }
 

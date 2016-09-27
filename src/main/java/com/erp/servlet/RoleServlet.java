@@ -66,7 +66,10 @@ public class RoleServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        ResponseBean responseBean = new ResponseBean(array);
+        Role role = new Role();
+        role.setRoleId(0);
+        role.setRoleName("Пе");
+        ResponseBean responseBean = new ResponseBean(array, role, !flag);
         return responseBean.getResponseArray(flag);
     }
 

@@ -35,7 +35,7 @@
             $("#user-query").datagrid('hideColumn', "staffId");
             $("#user-query").datagrid('hideColumn', "password");
             $("#user-query").datagrid('hideColumn', "styleId");
-            $("#user-query").datagrid('hideColumn', "roleId");
+//            $("#user-query").datagrid('hideColumn', "roleId");
             $("#user-query").datagrid('hideColumn', "modules");
 
             hasPermissionItems(["user-add","user-update","user-delete"]);
@@ -194,6 +194,7 @@
                            data-options="
                            <%--required:true,--%>
                            url: '<%= request.getContextPath()%>/RoleServlet?param=query-combo',
+                           value: '0',
 				           method: 'post',
 				           valueField: 'roleId',
 				           textField: 'roleName'
