@@ -125,6 +125,7 @@ public class UserServlet extends HttpServlet {
                 String staffname = request.getParameter("staffname");
                 String pwd = request.getParameter("pwd");
                 String telphone = request.getParameter("telphone");
+                String staffType = request.getParameter("staffType");
                 String styleid = request.getParameter("styleid");
                 String roleId = request.getParameter("roleId");
                 StaffInfo staffInfo = new StaffInfo();
@@ -132,6 +133,7 @@ public class UserServlet extends HttpServlet {
                 staffInfo.setStaffName(staffname);
                 staffInfo.setPassword(pwd);
                 staffInfo.setTelephone(telphone);
+                staffInfo.setStaffType(staffType);
                 staffInfo.setStyleId(Long.valueOf(styleid));
                 staffInfo.setRoleId(StringUtil.isEmpty(roleId)?0L:Long.valueOf(roleId));
                 UserService.insertUserData(staffInfo);
@@ -142,6 +144,7 @@ public class UserServlet extends HttpServlet {
                 String staffname = request.getParameter("staffname");
                 String pwd = request.getParameter("pwd");
                 String telphone = request.getParameter("telphone");
+                String staffType = request.getParameter("staffType");
                 String styleid = request.getParameter("styleid");
                 String roleId = request.getParameter("roleId");
                 staffInfo.setStaffId(Long.valueOf(dbid));
@@ -149,6 +152,7 @@ public class UserServlet extends HttpServlet {
                 staffInfo.setStaffName(staffname);
                 staffInfo.setPassword(pwd);
                 staffInfo.setTelephone(telphone);
+                staffInfo.setStaffType(staffType);
                 staffInfo.setStyleId(Long.valueOf(styleid));
                 staffInfo.setRoleId(StringUtil.isEmpty(roleId)?0L:Long.valueOf(roleId));
                 UserService.updateUserData(staffInfo);

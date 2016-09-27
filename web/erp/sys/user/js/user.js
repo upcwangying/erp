@@ -24,6 +24,7 @@ function openUserDialog(type) {
     $('#pwd-again').textbox('setValue', '');
     $('#telphone').textbox('setValue', '');
     $('#styleid').combobox('setValue', '');
+    $('#staffType').combobox('setValue', '0');
 }
 
 /**
@@ -36,6 +37,7 @@ function closeUserDialog() {
     $('#pwd-again').textbox('setValue', '');
     $('#telphone').textbox('setValue', '');
     $('#styleid').combobox('setValue', '');
+    $('#staffType').combobox('setValue', '0');
     $('#user-dlg').dialog('close');
 }
 
@@ -48,11 +50,31 @@ function saveUserForm() {
     var pwd = $('#pwd').textbox('getValue');
     var telphone = $('#telphone').textbox('getValue');
     var styleid = $('#styleid').combobox('getValue');
+    var staffType = $('#staffType').combobox('getValue');
+
+    if (staffcode==''||staffcode==null) {
+        $.messager.alert('提示', '‘登录名’不允许为空!', 'info');
+        return;
+    }
+    if (staffname==''||staffname==null) {
+        $.messager.alert('提示', '‘用户名’有些数据不允许为空!', 'info');
+        return;
+    }
+    if (pwd==''||pwd==null) {
+        $.messager.alert('提示', '‘密码’有些数据不允许为空!', 'info');
+        return;
+    }
+    if (styleid==''||styleid==null) {
+        $.messager.alert('提示', '‘界面样式’有些数据不允许为空!', 'info');
+        return;
+    }
+    if (staffType==''||staffType==null) {
+        $.messager.alert('提示', '‘用户类型’不允许为空!', 'info');
+        return;
+    }
 
     if (flag == 'add') {
-        if (checkUserData()) {
-            saveUser("insert", "");
-        }
+        saveUser("insert", "");
     } else if (flag == 'edit') {
         var rows = $('#user-query').datagrid('getSelections');
         var id = rows[0].staffId;
@@ -133,6 +155,7 @@ function updateUser() {
     $('#pwd-again').textbox('setValue', rows[0].password);
     $('#telphone').textbox('setValue', rows[0].telephone);
     $('#styleid').combobox('setValue', rows[0].styleId);
+    $('#staffType').combobox('setValue', rows[0].staffType);
     $('#roleId').combobox('setValue', rows[0].roleId=='0'?'':rows[0].roleId);
 
 }
@@ -153,6 +176,7 @@ function saveUser(param, dbid) {
             telphone: $('#telphone').textbox('getValue'),
             styleid: $('#styleid').combobox('getValue'),
             roleId: $('#roleId').combobox('getValue'),
+            staffType: $('#staffType').combobox('getValue'),
             seq: $('#seq').val()
         },
         success: function (data) {
@@ -166,11 +190,4 @@ function saveUser(param, dbid) {
             alert("网络错误！")
         }
     });
-}
-
-function checkUserData() {
-    if ($("#user-form").form("validate"))
-        return true;
-    else
-        return false;
 }

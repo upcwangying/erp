@@ -38,6 +38,8 @@ public class StaffInfo implements Serializable {
 
     private String roleName;
 
+    private String staffType;
+
     private String modules;
 
     // 创建时间
@@ -131,6 +133,14 @@ public class StaffInfo implements Serializable {
         this.roleName = roleName;
     }
 
+    public String getStaffType() {
+        return staffType;
+    }
+
+    public void setStaffType(String staffType) {
+        this.staffType = staffType;
+    }
+
     public String getModules() {
         return modules;
     }
@@ -175,6 +185,10 @@ public class StaffInfo implements Serializable {
         this.permissions.add(permission);
     }
 
+    public boolean is_Admin() {
+        return "1".equals(this.staffType);
+    }
+
     @Override
     public String toString() {
         return "StaffInfo{" +
@@ -188,10 +202,12 @@ public class StaffInfo implements Serializable {
                 ", style='" + style + '\'' +
                 ", roleId=" + roleId +
                 ", roleName='" + roleName + '\'' +
+                ", staffType='" + staffType + '\'' +
                 ", modules='" + modules + '\'' +
                 ", createDate=" + createDate +
                 ", updateDate=" + updateDate +
                 ", lastLoginTime=" + lastLoginTime +
+                ", permissions=" + permissions +
                 '}';
     }
 

@@ -137,9 +137,9 @@ $.extend($.fn.validatebox.defaults.rules, {
     },
     username: {// 验证用户名
         validator: function (value) {
-            return /^[a-zA-Z][a-zA-Z0-9_]{5,15}$/i.test(value);
+            return /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/i.test(value);
         },
-        message: '用户名不合法（字母开头，允许6-16字节，允许字母数字下划线）'
+        message: '用户名不合法（字母开头，允许5-16字节，允许字母数字下划线）'
     },
     faxno: {// 验证传真
         validator: function (value) {

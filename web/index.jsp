@@ -33,6 +33,13 @@
         <%
             }
         %>
+        <%
+            if (staffInfo.is_Admin()){
+        %>
+                is_admin=true;
+        <%
+            }
+        %>
 
         console.log("staff_permission_codes:"+staff_permission_codes);
         console.log("modules:"+modules);

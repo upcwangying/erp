@@ -70,6 +70,15 @@
         <th data-options="field:'style',width:100">界面样式</th>
         <th data-options="field:'roleId',width:100"></th>
         <th data-options="field:'roleName',width:100">角色名称</th>
+        <th data-options="field:'staffType',width:100,
+            formatter:function(value){
+                    if (value == '0') {
+                        return '非管理员用户';
+                    } else {
+                        return '管理员用户';
+                    }
+				}
+            ">用户类型</th>
         <th data-options="field:'modules',width:100"></th>
         <th data-options="field:'createDate',width:150">创建时间</th>
         <th data-options="field:'updateDate',width:150">更新时间</th>
@@ -153,6 +162,15 @@
                 <td>
                     <input class="easyui-textbox" type="text" id="telphone" name="telphone" data-options="validType:'mobile'">
                     </input>
+                </td>
+            </tr>
+            <tr>
+                <td>用户类型:</td>
+                <td>
+                    <select class="easyui-combobox" id="staffType" name="staffType" style="width: 171px;" data-options="required:true">
+                        <option value="1">管理员</option>
+                        <option value="0" selected>非管理员</option>
+                    </select>
                 </td>
             </tr>
             <tr>
