@@ -34,7 +34,6 @@
             $("#module-tree").treegrid('hideColumn', "id");
             $("#module-tree").treegrid('hideColumn', "parentId");
 
-//            hasPermissionItems(["addItem","deleteItem","resumeItem"], 'menu', "module-tree-menu");
         });
     </script>
 </head>
@@ -53,11 +52,7 @@
 				treeField: 'text',
 				onDblClickRow: function(row) {
 				    $(this).treegrid('select',row.id);
-				    if(hasPermission('module_update')) {
-				        editNode(row);
-				    } else {
-				        alert('您没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！');
-				    }
+				    editNode(row);
 				},
 				onContextMenu: function(e, row){
 				    e.preventDefault();
@@ -71,30 +66,15 @@
 				    if (leaf == 'file') { <%--叶子结点--%>
 				        $('#module-tree-menu').menu('disableItem', $('#addItem'));
                     } else {
-                        if(hasPermission($('#addItem').attr('permission'))) {
-                            $('#module-tree-menu').menu('enableItem', $('#addItem'));
-                        } else {
-                            $('#module-tree-menu').menu('disableItem', $('#addItem'));
-                            <%--console.log('您没有增加权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
-                        }
+                        $('#module-tree-menu').menu('enableItem', $('#addItem'));
                     }
 
                     if (display == '0') {
                         $('#module-tree-menu').menu('disableItem', $('#resumeItem'));
-                        if(hasPermission($('#deleteItem').attr('permission'))) {
-                            $('#module-tree-menu').menu('enableItem', $('#deleteItem'));
-                        } else {
-                            $('#module-tree-menu').menu('disableItem', $('#deleteItem'));
-                            <%--console.log('您没有删除权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
-                        }
+                        $('#module-tree-menu').menu('enableItem', $('#deleteItem'));
                     } else {
                         $('#module-tree-menu').menu('disableItem', $('#deleteItem'));
-                        if(hasPermission($('#resumeItem').attr('permission'))) {
-                            $('#module-tree-menu').menu('enableItem', $('#resumeItem'));
-                        } else {
-                            $('#module-tree-menu').menu('disableItem', $('#resumeItem'));
-                            <%--console.log('您没有数据恢复权限,请找有此权限的人操作或者联系管理员分配权限！');--%>
-                        }
+                        $('#module-tree-menu').menu('enableItem', $('#resumeItem'));
                     }
 				}
 			">
@@ -140,11 +120,11 @@
 </table>
 
 <div id="module-tree-menu" class="easyui-menu" style="width:120px;">
-    <div onclick="addNode()" id="addItem" permission="module_add" data-options="iconCls:'icon-add'">增加节点</div>
+    <div onclick="addNode()" id="addItem" data-options="iconCls:'icon-add'">增加节点</div>
     <div class="menu-sep"></div>
-    <div onclick="deleteNode()" id="deleteItem" permission="module_delete" data-options="iconCls:'icon-remove'">删除节点</div>
+    <div onclick="deleteNode()" id="deleteItem" data-options="iconCls:'icon-remove'">删除节点</div>
     <div class="menu-sep"></div>
-    <div onclick="resumeModule()" id="resumeItem" permission="module_resume" data-options="iconCls:'icon-remove'">恢复显示节点</div>
+    <div onclick="resumeModule()" id="resumeItem" data-options="iconCls:'icon-remove'">恢复显示节点</div>
 </div>
 
 <div id="module-dlg" class="easyui-dialog" title="模块增加" style="width:400px;height:300px;padding:10px"

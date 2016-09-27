@@ -64,6 +64,11 @@ function closeModuleDialog() {
  * 修改节点--双击事件
  */
 function editNode(row) {
+    if(!hasPermission('module_update')) {
+        $.messager.alert('权限提示', '您没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！', 'info');
+        return;
+    }
+
     var id = row.id;
     openModuleDialog("edit");
     $("#module-dlg").dialog('setTitle', '模块修改');
@@ -80,6 +85,12 @@ function addNode() {
     if ($('#module-tree-menu').menu("getItem", $('#addItem')).disabled) {
         return;
     }
+
+    if (!hasPermission('module_add')) {
+        $.messager.alert('权限提示', '您没有增加权限,请找有此权限的人操作或者联系管理员分配权限！', 'info');
+        return;
+    }
+
     openModuleDialog("add");
 }
 
@@ -88,6 +99,11 @@ function addNode() {
  */
 function deleteNode() {
     if ($('#module-tree-menu').menu("getItem", $('#deleteItem')).disabled) {
+        return;
+    }
+
+    if (!hasPermission('module_delete')) {
+        $.messager.alert('权限提示', '您没有删除权限,请找有此权限的人操作或者联系管理员分配权限！', 'info');
         return;
     }
     var selected = $("#module-tree").treegrid('getSelected');
@@ -157,6 +173,12 @@ function resumeModule() {
     if ($('#module-tree-menu').menu("getItem", $('#resumeItem')).disabled) {
         return;
     }
+
+    if (!hasPermission('module_resume')) {
+        $.messager.alert('权限提示', '您没有数据恢复权限,请找有此权限的人操作或者联系管理员分配权限！', 'info');
+        return;
+    }
+
     var selected = $("#module-tree").treegrid('getSelected');
     if (selected.display == '0') {
         $.messager.alert('提示', '该数据已是“显示”状态', 'info');

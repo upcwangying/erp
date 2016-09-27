@@ -55,7 +55,7 @@ function endReportEdit() {
  */
 function onClickReportCell(index, field) {
     if (!hasPermission('report_update')) {
-        alert('没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！');
+        $.messager.alert('权限提示','没有编辑权限,请找有此权限的人操作或者联系管理员分配权限！', 'info');
         return;
     }
     if (editReportIndex != index){
