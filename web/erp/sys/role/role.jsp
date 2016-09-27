@@ -82,7 +82,7 @@
         <th data-options="field:'permissionCount',width:100">权限数量</th>
         <th data-options="field:'is_init_permission',width:100,
             formatter:function(value){
-                if (value == '0') {
+                if (value == '1') {
                     return '已分配权限';
                 } else {
                     return '未分配权限';
