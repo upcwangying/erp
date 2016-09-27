@@ -212,7 +212,7 @@ function saveYJ(param, dbid, yjyf, yjlx) {
             alert(data.msg);
             if (data.success) {
                 if (param == "init") {
-                    sendMessage("请刷新页面！");
+                    sendMessage("月度结算数据已初始化,请刷新页面或重新打开‘月度结算’模块,进行数据操作！");
                 }
                 closeYjDialog();
                 queryAddYdjs();
