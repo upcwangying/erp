@@ -27,6 +27,14 @@ public class ResponseBean implements Serializable {
         this.jsonArray = jsonArray;
     }
 
+    public ResponseBean(JSONArray jsonArray, Object object, boolean queryAll) {
+        this.jsonArray = jsonArray;
+        if (queryAll) {
+            this.jsonObject = JSONObject.fromObject(object);
+            this.jsonArray.add(0, this.jsonObject);
+        }
+    }
+
     /**
      *
      * @return
