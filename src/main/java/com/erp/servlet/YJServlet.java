@@ -1,9 +1,11 @@
 package com.erp.servlet;
 
 import com.erp.bean.ResponseBean;
+import com.erp.entity.StaffInfo;
 import com.erp.entity.YJ;
 import com.erp.enums.TextEnum;
 import com.erp.exception.ServiceException;
+import com.erp.service.LoginService;
 import com.erp.service.YJService;
 import com.erp.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -65,6 +67,8 @@ public class YJServlet extends HttpServlet {
                 || "update".equals(param)
                 || "delete".equals(param)) {
             responseText = addOrUpdateYJData(request, param);
+        } else if ("valid".equals(param)) {
+            responseText = isValid(request);
         }
 
         PrintWriter writer = response.getWriter();
@@ -87,6 +91,27 @@ public class YJServlet extends HttpServlet {
         }
         ResponseBean responseBean = new ResponseBean(array);
         return responseBean.getResponseArray(true);
+    }
+
+    /**
+     * @param request
+     * @return
+     */
+    private String isValid(HttpServletRequest request) {
+        String yjyf = request.getParameter("yjyf");
+        String dbid = request.getParameter("dbid");
+        boolean success = false;
+        try {
+            YJ yj = YJService.queryYJDataByDbid(yjyf, dbid);
+            if (yj == null) {
+                success = true;
+            }
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+
+        ResponseBean responseBean = new ResponseBean(success, "");
+        return responseBean.getResponseBool();
     }
 
     /**

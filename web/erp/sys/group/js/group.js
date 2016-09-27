@@ -113,6 +113,11 @@ function saveGroupForm() {
         return;
     }
 
+    if (!$("#group-form").form("validate")) {
+        $.messager.alert('警告', '输入框显示红色,数据不符合要求！', 'warning');
+        return;
+    }
+
     var nodes = tree.tree('getChecked', ['checked','indeterminate']);
     var modules=[];
     for (var i=0;i<nodes.length;i++) {

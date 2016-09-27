@@ -110,15 +110,21 @@ public class YJService {
     }
 
     /**
-     * 分页查询月结数据
-     *
-     * @param page 当前页数
-     * @param rows 每页行数
+     * @param yjyf
+     * @param dbid
      * @return
      * @throws ServiceException
      */
-    public static List<YJ> queryYJDataByPage(int page, int rows) {
-        return null;
+    public static YJ queryYJDataByDbid(String yjyf, String dbid) throws ServiceException {
+        IYJDao yjDao = new YJDaoImpl();
+        YJ yj = null;
+        try {
+            yj = yjDao.queryYJDataByDbid(yjyf, dbid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+        return yj;
     }
 
 }

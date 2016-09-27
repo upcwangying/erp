@@ -112,6 +112,11 @@ function saveRoleForm() {
         return;
     }
 
+    if (!$("#role-form").form("validate")) {
+        $.messager.alert('警告', '输入框显示红色,数据不符合要求！', 'warning');
+        return;
+    }
+
     if (flag == 'add') {
         $.messager.confirm('保存确认框', '确定保存数据吗?', function (r) {
             if (r) {

@@ -4,6 +4,7 @@ import com.erp.dao.IYJDao;
 import com.erp.entity.YJ;
 import com.erp.exception.DAOException;
 import com.erp.util.JdbcUtil;
+import com.erp.util.StringUtil;
 import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 
@@ -173,16 +174,53 @@ public class YJDaoImpl implements IYJDao {
     }
 
     /**
-     * 分页查询月结数据
-     *
-     * @param page 当前页数
-     * @param rows 每页行数
+     * @param yjyf
+     * @param dbid
      * @return
      * @throws DAOException
      */
     @Override
-    public List<YJ> queryYJDataByPage(int page, int rows) throws DAOException {
-        return null;
+    public YJ queryYJDataByDbid(String yjyf, String dbid) throws DAOException {
+        Connection connection = JdbcUtil.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        YJ yj = null;
+        try {
+            String query_sql = "select yj.dbid,yj.yjyf,yj.yjzc,yj.yjhz,yj.yjye,yj.staffid," +
+                    "yj.yjlx,yj.create_date,yj.update_date,s.staffname " +
+                    "from "+TableNameConstant.T_YJ+" yj " +
+                    "left join "+TableNameConstant.STAFFINFO+" s on yj.staffid=s.staffid and s.is_del='0' " +
+                    "where yj.is_del='0' and convert(varchar(7), yj.yjyf,120)=? " +
+                    "and (0=? or yj.dbid!=?) ";
+            ps = connection.prepareStatement(query_sql);
+            ps.setString(1, yjyf);
+            ps.setInt(2, StringUtil.isEmpty(dbid)?0:1);
+            ps.setString(3, StringUtil.isEmpty(dbid)?"-1":dbid);
+            rst = ps.executeQuery();
+            while (rst.next()) {
+                yj = new YJ();
+                yj.setDbid(rst.getLong("dbid"));
+                yj.setYjyf(rst.getString("yjyf"));
+                yj.setYjzc(rst.getDouble("yjzc"));
+                yj.setYjhz(rst.getDouble("yjhz"));
+                yj.setYjye(rst.getDouble("yjye"));
+                yj.setStaffId(rst.getLong("staffid"));
+                yj.setStaffName(rst.getString("staffname"));
+                yj.setDelete(false);
+                yj.setYjlx(rst.getString("yjlx"));
+                yj.setCreateDate(new Date(rst.getDate("create_date").getTime()));
+                yj.setUpdateDate(new Date(rst.getDate("update_date").getTime()));
+            }
+        } catch (Exception e) {
+            logger.error("查询月度结算数据失败：" + e.getMessage(), e);
+            e.printStackTrace();
+            throw new DAOException("查询月度结算数据失败：" + e.getMessage(), e);
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+        return yj;
     }
 
     /**

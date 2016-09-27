@@ -203,12 +203,14 @@
 				]
 			">
     <form id="yj-form" method="post">
+        <input type="hidden" id="dbid" />
         <table cellpadding="5">
             <tr>
                 <td>初始化月份:</td>
                 <td><input class="easyui-datebox" type="text" id="yjyf" name="yjyf"
                            data-options="
                            required:true,
+                           validType:'remoteyjyf[\'dbid\', \'seq\']',
                            formatter: function (date) {
                                var y = date.getFullYear();
                                var m = date.getMonth() + 1;

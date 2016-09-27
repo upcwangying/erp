@@ -135,6 +135,11 @@ function savePermissionForm() {
         return;
     }
 
+    if (!$("#permission-form").form("validate")) {
+        $.messager.alert('警告', '输入框显示红色,数据不符合要求！', 'warning');
+        return;
+    }
+
     if (flag == 'add') {
         var nodes = $('#permission-tree').tree('getChecked');
         var node = nodes[0];

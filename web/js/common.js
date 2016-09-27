@@ -284,6 +284,25 @@ $.extend($.fn.validatebox.defaults.rules, {
             return _48;
         },
         message: '该角色编码已被占用！'
+    },
+    remoteyjyf: {
+        validator: function (_46, _47) {
+            var _48 = $.ajax({
+                url: root + '/YJServlet',
+                dataType: "json",
+                data: {
+                    param: 'valid',
+                    yjyf: _46,
+                    dbid: $("#" + _47[0]).val(),
+                    seq: $("#" + _47[1]).val()
+                },
+                async: false,
+                cache: false,
+                type: "post"
+            }).responseJSON.success;
+            return _48;
+        },
+        message: '该月结月份已被占用！'
     }
 
 });

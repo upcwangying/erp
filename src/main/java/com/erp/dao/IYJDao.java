@@ -48,12 +48,12 @@ public interface IYJDao {
     List<YJ> queryYJData(String yjyf) throws DAOException;
 
     /**
-     * 分页查询月结数据
-     * @param page 当前页数
-     * @param rows 每页行数
+     *
+     * @param yjyf
+     * @param dbid
      * @return
      * @throws DAOException
      */
-    List<YJ> queryYJDataByPage(int page, int rows) throws DAOException;
+    YJ queryYJDataByDbid(String yjyf, String dbid) throws DAOException;
 
 }

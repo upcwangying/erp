@@ -94,6 +94,7 @@ function disableFilterYdjs() {
  */
 function addYdjs() {
     openYjDialog('insert');
+    $('#dbid').val("");
 }
 
 /**
@@ -108,6 +109,7 @@ function updateYdjs() {
 
     openYjDialog("edit");
 
+    $('#dbid').val(rows[0].dbid);
     $('#yjyf').datebox('setValue', rows[0].yjyf);
     $('#yjzc').numberbox('setValue', rows[0].yjzc);
     $('#yjhz').numberbox('setValue', rows[0].yjhz);
@@ -161,15 +163,36 @@ function deleteYdjs() {
  * 窗口保存或初始化
  */
 function saveYjForm() {
-    var checkResult = checkRepeatYjyf();
-    if (checkResult != null) {
-        $.messager.alert('提示',"与第" + checkResult + "行“月结月份”重复,请重新选择“月结月份”！",'info');
+    // var checkResult = checkRepeatYjyf();
+    // if (checkResult != null) {
+    //     $.messager.alert('提示',"与第" + checkResult + "行“月结月份”重复,请重新选择“月结月份”！",'info');
+    //     return;
+    // }
+    var yjyf1 = $('#yjyf').datebox('getValue');
+    var yjzc1 = $('#yjzc').numberbox('getValue');
+    var yjhz1 = $('#yjhz').numberbox('getValue');
+    if (yjyf1==''||yjyf1==null) {
+        $.messager.alert('提示', '月结月份不允许为空！', 'info');
         return;
     }
+
+    if (yjzc1==''||yjzc1==null) {
+        $.messager.alert('提示', '月结支出不允许为空！', 'info');
+        return;
+    }
+
+    if (yjhz1==''||yjhz1==null) {
+        $.messager.alert('提示', '月结划转不允许为空！', 'info');
+        return;
+    }
+
+    if (!$("#yj-form").form("validate")) {
+        $.messager.alert('警告', '输入框显示红色,数据不符合要求！', 'warning');
+        return;
+    }
+
     if (flag == 'insert' || flag == "init") {
-        if ($("#yj-form").form("validate")) {
-            saveYJ(flag, null, null, null);
-        }
+        saveYJ(flag, null, null, null);
     } else if (flag == 'edit') {
         var rows = $('#ydjs-add').datagrid('getSelections');
         var dbid = rows[0].dbid;
