@@ -36,6 +36,7 @@
         $(document).ready(function () {
             $("#role-query").datagrid('hideColumn', "roleId");
             $("#role-query").datagrid('hideColumn', "groupId");
+            $("#role-query").datagrid('hideColumn', "modules");
 
             hasPermissionItems(["role-add","role-update","role-delete","role_permission_add","role_permission_delete"]);
         });
@@ -77,9 +78,17 @@
         <th data-options="field:'roleName',width:100">角色名称</th>
         <th data-options="field:'groupId',width:100"></th>
         <th data-options="field:'groupName',width:100">组名称</th>
-        <th data-options="field:'modules',width:100">模块名</th>
+        <th data-options="field:'modules',width:100"></th>
         <th data-options="field:'permissionCount',width:100">权限数量</th>
-        <th data-options="field:'is_init_permission',width:100">是否分配权限</th>
+        <th data-options="field:'is_init_permission',width:100,
+            formatter:function(value){
+                if (value == '0') {
+                    return '已分配权限';
+                } else {
+                    return '未分配权限';
+                }
+			}
+        ">是否分配权限</th>
     </tr>
     </thead>
 </table>
