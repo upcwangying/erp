@@ -2,6 +2,7 @@ package com.erp.chart.jdbc;
 
 import com.erp.util.JdbcUtil;
 import com.erp.util.StringUtil;
+import com.erp.util.TableNameConstant;
 import org.apache.log4j.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -28,8 +29,8 @@ public class ChartJdbc {
         ResultSet rst = null;
         try {
             String sql = "select y.price * y.number as total_price, w.wlmc, y.shoppingtime " +
-                    "from t_yw y " +
-                    "left join t_wl w on y.wlbm=w.wlbm " +
+                    "from "+ TableNameConstant.T_YW+" y " +
+                    "left join "+TableNameConstant.T_WL+" w on y.wlbm=w.wlbm " +
                     "where (y.wlbm=? or 0 = ?) and y.is_del='0' and w.is_del='0' " +
                     "order by y.shoppingtime asc ";
             ps = connection.prepareStatement(sql);
@@ -62,7 +63,7 @@ public class ChartJdbc {
         ResultSet rst = null;
         try {
             String sql = "select a.yjyf as yjyf, a.yjye as yjye from ( " +
-                    "select top 12 yjyf,yjye from t_yj where is_del='0' order by yjyf desc) a " +
+                    "select top 12 yjyf,yjye from "+TableNameConstant.T_YJ+" where is_del='0' order by yjyf desc) a " +
                     "order by a.yjyf asc ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
@@ -92,7 +93,7 @@ public class ChartJdbc {
         PreparedStatement ps = null;
         ResultSet rst = null;
         try {
-            String sql = "select price * number as total_price, shoppingtime from t_yw where is_del='0' and wlbm=? ";
+            String sql = "select price * number as total_price, shoppingtime from "+TableNameConstant.T_YW+" where is_del='0' and wlbm=? ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, wlbm);
             rst = ps.executeQuery();
@@ -122,7 +123,7 @@ public class ChartJdbc {
         ResultSet rst = null;
         try {
             String sql = "select a.yjyf as yjyf, a.yjye as yjye from ( " +
-                    "select top 12 yjyf,yjye from t_yj where is_del='0' order by yjyf desc) a " +
+                    "select top 12 yjyf,yjye from "+TableNameConstant.T_YJ+" where is_del='0' order by yjyf desc) a " +
                     "order by a.yjyf asc ";
             ps = connection.prepareStatement(sql);
             rst = ps.executeQuery();
