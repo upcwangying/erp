@@ -174,15 +174,16 @@ public class GroupDaoImpl implements IGroupDao {
      */
     private void updateGroup(Connection connection, Group group) throws SQLException {
         String update_sql = "update " + TableNameConstant.T_SYS_MODULE_GROUP + " set " +
-                "groupname=?,groupdesc=?,module=?,modules=?,update_staffid=?,update_date=getdate() " +
+                "groupcode=?,groupname=?,groupdesc=?,module=?,modules=?,update_staffid=?,update_date=getdate() " +
                 "where groupid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
-        ps.setString(1, group.getGroupName());
-        ps.setString(2, group.getGroupDesc());
-        ps.setString(3, group.getModule());
-        ps.setString(4, group.getModules());
-        ps.setLong(5, group.getUpdate_staffId());
-        ps.setLong(6, group.getGroupId());
+        ps.setString(1, group.getGroupCode());
+        ps.setString(2, group.getGroupName());
+        ps.setString(3, group.getGroupDesc());
+        ps.setString(4, group.getModule());
+        ps.setString(5, group.getModules());
+        ps.setLong(6, group.getUpdate_staffId());
+        ps.setLong(7, group.getGroupId());
         ps.execute();
     }
 

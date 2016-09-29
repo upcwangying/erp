@@ -184,7 +184,7 @@ public class RoleDaoImpl implements IRoleDao {
                 "where roleid=? ";
         PreparedStatement ps = connection.prepareStatement(update_sql);
         ps.setString(1, role.getRoleCode());
-        ps.setString(2, role.getGroupName());
+        ps.setString(2, role.getRoleName());
         ps.setString(3, role.getRoleDesc());
         ps.setLong(4, role.getGroupId());
         ps.setString(5, flag?"0":role.getIs_init_permission());
