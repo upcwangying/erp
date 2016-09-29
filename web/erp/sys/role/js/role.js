@@ -38,7 +38,7 @@ function updateRole() {
     $('#roleCode').textbox('setValue', row.roleCode);
     $('#roleName').textbox('setValue', row.roleName);
     $('#roleDesc').textbox('setValue', row.roleDesc);
-    $('#roleGroupCode').combobox('setValues', row.groupId);
+    $('#roleGroupCode').combobox('setValue', row.groupId);
 }
 
 /**
