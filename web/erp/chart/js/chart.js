@@ -18,14 +18,14 @@ function insertTable(wl) {
             wlbm: wl,
             chart_lx: "line",
             module_lx: 'chart',
-            width: 1500,
-            height: 800,
+            width: chart_width,
+            height: chart_height,
             seq: $('#seq').val()
         },
         success: function (data) {
             // console.log(data);
             var graphURL = root + "/servlet/DisplayServlet?filename=" + data.id;
-            var html = "<tr><td><img src='" + graphURL + "' width=1500 height=800 border=0></td></tr>";
+            var html = "<tr><td><img src='" + graphURL + "' width="+chart_width+" height="+chart_height+" border=0></td></tr>";
             $("#table").empty();
             $("#table").append(html);
         },

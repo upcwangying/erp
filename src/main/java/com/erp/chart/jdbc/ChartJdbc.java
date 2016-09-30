@@ -28,7 +28,7 @@ public class ChartJdbc {
         PreparedStatement ps = null;
         ResultSet rst = null;
         try {
-            String sql = "select y.price * y.number as total_price, w.wlmc, y.shoppingtime " +
+            String sql = "select y.price, w.wlmc, y.shoppingtime " +
                     "from "+ TableNameConstant.T_YW+" y " +
                     "left join "+TableNameConstant.T_WL+" w on y.wlbm=w.wlbm " +
                     "where (y.wlbm=? or 0 = ?) and y.is_del='0' and w.is_del='0' " +
@@ -38,7 +38,7 @@ public class ChartJdbc {
             ps.setInt(2, StringUtil.isEmpty(wlbm) ? 0 : 1);
             rst = ps.executeQuery();
             while (rst.next()) {
-                dataset.addValue(rst.getDouble("total_price"), rst.getString("wlmc"), rst.getDate("shoppingtime"));
+                dataset.addValue(rst.getDouble("price"), rst.getString("wlmc"), rst.getDate("shoppingtime"));
             }
         } catch (SQLException e) {
             logger.error("获取数据失败：" + e.getMessage(), e);
@@ -93,12 +93,12 @@ public class ChartJdbc {
         PreparedStatement ps = null;
         ResultSet rst = null;
         try {
-            String sql = "select price * number as total_price, shoppingtime from "+TableNameConstant.T_YW+" where is_del='0' and wlbm=? ";
+            String sql = "select price, shoppingtime from "+TableNameConstant.T_YW+" where is_del='0' and wlbm=? ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, wlbm);
             rst = ps.executeQuery();
             while (rst.next()) {
-                dataset.setValue(rst.getDate("shoppingtime"), rst.getDouble("total_price"));
+                dataset.setValue(rst.getDate("shoppingtime"), rst.getDouble("price"));
             }
         } catch (SQLException e) {
             logger.error("获取饼状数据失败：" + e.getMessage(), e);
