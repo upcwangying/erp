@@ -322,7 +322,7 @@ function getAllNode() {
     var node = [];
     for (var i = 0; i < nodes.length; i++) {
         node.push(nodes[i]);
-        var children = $("#module-tree").treegrid('getChildren', nodes[i].target);
+        var children = $("#module-tree").treegrid('getChildren', nodes[i].id);
         if (children.length > 0) {
             for (var j = 0; j < children.length; j++) {
                 node.push(children[j]);
@@ -339,7 +339,7 @@ function getSelectedNode() {
     var selected = $("#module-tree").treegrid('getSelected');
     var node = [];
     node.push(selected);
-    var children = $("#module-tree").treegrid('getChildren', selected.target);
+    var children = $("#module-tree").treegrid('getChildren', selected.id);
     if (children.length > 0) {
         for (var i = 0; i < children.length; i++) {
             if (children[i].display == '0') {
