@@ -2,6 +2,8 @@ package com.erp.chart;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -56,7 +58,11 @@ public class LineChart extends BaseChart{
         // 6,设置是否显示水平网格线
         plot.setRangeGridlinesVisible(true);
 
-        // 7,设置无数据时的信息显示、显示颜色
+        // 7,设置x轴垂直显示
+        CategoryAxis categoryAxis = plot.getDomainAxis();
+        categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+
+        // 8,设置无数据时的信息显示、显示颜色
         plot.setNoDataMessage(this.getChartBean().getNoDataMessage());
         plot.setNoDataMessagePaint(this.getChartBean().getNoDataMessageColor());
 

@@ -1,6 +1,8 @@
 package com.erp.chart;
 
 import org.jfree.chart.*;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -37,6 +39,10 @@ public class BarChart extends BaseChart{
         // 设置无数据时的信息显示、显示颜色
         plot.setNoDataMessage(this.getChartBean().getNoDataMessage());
         plot.setNoDataMessagePaint(this.getChartBean().getNoDataMessageColor());
+
+        // 设置x轴垂直显示
+        CategoryAxis categoryAxis = plot.getDomainAxis();
+        categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
 
         CategoryItemRenderer categoryItemRenderer = plot.getRenderer();
         categoryItemRenderer.setBaseItemLabelsVisible(this.getChartBean().isShowChartData());
