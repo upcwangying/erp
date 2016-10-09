@@ -27,7 +27,7 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.min.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
 
-    <script type="text/javascript" src="<%= request.getContextPath()%>/erp/chart/js/chart.js?version=<%= version%>"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/erp/chart/js/chart_index.js?version=<%= version%>"></script>
     <title>图表</title>
 
     <script type="text/javascript">
@@ -58,7 +58,7 @@
 				}
 			">
 </div>
-<table id="table" width="<%= chart_width%>" border="0" cellspacing="0" cellpadding="0">
+<table id="table" width="<%=chart_width%>" border="0" cellspacing="0" cellpadding="0">
 </table>
 </body>
 </html>

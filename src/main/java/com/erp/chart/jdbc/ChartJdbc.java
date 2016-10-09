@@ -53,6 +53,40 @@ public class ChartJdbc {
     }
 
     /**
+     * @param wlbm
+     * @return
+     */
+    public static DefaultCategoryDataset getWlCategoryDataset1(String wlbm) {
+        Connection connection = JdbcUtil.getConnection();
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        try {
+            String sql = "select y.price, w.wlmc, convert(varchar(5),y.shoppingtime,110) as shoppingtime " +
+                    "from "+ TableNameConstant.T_YW+" y " +
+                    "left join "+TableNameConstant.T_WL+" w on y.wlbm=w.wlbm " +
+                    "where (y.wlbm=? or 0 = ?) and y.is_del='0' and w.is_del='0' " +
+                    "order by y.shoppingtime asc ";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, StringUtil.isEmpty(wlbm) ? "erp" : wlbm);
+            ps.setInt(2, StringUtil.isEmpty(wlbm) ? 0 : 1);
+            rst = ps.executeQuery();
+            while (rst.next()) {
+                dataset.addValue(rst.getDouble("price"), rst.getString("wlmc"), rst.getString("shoppingtime"));
+            }
+        } catch (SQLException e) {
+            logger.error("获取数据失败：" + e.getMessage(), e);
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+
+        return dataset;
+    }
+
+    /**
      *
      * @return
      */
@@ -99,6 +133,37 @@ public class ChartJdbc {
             rst = ps.executeQuery();
             while (rst.next()) {
                 dataset.setValue(rst.getDate("shoppingtime"), rst.getDouble("price"));
+            }
+        } catch (SQLException e) {
+            logger.error("获取饼状数据失败：" + e.getMessage(), e);
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                JdbcUtil.close();
+            }
+        }
+
+        return dataset;
+    }
+
+    /**
+     * @param wlbm
+     * @return
+     */
+    public static DefaultPieDataset getWlPieDataset1(String wlbm) {
+        Connection connection = JdbcUtil.getConnection();
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        if (StringUtil.isEmpty(wlbm)) return dataset;
+        PreparedStatement ps = null;
+        ResultSet rst = null;
+        try {
+            String sql = "select price, convert(varchar(5),y.shoppingtime,110) as shoppingtime " +
+                    "from "+TableNameConstant.T_YW+" where is_del='0' and wlbm=? ";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, wlbm);
+            rst = ps.executeQuery();
+            while (rst.next()) {
+                dataset.setValue(rst.getString("shoppingtime"), rst.getDouble("price"));
             }
         } catch (SQLException e) {
             logger.error("获取饼状数据失败：" + e.getMessage(), e);

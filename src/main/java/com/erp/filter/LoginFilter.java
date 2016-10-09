@@ -17,7 +17,7 @@ import java.io.PrintWriter;
  */
 @WebFilter(filterName = "LoginFilter",
         urlPatterns = {"*.jsp"},
-        initParams = {@WebInitParam(name = "loginPath", value = "/login.jsp;/erp/chart/chart.jsp")})
+        initParams = {@WebInitParam(name = "loginPath", value = "/login.jsp;/erp/chart/chart_index.jsp")})
 public class LoginFilter implements Filter {
     private FilterConfig filterConfig;
 

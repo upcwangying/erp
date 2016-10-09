@@ -46,7 +46,7 @@ public class BarChart extends BaseChart{
 
         CategoryItemRenderer categoryItemRenderer = plot.getRenderer();
         categoryItemRenderer.setBaseItemLabelsVisible(this.getChartBean().isShowChartData());
-        categoryItemRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_LEFT));
+        categoryItemRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.INSIDE12, TextAnchor.TOP_LEFT));
 
         categoryItemRenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         categoryItemRenderer.setBaseItemLabelFont(new Font("Dialog", 1, 14));

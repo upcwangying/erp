@@ -11,6 +11,10 @@ public enum DataSetEnum {
     CHARTBARDATASET("chart_bar", new ChartBarDataSet()),
     CHARTLINEDATASET("chart_line", new ChartLineDataSet()),
 
+    CHARTINDEXPIEDATASET("chart_index_pie", new ChartIndexPieDataSet()),
+    CHARTINDEXBARDATASET("chart_index_bar", new ChartIndexBarDataSet()),
+    CHARTINDEXLINEDATASET("chart_index_line", new ChartIndexLineDataSet()),
+
     YDJSPIEDATASET("ydjs_pie", new YdjsPieDataSet()),
     YDJSBARDATASET("ydjs_bar", new YdjsBarDataSet()),
     YDJSLINEDATASET("ydjs_line", new YdjsLineDataSet());
