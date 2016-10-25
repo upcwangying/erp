@@ -292,7 +292,7 @@ public class ProductDaoImpl implements IProductDao {
         long dbid = 0;
         try {
             String insert_sql = "insert into "+TableNameConstant.T_FILEUPLOADLOG+"(productid,name,url,thumbnailurl,deleteurl," +
-                    "is_del,create_staffid,create_date,update_staffid,update_date) " +
+                    "is_pic_valid,is_del,create_staffid,create_date,update_staffid,update_date) " +
                     "values (?,?,?,?,?,'1','0',?,getdate(),?,getdate()) ";
             ps = connection.prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, fileUploadLog.getProductId());
