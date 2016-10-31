@@ -28,11 +28,11 @@ public class ChartJdbc {
         PreparedStatement ps = null;
         ResultSet rst = null;
         try {
-            String sql = "select y.price, w.wlmc, y.shoppingtime " +
-                    "from "+ TableNameConstant.T_YW+" y " +
-                    "left join "+TableNameConstant.T_WL+" w on y.wlbm=w.wlbm " +
-                    "where (y.wlbm=? or 0 = ?) and y.is_del='0' and w.is_del='0' " +
-                    "order by y.shoppingtime asc ";
+            String sql = "select a.price,a.shoppingtime,w.wlmc from (select top 3 wlbm,price,shoppingtime " +
+                    "from "+TableNameConstant.T_YW+" where (wlbm=? or 0 = ?) and is_del='0' " +
+                    "order by shoppingtime desc) a " +
+                    "left join "+TableNameConstant.T_WL+" w on a.wlbm=w.wlbm and w.is_del='0' " +
+                    "order by a.shoppingtime asc ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, StringUtil.isEmpty(wlbm) ? "erp" : wlbm);
             ps.setInt(2, StringUtil.isEmpty(wlbm) ? 0 : 1);
@@ -62,11 +62,11 @@ public class ChartJdbc {
         PreparedStatement ps = null;
         ResultSet rst = null;
         try {
-            String sql = "select y.price, w.wlmc, convert(varchar(5),y.shoppingtime,110) as shoppingtime " +
-                    "from "+ TableNameConstant.T_YW+" y " +
-                    "left join "+TableNameConstant.T_WL+" w on y.wlbm=w.wlbm " +
-                    "where (y.wlbm=? or 0 = ?) and y.is_del='0' and w.is_del='0' " +
-                    "order by y.shoppingtime asc ";
+            String sql = "select a.price, convert(varchar(5),a.shoppingtime,110) as shoppingtime,w.wlmc " +
+                    "from (select top 2 wlbm,price,shoppingtime from "+TableNameConstant.T_YW+" " +
+                    "where (wlbm=? or 0 = ?) and is_del='0' order by shoppingtime desc) a " +
+                    "left join "+TableNameConstant.T_WL+" w on a.wlbm=w.wlbm and w.is_del='0' " +
+                    "order by a.shoppingtime asc ";
             ps = connection.prepareStatement(sql);
             ps.setString(1, StringUtil.isEmpty(wlbm) ? "erp" : wlbm);
             ps.setInt(2, StringUtil.isEmpty(wlbm) ? 0 : 1);
